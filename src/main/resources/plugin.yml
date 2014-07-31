@@ -1,0 +1,8 @@
+name: ${project.name}
+main: org.arkham.cs.CosmeticSuite
+version: ${project.version}
+description: ${project.description}
+commands:
+  cosmetics:
+    aliases: [cs, csuite, cosmeticsuite, cosmetic]
+    
