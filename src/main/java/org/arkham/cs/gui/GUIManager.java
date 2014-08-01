@@ -4,11 +4,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.arkham.cs.interfaces.GUIButton;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
-public class GUIManager {
+public class GUIManager implements Listener {
 
 	private Inventory main;
 	private HashMap<Category, List<GUIPage>> pages = new HashMap<>();
@@ -42,5 +48,25 @@ public class GUIManager {
 		return pages.get(cat);
 	}
 
+	@EventHandler
+	public void onClick(InventoryClickEvent event){
+		if(event.getInventory() == null){
+			return;
+		}
+		if(event.getCurrentItem() == null){
+			GUIButton button = GUIButton.fromSlot(event.getRawSlot());
+			if(button == null){
+				return;
+			}
+			button.onClick((Player) event.getWhoClicked());
+			return;
+		}
+		ItemStack item = event.getCurrentItem();
+		if(ClickableItem.fromItem(item) == null){
+			return;
+		}
+		ClickableItem cItem = ClickableItem.fromItem(item);
+		cItem.doClick((Player) event.getWhoClicked());
+	}
 
 }
