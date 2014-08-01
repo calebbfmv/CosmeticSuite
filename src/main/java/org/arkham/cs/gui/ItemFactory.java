@@ -25,6 +25,7 @@ public class ItemFactory {
 			lore1.add(ChatColor.translateAlternateColorCodes('&', s));
 		}
 		meta.setLore(lore1);
+		item.setItemMeta(meta);
 		return item;
 	}
 	

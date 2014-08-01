@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
 public class GUIPage {
@@ -68,5 +69,18 @@ public class GUIPage {
 
 	public static GUIPage first(){
 		return pages.get(1);
+	}
+	
+	public static GUIPage getCurrent(Player player){
+		if(player.getOpenInventory() == null){
+			return null;
+		}
+		String title = player.getOpenInventory().getTitle();
+		for(GUIPage page :  pages.values()){
+			if(page.getTitle().equalsIgnoreCase(title)){
+				return page;
+			}
+		}
+		return null;
 	}
 }

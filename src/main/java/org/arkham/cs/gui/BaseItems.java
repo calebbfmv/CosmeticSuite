@@ -1,12 +1,9 @@
 package org.arkham.cs.gui;
 
-import java.util.List;
-
 import org.arkham.cs.CosmeticSuite;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 public class BaseItems {
 	
@@ -14,27 +11,60 @@ public class BaseItems {
 		return new ClickableItem(ItemFactory.create(Material.BUCKET, ChatColor.AQUA + "Hats", ChatColor.GREEN + "Click to open the hat GUI")) {
 			@Override
 			public void doClick(Player player) {
-				List<GUIPage> pages = CosmeticSuite.getInstance().getGuiManager().getPages(Category.HATS);
-				GUIPage page = pages.get(0);
+				GUIPage page = CosmeticSuite.getInstance().getGuiManager().getPages(Category.HATS);
 				player.openInventory(page.getInv());
 			}
 		};
 	}
 	
-	public static ItemStack effects(){
-		return ItemFactory.create(Material.BUCKET, ChatColor.MAGIC + "<>" + ChatColor.RESET + ChatColor.GOLD + "Effects", ChatColor.GREEN + "Click to open the effects GUI");
+	public static ClickableItem effects(){
+		return new ClickableItem(ItemFactory.create(Material.FEATHER, ChatColor.MAGIC + "<>" + ChatColor.RESET + ChatColor.GOLD + "Effects", ChatColor.GREEN + "Click to open the effects GUI")) {
+			@Override
+			public void doClick(Player player) {
+				GUIPage page  = CosmeticSuite.getInstance().getGuiManager().getPages(Category.EFFECTS);
+				player.openInventory(page.getInv());
+			}
+		};
 	}
 	
-	public static ItemStack back(){
-		return ItemFactory.create(Material.REDSTONE, ChatColor.RED + ChatColor.BOLD.toString() + "Go Back");
+	public static ClickableItem back(){
+		return new ClickableItem(ItemFactory.create(Material.REDSTONE, ChatColor.RED + ChatColor.BOLD.toString() + "Go Back")){
+			@Override
+			public void doClick(Player player) {
+				GUIPage page = GUIPage.getCurrent(player).prev();
+				if(page == null){
+					player.closeInventory();
+					return;
+				}
+				player.openInventory(page.getInv());
+			}
+		};
 	}
 	
-	public static ItemStack next(){
-		return ItemFactory.create(Material.GOLD_INGOT, ChatColor.GREEN + ChatColor.BOLD.toString() + "Proceed");
+	public static ClickableItem next(){
+		return new ClickableItem(ItemFactory.create(Material.GOLD_INGOT, ChatColor.GREEN + ChatColor.BOLD.toString() + "Proceed")){
+			@Override
+			public void doClick(Player player) {
+				if(GUIPage.getCurrent(player) == null){
+					return;
+				}
+				GUIPage page = GUIPage.getCurrent(player).next();
+				if(page == null){
+					player.closeInventory();
+					return;
+				}
+				player.openInventory(page.getInv());
+			}
+		};
 	}
 	
-	public static ItemStack fireworks(){
-		return ItemFactory.create(Material.BUCKET, ChatColor.RED + "Fi" + ChatColor.YELLOW + "re" + ChatColor.BLUE + "works", ChatColor.GREEN + "Click to open the firework GUI");
+	public static ClickableItem fireworks(){
+		return new ClickableItem(ItemFactory.create(Material.FIREWORK, ChatColor.RED + "Fi" + ChatColor.YELLOW + "re" + ChatColor.BLUE + "works", ChatColor.GREEN + "Click to open the firework GUI")) {
+			@Override
+			public void doClick(Player player) {
+				GUIPage page = CosmeticSuite.getInstance().getGuiManager().getPages(Category.FIREWORKS);
+				player.openInventory(page.getInv());
+			}
+		};
 	}
-
 }
