@@ -1,22 +1,30 @@
 package org.arkham.cs.interfaces;
 
+import java.util.Collections;
 import java.util.HashMap;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public abstract class GUIButton {
-	
-	public abstract void doClick(Player player);
-	
+		
 	public abstract ItemStack getDisplay();
 	
-	private int slot;
+	public abstract String getPermission();
+	
+	public abstract void onClick(Player player);
+		
+	private int slot, id;
 	private static HashMap<Integer, GUIButton> buttons = new HashMap<>();
 	
 	public GUIButton(int slot){
 		this.slot = slot;
 		buttons.put(slot, this);
+		if(!buttons.isEmpty()){
+			id = Collections.max(buttons.keySet()) + 1;
+		} else {
+			id = 1;
+		}
 	}
 	
 	public int getSlot(){
@@ -27,8 +35,8 @@ public abstract class GUIButton {
 		return buttons.get(slot);
 	}
 	
+	public int getId(){
+		return id;
+	}
 	
-	
-	
-
 }

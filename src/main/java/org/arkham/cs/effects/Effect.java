@@ -10,14 +10,23 @@ public class Effect extends GUIButton {
 		super(slot);
 	}
 
-	@Override
-	public void doClick(Player player) {
-		
-	}
 
 	@Override
 	public ItemStack getDisplay() {
 		return null;
+	}
+
+	@Override
+	public String getPermission() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public void onClick(Player player) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

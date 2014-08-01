@@ -9,8 +9,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class ItemFactory {
-	
-	public static ItemStack create(Material mat, String displayName, int amount, byte data, String... lore){
+		
+	public static ItemStack create(Material mat, String displayName, int amount, byte data,  String... lore){
 		ItemStack item =  new ItemStack(mat, amount, data);
 		ItemMeta meta = item.getItemMeta();
 		displayName = ChatColor.translateAlternateColorCodes('&', displayName);

@@ -8,19 +8,23 @@ public class Hat extends GUIButton {
 
 	public Hat(int slot) {
 		super(slot);
-		// TODO Auto-generated constructor stub
 	}
 
-	@Override
-	public void doClick(Player player) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public ItemStack getDisplay() {
-		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public String getPermission() {
+		return null;
+	}
+
+
+	@Override
+	public void onClick(Player player) {
+		
 	}
 
 }

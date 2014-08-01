@@ -12,19 +12,26 @@ public class GUIPage {
 	private int id;
 	private String title;
 	private Inventory inv;
+	private Category cat;
 	
 	private static HashMap<Integer, GUIPage> pages = new HashMap<>();
 	
-	public GUIPage(String title){
+	public GUIPage(String title, Category cat){
 		this.title = title;
-		title = ChatColor.translateAlternateColorCodes('&', title);
-		this.inv = Bukkit.createInventory(null, 45, title);
 		if(!pages.isEmpty()){
 			this.id = Collections.max(pages.keySet()) + 1;
 		}  else {
 			this.id = 1;
 		}
 		pages.put(id, this);
+		title = ChatColor.translateAlternateColorCodes('&', title);
+		title += ": " + id;
+		this.inv = Bukkit.createInventory(null, 45, title);
+		this.cat = cat;
+	}
+	
+	public Category getCategory(){
+		return cat;
 	}
 	
 	public GUIPage prev(){
