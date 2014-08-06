@@ -5,11 +5,11 @@ import java.util.List;
 
 import org.arkham.cs.CosmeticSuite;
 import org.arkham.cs.effects.CustomEffect;
+import org.arkham.cs.effects.ParticleEffect;
 import org.arkham.cs.hats.Hat;
 import org.arkham.cs.interfaces.Button;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -70,7 +70,7 @@ public class GUIManager implements Listener {
 				e = e.toUpperCase();
 				String permission = effects.getString(s + ".permission");
 				Material display = Material.matchMaterial(effects.getString(s + ".item"));
-				Effect effect = Effect.valueOf(e);
+				ParticleEffect effect = ParticleEffect.fromName(e);
 				new CustomEffect(slot, effect, permission, display);
 				slot++;
 			}

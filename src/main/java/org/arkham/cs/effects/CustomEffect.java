@@ -7,14 +7,13 @@ import org.arkham.cs.gui.Category;
 import org.arkham.cs.gui.GUIPage;
 import org.arkham.cs.gui.ItemFactory;
 import org.arkham.cs.interfaces.Button;
-import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class CustomEffect extends Button {
 	
-	private Effect effect;
+	private ParticleEffect effect;
 	private String permission;
 	private Material display;
 	private static ArrayList<CustomEffect> effects = new ArrayList<>();
@@ -25,7 +24,7 @@ public class CustomEffect extends Button {
 	 * @param permission
 	 * @param display
 	 */
-	public CustomEffect(int slot, Effect effect, String permission, Material display) {
+	public CustomEffect(int slot, ParticleEffect effect, String permission, Material display) {
 		super(slot);
 		this.effect = effect;
 		this.permission = permission;
@@ -68,7 +67,7 @@ public class CustomEffect extends Button {
 		player.closeInventory();
 	}
 	
-	public Effect getEffect(){
+	public ParticleEffect getEffect(){
 		return effect;
 	}
 	

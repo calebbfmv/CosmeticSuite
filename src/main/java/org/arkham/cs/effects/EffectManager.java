@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.UUID;
 
 import org.arkham.cs.CosmeticSuite;
-import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -38,9 +37,9 @@ public class EffectManager implements Listener{
 		if(effect == null){
 			return;
 		}
-		Effect playedEffect = effect.getEffect();
+		ParticleEffect playedEffect = effect.getEffect();
 		Location loc = player.getLocation();
-		loc.getWorld().playEffect(loc, playedEffect, 0);
+		playedEffect.display(loc, 0, 0, 0, 5F, 1);
 	}
 
 }
