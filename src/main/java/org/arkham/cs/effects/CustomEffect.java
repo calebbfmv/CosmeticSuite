@@ -38,13 +38,18 @@ public class CustomEffect extends Button {
 		ItemStack item = new ItemStack(display);
 		String displayName = effect.name();
 		StringBuilder builder = new StringBuilder();
-		builder.append(displayName.substring(0, 1).toUpperCase());
-		builder.append(displayName.substring(1).toLowerCase());
 		if(displayName.contains("_")){
 			String[] str = displayName.split("_");
 			String second = str[1];
+			displayName = str[0];
+			builder.append(displayName.substring(0, 1).toUpperCase());
+			builder.append(displayName.substring(1).toLowerCase());
+			builder.append(" ");
 			builder.append(second.substring(0, 1).toUpperCase());
 			builder.append(second.substring(1).toLowerCase());
+		} else {
+			builder.append(displayName.substring(0, 1).toUpperCase());
+			builder.append(displayName.substring(1).toLowerCase());
 		}
 		item = ItemFactory.create(display, builder.toString()); 
 		return item;

@@ -47,8 +47,8 @@ public class GUIManager implements Listener {
 	@SuppressWarnings("unused")
 	private void loadPagesFromYML(){
 		ConfigurationSection hats = CosmeticSuite.getInstance().getFileHandler().getHatConfig().getConfigurationSection("hats");
-		ConfigurationSection effects = CosmeticSuite.getInstance().getFileHandler().getHatConfig().getConfigurationSection("effects");
-		ConfigurationSection fireworks = CosmeticSuite.getInstance().getFileHandler().getHatConfig().getConfigurationSection("fireworks");
+		ConfigurationSection effects = CosmeticSuite.getInstance().getFileHandler().getEffectConfig().getConfigurationSection("effects");
+		ConfigurationSection fireworks = CosmeticSuite.getInstance().getFileHandler().getFireworkConfig().getConfigurationSection("fireworks");
 		if(hats != null){
 			new GUIPage(ChatColor.AQUA  + "Hats", Category.HATS);
 			int slot = 0;
