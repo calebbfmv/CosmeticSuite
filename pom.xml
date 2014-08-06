@@ -4,7 +4,7 @@
 	<groupId>org.arkham</groupId>
 	<artifactId>cosmeticsuite</artifactId>
 	<version>1.0.0.banana</version>
-	<name>Cosmetic Suite</name>
+	<name>CosmeticSuite</name>
 	<description>Cosmetic Suite for ArkhamNetwork to help comply with the EULA enforcement  (if there is such a thing lel)</description>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

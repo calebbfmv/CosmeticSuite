@@ -7,14 +7,14 @@ import org.arkham.cs.CosmeticSuite;
 import org.arkham.cs.gui.Category;
 import org.arkham.cs.gui.GUIManager;
 import org.arkham.cs.gui.GUIPage;
-import org.arkham.cs.interfaces.GUIButton;
+import org.arkham.cs.interfaces.Button;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class Hat extends GUIButton {
-	
+public class Hat extends Button {
+
 	private ItemStack item;
 	private String name, permission;
 	private List<String> lore;
@@ -30,6 +30,7 @@ public class Hat extends GUIButton {
 		this.item = item;
 		this.name = name;
 		this.lore = lore;
+		this.permission = permission;
 		hats.add(this);
 	}
 
@@ -55,29 +56,29 @@ public class Hat extends GUIButton {
 
 	@Override
 	public void onClick(Player player) {
-		System.out.println("Clickedddd");
 		player.getInventory().setHelmet(getDisplay());
 		player.closeInventory();
 	}
-	
-	public static void populate(){
+
+	public static void populate(Player player){
 		CosmeticSuite suite =  CosmeticSuite.getInstance();
 		if(suite == null){
-			System.out.println("null instance");
 			return;
 		}
 		GUIManager manager = suite.getGuiManager();
 		if(manager == null){
-			System.out.println("null managaer");
 			return;
 		}
 		GUIPage page = manager.getPages(Category.HATS);
 		if(page == null){
-			System.out.println("null page");
 			return;
 		}
 		for(Hat hat : hats){
-			page.getInv().addItem(hat.getDisplay());
+			if(!player.hasPermission(hat.getPermission())){
+				page.getInv().setItem(hat.getSlot(), hat.noPermissionItem().getItem());
+			} else {
+				page.getInv().setItem(hat.getSlot(), hat.getDisplay());
+			}
 		}
 	}
 }

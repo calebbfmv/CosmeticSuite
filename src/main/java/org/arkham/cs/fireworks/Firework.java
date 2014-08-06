@@ -2,7 +2,7 @@ package org.arkham.cs.fireworks;
 
 import java.util.List;
 
-import org.arkham.cs.interfaces.GUIButton;
+import org.arkham.cs.interfaces.Button;
 import org.bukkit.ChatColor;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Material;
@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 
-public class Firework extends GUIButton {
+public class Firework extends Button {
 	
 	private String permission;
 	private String name;

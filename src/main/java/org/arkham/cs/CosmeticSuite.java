@@ -2,6 +2,7 @@ package org.arkham.cs;
 
 import java.io.IOException;
 
+import org.arkham.cs.effects.EffectManager;
 import org.arkham.cs.gui.GUIManager;
 import org.arkham.cs.handler.FileHandler;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -10,6 +11,7 @@ public class CosmeticSuite extends JavaPlugin {
 	
 	private static CosmeticSuite instance;
 	private GUIManager guiManager;
+	private EffectManager effectManager;
 	private FileHandler fileHandler;
 	
 	public void onEnable(){
@@ -21,6 +23,8 @@ public class CosmeticSuite extends JavaPlugin {
 		}
 		guiManager = new GUIManager();
 		guiManager.loadPages();
+		effectManager = new EffectManager();
+		new CosmeticCommand();
 		getServer().getPluginManager().registerEvents(guiManager, instance);
 	}
 	
@@ -34,6 +38,10 @@ public class CosmeticSuite extends JavaPlugin {
 	
 	public GUIManager getGuiManager(){
 		return guiManager;
+	}
+	
+	public EffectManager getEffectManager(){
+		return effectManager;
 	}
 
 }

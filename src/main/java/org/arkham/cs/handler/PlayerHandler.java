@@ -1,17 +1,11 @@
 package org.arkham.cs.handler;
 
-import org.arkham.cs.interfaces.GUIButton;
+import org.arkham.cs.interfaces.Button;
 import org.bukkit.entity.Player;
 
 public class PlayerHandler {
 	
-	private Player player;
-	
-	public PlayerHandler(Player player){
-		this.player = player;
-	}
-	
-	public boolean canPurchase(GUIButton button){
+	public static boolean canPurchase(Button button, Player player){
 		if(player.hasPermission(button.getPermission())){
 			return true;
 		}
@@ -21,8 +15,7 @@ public class PlayerHandler {
 		return false;
 	}
 	
-	public void purchase(GUIButton button){
-		
+	public static void purchase(Button button, Player player){
 		PurchaseHandler.addPurchase(player, button);
 	}
 

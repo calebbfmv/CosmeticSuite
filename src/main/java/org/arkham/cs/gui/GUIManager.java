@@ -1,14 +1,15 @@
 package org.arkham.cs.gui;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import org.arkham.cs.CosmeticSuite;
+import org.arkham.cs.effects.CustomEffect;
 import org.arkham.cs.hats.Hat;
-import org.arkham.cs.interfaces.GUIButton;
+import org.arkham.cs.interfaces.Button;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -41,9 +42,9 @@ public class GUIManager implements Listener {
 				}
 			}
 		}
-		Hat.populate();
 	}
 
+	@SuppressWarnings("unused")
 	private void loadPagesFromYML(){
 		ConfigurationSection hats = CosmeticSuite.getInstance().getFileHandler().getHatConfig().getConfigurationSection("hats");
 		ConfigurationSection effects = CosmeticSuite.getInstance().getFileHandler().getHatConfig().getConfigurationSection("effects");
@@ -55,8 +56,22 @@ public class GUIManager implements Listener {
 				List<String> lore = hats.getStringList(s + ".lore");
 				Material mat = Material.matchMaterial(hats.getString(s + ".item"));
 				String permission = hats.getString(s + ".permission");
+				System.out.println(permission + " :: " + lore + " :: " + mat.name().toLowerCase());
 				ItemStack item = new ItemStack(mat);
 				new Hat(slot, item, s, permission, lore);
+				slot++;
+			}
+		}
+		if(effects != null){
+			new GUIPage(ChatColor.RED + "Effects", Category.EFFECTS);
+			int slot = 0;
+			for(String s : effects.getKeys(false)){
+				String e = effects.getString(s + ".effectType");
+				e = e.toUpperCase();
+				String permission = effects.getString(s + ".permission");
+				Material display = Material.matchMaterial(effects.getString(s + ".item"));
+				Effect effect = Effect.valueOf(e);
+				new CustomEffect(slot, effect, permission, display);
 				slot++;
 			}
 		}
@@ -76,7 +91,7 @@ public class GUIManager implements Listener {
 		}
 		ItemStack item = event.getCurrentItem();
 		if(ClickableItem.fromItem(item) == null){
-			GUIButton button = GUIButton.fromSlot(event.getRawSlot());
+			Button button = Button.fromSlot(event.getRawSlot());
 			if(button == null){
 				System.out.println("Null button on slot " + event.getRawSlot());
 				return;
@@ -97,8 +112,13 @@ public class GUIManager implements Listener {
 			@Override
 			public void run() {
 				player.openInventory(main);
+				Hat.populate(player);
+				CustomEffect.populate(player);
 			}
 		}.runTaskLater(CosmeticSuite.getInstance(), 5L);
 	}
-
+	
+	public Inventory getMain(){
+		return main;
+	}
 }
