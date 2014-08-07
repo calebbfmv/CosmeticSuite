@@ -15,7 +15,6 @@ public class SQLConnectionThread {
                 if (con != null) {
                     con.close();
                 }
-
                 con = DriverManager.getConnection(Authentication.sql_url, Authentication.sql_user, Authentication.sql_pass);
                 query_count = 0;
             }
@@ -34,7 +33,7 @@ public class SQLConnectionThread {
     public static ResultSet getResultSet(String query) {
         PreparedStatement pst = null;
         try {
-            pst = SQLConnectionThread.getConnection().prepareStatement(query);
+            pst = getConnection().prepareStatement(query);
             pst.execute();
             ResultSet rs = pst.getResultSet();
             return rs;

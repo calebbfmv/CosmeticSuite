@@ -16,6 +16,7 @@ public class CustomEffect extends Button {
 	private ParticleEffect effect;
 	private String permission;
 	private Material display;
+	private int amount;
 	private static ArrayList<CustomEffect> effects = new ArrayList<>();
 	
 	/**
@@ -24,33 +25,23 @@ public class CustomEffect extends Button {
 	 * @param permission
 	 * @param display
 	 */
-	public CustomEffect(int slot, ParticleEffect effect, String permission, Material display) {
-		super(slot);
+	public CustomEffect(int slot, String name, ParticleEffect effect, String permission, Material display, int amount) {
+		super(slot, name);
 		this.effect = effect;
 		this.permission = permission;
 		this.display = display;
+		this.amount = amount;
 		effects.add(this);
+	}
+	
+	public int getAmount(){
+		return amount;
 	}
 
 	@Override
 	public ItemStack getDisplay() {
 		ItemStack item = new ItemStack(display);
-		String displayName = effect.name();
-		StringBuilder builder = new StringBuilder();
-		if(displayName.contains("_")){
-			String[] str = displayName.split("_");
-			String second = str[1];
-			displayName = str[0];
-			builder.append(displayName.substring(0, 1).toUpperCase());
-			builder.append(displayName.substring(1).toLowerCase());
-			builder.append(" ");
-			builder.append(second.substring(0, 1).toUpperCase());
-			builder.append(second.substring(1).toLowerCase());
-		} else {
-			builder.append(displayName.substring(0, 1).toUpperCase());
-			builder.append(displayName.substring(1).toLowerCase());
-		}
-		item = ItemFactory.create(display, builder.toString()); 
+		item = ItemFactory.create(display, getName()); 
 		return item;
 	}
 
@@ -62,6 +53,7 @@ public class CustomEffect extends Button {
 
 	@Override
 	public void onClick(Player player) {
+		System.out.println("Called bby");
 		EffectManager manager = CosmeticSuite.getInstance().getEffectManager();
 		manager.setEffect(player, this);
 		player.closeInventory();

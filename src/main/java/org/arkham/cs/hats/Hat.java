@@ -16,7 +16,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 public class Hat extends Button {
 
 	private ItemStack item;
-	private String name, permission;
+	private String permission;
 	private List<String> lore;
 	private static List<Hat> hats = new ArrayList<>();
 	/**
@@ -26,9 +26,8 @@ public class Hat extends Button {
 	 * @param lore
 	 */
 	public Hat(int slot, ItemStack item, String name, String permission, List<String> lore) {
-		super(slot);
+		super(slot, name);
 		this.item = item;
-		this.name = name;
 		this.lore = lore;
 		this.permission = permission;
 		hats.add(this);
@@ -37,12 +36,11 @@ public class Hat extends Button {
 	@Override
 	public ItemStack getDisplay() {
 		ItemMeta meta = item.getItemMeta();
-		name = ChatColor.translateAlternateColorCodes('&', name);
 		List<String> lore1 = new ArrayList<>();
 		for(String s : lore){
 			lore1.add(ChatColor.translateAlternateColorCodes('&', s));
 		}
-		meta.setDisplayName(name);
+		meta.setDisplayName(getName());
 		meta.setLore(lore1);
 		item.setItemMeta(meta);
 		return item;
@@ -56,8 +54,10 @@ public class Hat extends Button {
 
 	@Override
 	public void onClick(Player player) {
+		System.out.println("CLICKED");
 		player.getInventory().setHelmet(getDisplay());
 		player.closeInventory();
+		System.out.println("ID: " + this.getId());
 	}
 
 	public static void populate(Player player){

@@ -20,14 +20,11 @@ public class SQLQueryThread extends Thread {
 			for (String query : sql_query) {
 				Connection con = null;
 				PreparedStatement pst = null;
-
 				try {
 					pst = SQLConnectionThread.getConnection().prepareStatement(query);
 					pst.executeUpdate();
-
 				} catch (Exception ex) {
 					ex.printStackTrace();
-
 				} finally {
 					try {
 						if (pst != null) {
@@ -36,44 +33,16 @@ public class SQLQueryThread extends Thread {
 						if (con != null) {
 							con.close();
 						}
-
 					} catch (SQLException ex) {
 						ex.printStackTrace();
 					}
 				}
-
 				sql_query.remove(query);
 			}
 		}
 	}
-
-	public void doWork() {
-		for (String query : sql_query) {
-			Connection con = null;
-			PreparedStatement pst = null;
-
-			try {
-				pst = SQLConnectionThread.getConnection().prepareStatement(query);
-				pst.executeUpdate();
-
-			} catch (Exception ex) {
-				ex.printStackTrace();
-
-			} finally {
-				try {
-					if (pst != null) {
-						pst.close();
-					}
-					if (con != null) {
-						con.close();
-					}
-
-				} catch (SQLException ex) {
-					ex.printStackTrace();
-				}
-			}
-
-			sql_query.remove(query);
-		}
+	
+	public static void addQuery(String query){
+		sql_query.add(query);
 	}
 }

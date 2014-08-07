@@ -1,6 +1,5 @@
 package org.arkham.cs.interfaces;
 
-import java.util.Collections;
 import java.util.HashMap;
 
 import org.arkham.cs.CosmeticSuite;
@@ -18,19 +17,25 @@ public abstract class Button {
 	
 	public abstract String getPermission();
 	
+	
 	public abstract void onClick(Player player);
 		
 	private int slot, id;
-	private static HashMap<Integer, Button> buttons = new HashMap<>();
+	private String name;
+	private static HashMap<String, Button> buttons = new HashMap<>();
+	private static HashMap<Integer, Button> buttonIds = new HashMap<>();
 	
-	public Button(int slot){
-		this.slot = slot;
-		buttons.put(slot, this);
+	public Button(int slot, String name){
+		this.slot = slot;		
 		if(!buttons.isEmpty()){
-			id = Collections.max(buttons.keySet()) + 1;
+			id = buttons.size() + 1;
 		} else {
 			id = 1;
 		}
+		this.name = name;
+		name = ChatColor.translateAlternateColorCodes('&', name);
+		buttons.put(getName(), this);
+		buttonIds.put(id, this);
 	}
 	
 	public ClickableItem noPermissionItem(){
@@ -40,6 +45,7 @@ public abstract class Button {
 			public void doClick(Player player) {		
 				CosmeticSuite cs = CosmeticSuite.getInstance();
 				FileConfiguration config = cs.getConfig();
+
 				String link = config.getString("buy-link", "https://buy.arkhamnetwork.org");
 				link = ChatColor.translateAlternateColorCodes('&', link);
 				player.sendMessage(link);
@@ -52,12 +58,19 @@ public abstract class Button {
 		return slot;
 	}
 	
-	public static Button fromSlot(int slot){
+	public static Button fromName(String slot){
 		return buttons.get(slot);
+	}
+	
+	public static Button fromId(int id){
+		return buttonIds.get(id);
 	}
 	
 	public int getId(){
 		return id;
 	}
 	
+	public String getName(){
+		return name;
+	}
 }

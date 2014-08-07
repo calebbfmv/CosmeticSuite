@@ -2,6 +2,8 @@ package org.arkham.cs;
 
 import java.io.IOException;
 
+import org.arkham.cs.db.Authentication;
+import org.arkham.cs.db.SQLQueryThread;
 import org.arkham.cs.effects.EffectManager;
 import org.arkham.cs.gui.GUIManager;
 import org.arkham.cs.handler.FileHandler;
@@ -25,6 +27,8 @@ public class CosmeticSuite extends JavaPlugin {
 		guiManager.loadPages();
 		effectManager = new EffectManager();
 		new CosmeticCommand();
+		SQLQueryThread.addQuery("CREATE DATABASE IF NOT EXISTS " + Authentication.sql_db);
+		SQLQueryThread.addQuery("CREATE TABLE IF NOT EXISTS `purchases` (`player` varchar(64), `buttons` int)");
 		getServer().getPluginManager().registerEvents(guiManager, instance);
 	}
 	

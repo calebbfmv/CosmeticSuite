@@ -39,7 +39,7 @@ public class EffectManager implements Listener{
 		}
 		ParticleEffect playedEffect = effect.getEffect();
 		Location loc = player.getLocation();
-		playedEffect.display(loc, 0, 0, 0, 5F, 1);
+		playedEffect.display(loc, 0, 0, 0, 50F, effect.getAmount());
 	}
 
 }

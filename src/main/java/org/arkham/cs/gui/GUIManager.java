@@ -56,7 +56,6 @@ public class GUIManager implements Listener {
 				List<String> lore = hats.getStringList(s + ".lore");
 				Material mat = Material.matchMaterial(hats.getString(s + ".item"));
 				String permission = hats.getString(s + ".permission");
-				System.out.println(permission + " :: " + lore + " :: " + mat.name().toLowerCase());
 				ItemStack item = new ItemStack(mat);
 				new Hat(slot, item, s, permission, lore);
 				slot++;
@@ -67,11 +66,26 @@ public class GUIManager implements Listener {
 			int slot = 0;
 			for(String s : effects.getKeys(false)){
 				String e = effects.getString(s + ".effectType");
-				e = e.toUpperCase();
 				String permission = effects.getString(s + ".permission");
 				Material display = Material.matchMaterial(effects.getString(s + ".item"));
 				ParticleEffect effect = ParticleEffect.fromName(e);
-				new CustomEffect(slot, effect, permission, display);
+				int amount = effects.getInt(s + ".amount", 15);
+				String displayName = effect.name();
+				StringBuilder builder = new StringBuilder();
+				builder.append(ChatColor.GOLD + ChatColor.BOLD.toString());
+				if(displayName.contains("_")){
+					String[] str = displayName.split("_");
+					for(int i = 0; i < str.length; i++){
+						String name = str[i];
+						builder.append(name.substring(0, 1).toUpperCase());
+						builder.append(name.substring(1).toLowerCase());
+						builder.append(" ");
+					}
+				} else {
+					builder.append(displayName.substring(0, 1).toUpperCase());
+					builder.append(displayName.substring(1).toLowerCase());
+				}
+				new CustomEffect(slot, builder.toString(), effect, permission, display, amount);
 				slot++;
 			}
 		}
@@ -90,14 +104,20 @@ public class GUIManager implements Listener {
 			return;
 		}
 		ItemStack item = event.getCurrentItem();
+		if(!item.hasItemMeta()){
+			return;
+		}
+		if(!item.getItemMeta().hasDisplayName()){
+			return;
+		}
 		if(ClickableItem.fromItem(item) == null){
-			Button button = Button.fromSlot(event.getRawSlot());
+			String name = item.getItemMeta().getDisplayName();
+			Button button = Button.fromName(name);
 			if(button == null){
-				System.out.println("Null button on slot " + event.getRawSlot());
 				return;
 			}
-			event.setCancelled(true);
 			button.onClick((Player) event.getWhoClicked());
+			event.setCancelled(true);
 			return;
 		}
 		event.setCancelled(true);
