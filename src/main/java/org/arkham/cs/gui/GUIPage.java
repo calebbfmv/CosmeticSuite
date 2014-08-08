@@ -26,7 +26,6 @@ public class GUIPage {
 		}
 		pages.put(id, this);
 		title = ChatColor.translateAlternateColorCodes('&', title);
-		title += ": " + id;
 		this.inv = Bukkit.createInventory(null, 45, title);
 		this.cat = cat;
 	}

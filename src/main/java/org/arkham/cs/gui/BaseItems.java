@@ -11,8 +11,7 @@ public class BaseItems {
 		return new ClickableItem(ItemFactory.create(Material.BUCKET, ChatColor.AQUA + "Hats", ChatColor.GREEN + "Click to open the hat GUI")) {
 			@Override
 			public void doClick(Player player) {
-				GUIPage page = CosmeticSuite.getInstance().getGuiManager().getPages(Category.HATS);
-				player.openInventory(page.getInv());
+				CosmeticSuite.getInstance().getCommand().openHats(player);
 			}
 		};
 	}
@@ -21,9 +20,8 @@ public class BaseItems {
 		return new ClickableItem(ItemFactory.create(Material.FEATHER, ChatColor.MAGIC + "<>" + ChatColor.RESET + ChatColor.GOLD + "Effects", ChatColor.GREEN + "Click to open the effects GUI")) {
 			@Override
 			public void doClick(Player player) {
-				GUIPage page  = CosmeticSuite.getInstance().getGuiManager().getPages(Category.EFFECTS);
-				player.openInventory(page.getInv());
-			}
+				CosmeticSuite.getInstance().getCommand().openEffects(player);
+				}
 		};
 	}
 	
@@ -62,9 +60,8 @@ public class BaseItems {
 		return new ClickableItem(ItemFactory.create(Material.FIREWORK, ChatColor.RED + "Fi" + ChatColor.YELLOW + "re" + ChatColor.BLUE + "works", ChatColor.GREEN + "Click to open the firework GUI")) {
 			@Override
 			public void doClick(Player player) {
-				GUIPage page = CosmeticSuite.getInstance().getGuiManager().getPages(Category.FIREWORKS);
-				player.openInventory(page.getInv());
-			}
+				CosmeticSuite.getInstance().getCommand().openFireworks(player);
+				}
 		};
 	}
 }

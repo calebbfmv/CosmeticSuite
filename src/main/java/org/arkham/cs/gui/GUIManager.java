@@ -1,5 +1,6 @@
 package org.arkham.cs.gui;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -24,7 +25,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class GUIManager implements Listener {
 
 	private Inventory main;
-	private HashMap<Category, GUIPage> pages = new HashMap<>();
+	private HashMap<Category, List<GUIPage>> pages = new HashMap<>();
 
 	public GUIManager(){
 		main = Bukkit.createInventory(null, 9, ChatColor.DARK_PURPLE + "Arkham Cosmetics");
@@ -36,11 +37,13 @@ public class GUIManager implements Listener {
 	public void loadPages(){
 		loadPagesFromYML();
 		for(Category cat :  Category.values()){
+			List<GUIPage> pages = new ArrayList<>();
 			for(GUIPage page :  GUIPage.getPages().values()){
 				if(page.getCategory() == cat){
-					pages.put(cat, page);
+					pages.add(page);
 				}
 			}
+			this.pages.put(cat, pages);
 		}
 	}
 
@@ -91,7 +94,7 @@ public class GUIManager implements Listener {
 		}
 	}
 	
-	public GUIPage getPages(Category cat){
+	public List<GUIPage> getPages(Category cat){
 		return pages.get(cat);
 	}
 

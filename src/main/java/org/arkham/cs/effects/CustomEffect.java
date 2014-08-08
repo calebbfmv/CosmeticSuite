@@ -1,9 +1,11 @@
 package org.arkham.cs.effects;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.arkham.cs.CosmeticSuite;
 import org.arkham.cs.gui.Category;
+import org.arkham.cs.gui.GUIManager;
 import org.arkham.cs.gui.GUIPage;
 import org.arkham.cs.gui.ItemFactory;
 import org.arkham.cs.interfaces.Button;
@@ -64,7 +66,19 @@ public class CustomEffect extends Button {
 	}
 	
 	public static void populate(Player player){
-		GUIPage page = CosmeticSuite.getInstance().getGuiManager().getPages(Category.EFFECTS);
+		CosmeticSuite suite =  CosmeticSuite.getInstance();
+		if(suite == null){
+			return;
+		}
+		GUIManager manager = suite.getGuiManager();
+		if(manager == null){
+			return;
+		}
+		List<GUIPage> pages = manager.getPages(Category.EFFECTS);
+		GUIPage page = pages.get(0);
+		if(page == null){
+			return;
+		}
 		for(CustomEffect effect : effects){
 			if(!player.hasPermission(effect.getPermission())){
 				page.getInv().setItem(effect.getSlot(), effect.noPermissionItem().getItem());

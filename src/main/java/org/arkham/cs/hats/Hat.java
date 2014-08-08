@@ -19,6 +19,7 @@ public class Hat extends Button {
 	private String permission;
 	private List<String> lore;
 	private static List<Hat> hats = new ArrayList<>();
+	
 	/**
 	 * @param slot
 	 * @param item
@@ -54,10 +55,8 @@ public class Hat extends Button {
 
 	@Override
 	public void onClick(Player player) {
-		System.out.println("CLICKED");
 		player.getInventory().setHelmet(getDisplay());
 		player.closeInventory();
-		System.out.println("ID: " + this.getId());
 	}
 
 	public static void populate(Player player){
@@ -69,7 +68,8 @@ public class Hat extends Button {
 		if(manager == null){
 			return;
 		}
-		GUIPage page = manager.getPages(Category.HATS);
+		List<GUIPage> pages = manager.getPages(Category.HATS);
+		GUIPage page = pages.get(0);
 		if(page == null){
 			return;
 		}

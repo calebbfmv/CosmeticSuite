@@ -15,6 +15,7 @@ public class CosmeticSuite extends JavaPlugin {
 	private GUIManager guiManager;
 	private EffectManager effectManager;
 	private FileHandler fileHandler;
+	private CosmeticCommand cCommand;
 	
 	public void onEnable(){
 		instance = this;
@@ -26,10 +27,14 @@ public class CosmeticSuite extends JavaPlugin {
 		guiManager = new GUIManager();
 		guiManager.loadPages();
 		effectManager = new EffectManager();
-		new CosmeticCommand();
+		cCommand = new CosmeticCommand();
 		SQLQueryThread.addQuery("CREATE DATABASE IF NOT EXISTS " + Authentication.sql_db);
 		SQLQueryThread.addQuery("CREATE TABLE IF NOT EXISTS `purchases` (`player` varchar(64), `buttons` int)");
 		getServer().getPluginManager().registerEvents(guiManager, instance);
+	}
+	
+	public CosmeticCommand getCommand(){
+		return cCommand;
 	}
 	
 	public FileHandler getFileHandler() {

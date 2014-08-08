@@ -1,5 +1,7 @@
 package org.arkham.cs;
 
+import java.util.List;
+
 import org.arkham.cs.gui.Category;
 import org.arkham.cs.gui.GUIManager;
 import org.arkham.cs.gui.GUIPage;
@@ -67,19 +69,31 @@ public class CosmeticCommand implements CommandExecutor {
 
 	public void openEffects(Player player) {
 		GUIManager manager = CosmeticSuite.getInstance().getGuiManager();
-		GUIPage page = manager.getPages(Category.EFFECTS);
+		List<GUIPage> pages = manager.getPages(Category.EFFECTS);
+		GUIPage page = pages.get(0);
+		if(page == null){
+			return;
+		}
 		player.openInventory(page.getInv());
 	}
 
 	public void openHats(Player player) {
 		GUIManager manager = CosmeticSuite.getInstance().getGuiManager();
-		GUIPage page = manager.getPages(Category.HATS);
+		List<GUIPage> pages = manager.getPages(Category.HATS);
+		GUIPage page = pages.get(0);
+		if(page == null){
+			return;
+		}
 		player.openInventory(page.getInv());
 	}
 
 	public void openFireworks(Player player) {
 		GUIManager manager = CosmeticSuite.getInstance().getGuiManager();
-		GUIPage page = manager.getPages(Category.FIREWORKS);
+		List<GUIPage> pages = manager.getPages(Category.FIREWORKS);
+		GUIPage page = pages.get(0);
+		if(page == null){
+			return;
+		}
 		player.openInventory(page.getInv());
 	}
 
