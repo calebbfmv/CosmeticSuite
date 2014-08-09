@@ -10,7 +10,6 @@ import java.util.UUID;
 import org.arkham.cs.db.SQLConnectionThread;
 import org.arkham.cs.db.SQLQueryThread;
 import org.arkham.cs.interfaces.Button;
-import org.arkham.cs.utils.NameUtils;
 import org.bukkit.entity.Player;
 
 public class PurchaseHandler {
@@ -29,10 +28,7 @@ public class PurchaseHandler {
 		String query = "UPDATE `purchases` SET `buttons`='" + Button.serialze(buttons)+ "' WHERE `player`=" + name;
 		ResultSet res = SQLConnectionThread.getResultSet(query1);
 		try {
-			if(res.next()){
-				System.out.println("We all good to update");
-			} else {
-				System.out.println("Nope nope nope nope nope");
+			if(!res.next()){
 				query = "INSERT INTO `purchases` VALUES(" + name + ", '" + button.getPermission() + "')"; 
 			}
 		} catch (SQLException e) {
@@ -43,15 +39,12 @@ public class PurchaseHandler {
 
 	public static boolean hasPurchased(Player player, Button button){
 		if(player.isOp()){
-			System.out.println("Can Purchase: OP");
 			return true;
 		}
 		if(player.hasPermission("cosmetics.*")){
-			System.out.println("Can Purchase: SPECIAL USER" );
 			return true;
 		}
 		if(purchases.get(player.getUniqueId()) == null){
-			System.out.println("Buttons for " + player.getName() + " " + NameUtils.formatButtons(purchased(player), '=', false));
 			purchases.put(player.getUniqueId(), purchased(player));
 		}
 		return purchases.get(player.getUniqueId()).contains(button);
@@ -68,7 +61,6 @@ public class PurchaseHandler {
 				if(res.next()){
 					buttons.addAll(Button.deserialize(res.getString("buttons")));
 				} else {
-					System.out.println("No res.next()");
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -76,7 +68,7 @@ public class PurchaseHandler {
 		}
 		return buttons;
 	}
-	
+
 	public static void setUpPurchases(Player player){
 		System.out.println("Syncing purchases for " + player.getUniqueId().toString() + " [" + player.getName() + "]");
 		List<Button> buttons = new ArrayList<>();
@@ -85,16 +77,12 @@ public class PurchaseHandler {
 		ResultSet res = SQLConnectionThread.getResultSet(query);
 		try {
 			if(res.next()){
-				System.out.println("Nexted");
-				System.out.println("Buttons :: " + (Button.deserialize(res.getString("buttons"))));
 				buttons.addAll(Button.deserialize(res.getString("buttons")));
 			} else {
-				System.out.println("Nope nope nope nope nope");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		System.out.println("Synced buttons for " + player.getName() + " == " + NameUtils.formatButtons(buttons, ' ', false));
 		purchases.put(player.getUniqueId(), buttons);
 	}
 }

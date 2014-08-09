@@ -34,6 +34,10 @@ public class Hat extends Button {
 		this.item = item;
 		hats.add(this);
 	}
+	
+	public Hat(Material mat, int slot){
+		this(slot, new ItemStack(mat), Category.HATS, "cosmetics.hats." + mat.name().toLowerCase());
+	}
 
 	@Override
 	public ItemStack getDisplay() {
@@ -43,11 +47,10 @@ public class Hat extends Button {
 
 	@Override
 	public void onClick(Player player) {
-		player.getInventory().setHelmet(getDisplay());
-		PacketPlayOutEntityEquipment equip = new PacketPlayOutEntityEquipment(player.getEntityId(), 3, CraftItemStack.asNMSCopy(new ItemStack(Material.AIR)));
+		player.getInventory().setHelmet(player.getInventory().getHelmet());
+		PacketPlayOutEntityEquipment equip = new PacketPlayOutEntityEquipment(player.getEntityId(), 1, CraftItemStack.asNMSCopy(getDisplay()));
 		for(Player p :  Bukkit.getOnlinePlayers()){
 			if(!p.getName().equalsIgnoreCase(player.getName())){
-			} else { 
 				((CraftPlayer)p).getHandle().playerConnection.sendPacket(equip);
 			}
 		}
