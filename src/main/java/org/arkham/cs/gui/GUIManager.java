@@ -60,7 +60,7 @@ public class GUIManager implements Listener {
 				Material mat = Material.matchMaterial(hats.getString(s + ".item"));
 				String permission = hats.getString(s + ".permission");
 				ItemStack item = new ItemStack(mat);
-				new Hat(slot, item, s, permission, lore);
+				new Hat(slot, item, Category.HATS);
 				slot++;
 			}
 		}
@@ -69,7 +69,7 @@ public class GUIManager implements Listener {
 			int slot = 0;
 			for(String s : effects.getKeys(false)){
 				String e = effects.getString(s + ".effectType");
-				String permission = effects.getString(s + ".permission");
+				String permission = "cosmetics.effects." + s; 
 				Material display = Material.matchMaterial(effects.getString(s + ".item"));
 				ParticleEffect effect = ParticleEffect.fromName(e);
 				int amount = effects.getInt(s + ".amount", 15);
@@ -88,7 +88,7 @@ public class GUIManager implements Listener {
 					builder.append(displayName.substring(0, 1).toUpperCase());
 					builder.append(displayName.substring(1).toLowerCase());
 				}
-				new CustomEffect(slot, builder.toString(), effect, permission, display, amount);
+				new CustomEffect(slot, Category.EFFECTS, effect, permission, display, amount);
 				slot++;
 			}
 		}
@@ -114,9 +114,9 @@ public class GUIManager implements Listener {
 			return;
 		}
 		if(ClickableItem.fromItem(item) == null){
-			String name = item.getItemMeta().getDisplayName();
-			Button button = Button.fromName(name);
+			Button button = Button.getButton(GUIPage.getCurrent((Player) event.getWhoClicked()).getCategory(), event.getRawSlot());
 			if(button == null){
+				System.out.println("Null button");
 				return;
 			}
 			button.onClick((Player) event.getWhoClicked());

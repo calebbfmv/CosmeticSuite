@@ -7,35 +7,36 @@ import org.arkham.cs.CosmeticSuite;
 import org.arkham.cs.gui.Category;
 import org.arkham.cs.gui.GUIManager;
 import org.arkham.cs.gui.GUIPage;
-import org.arkham.cs.gui.ItemFactory;
 import org.arkham.cs.interfaces.Button;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class CustomEffect extends Button {
-	
+
 	private ParticleEffect effect;
 	private String permission;
 	private Material display;
 	private int amount;
 	private static ArrayList<CustomEffect> effects = new ArrayList<>();
-	
+
 	/**
 	 * @param slot
+	 * @param cat
 	 * @param effect
 	 * @param permission
 	 * @param display
+	 * @param amount
 	 */
-	public CustomEffect(int slot, String name, ParticleEffect effect, String permission, Material display, int amount) {
-		super(slot, name);
+	public CustomEffect(int slot, Category cat, ParticleEffect effect, String permission, Material display, int amount) {
+		super(slot, cat);
 		this.effect = effect;
 		this.permission = permission;
 		this.display = display;
 		this.amount = amount;
 		effects.add(this);
 	}
-	
+
 	public int getAmount(){
 		return amount;
 	}
@@ -43,7 +44,6 @@ public class CustomEffect extends Button {
 	@Override
 	public ItemStack getDisplay() {
 		ItemStack item = new ItemStack(display);
-		item = ItemFactory.create(display, getName()); 
 		return item;
 	}
 
@@ -60,11 +60,11 @@ public class CustomEffect extends Button {
 		manager.setEffect(player, this);
 		player.closeInventory();
 	}
-	
+
 	public ParticleEffect getEffect(){
 		return effect;
 	}
-	
+
 	public static void populate(Player player){
 		CosmeticSuite suite =  CosmeticSuite.getInstance();
 		if(suite == null){

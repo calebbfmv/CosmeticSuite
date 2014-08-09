@@ -8,42 +8,30 @@ import org.arkham.cs.gui.Category;
 import org.arkham.cs.gui.GUIManager;
 import org.arkham.cs.gui.GUIPage;
 import org.arkham.cs.interfaces.Button;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 public class Hat extends Button {
 
 	private ItemStack item;
 	private String permission;
-	private List<String> lore;
 	private static List<Hat> hats = new ArrayList<>();
-	
+
 	/**
 	 * @param slot
 	 * @param item
 	 * @param name
 	 * @param lore
 	 */
-	public Hat(int slot, ItemStack item, String name, String permission, List<String> lore) {
+	public Hat(int slot, ItemStack item, Category name) {
 		super(slot, name);
 		this.item = item;
-		this.lore = lore;
-		this.permission = permission;
+		this.permission = "cosmetics.hats." + item.getType().name().toLowerCase();
 		hats.add(this);
 	}
 
 	@Override
 	public ItemStack getDisplay() {
-		ItemMeta meta = item.getItemMeta();
-		List<String> lore1 = new ArrayList<>();
-		for(String s : lore){
-			lore1.add(ChatColor.translateAlternateColorCodes('&', s));
-		}
-		meta.setDisplayName(getName());
-		meta.setLore(lore1);
-		item.setItemMeta(meta);
 		return item;
 	}
 
@@ -81,4 +69,5 @@ public class Hat extends Button {
 			}
 		}
 	}
+
 }
