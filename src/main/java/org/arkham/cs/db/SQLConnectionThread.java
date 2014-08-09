@@ -9,25 +9,31 @@ public class SQLConnectionThread {
     private static Connection con = null;
     public static int query_count = 0;
 
-    public static Connection getConnection() {
-        try {
+    public static Connection getConnection() {  
+        try {  
             if (query_count >= 1000) {
-                if (con != null) {
+                if(con != null){
                     con.close();
                 }
-                con = DriverManager.getConnection(Authentication.sql_url, Authentication.sql_user, Authentication.sql_pass);
+ 
+                con = DriverManager.getConnection(Authentication.sqlurl, Authentication.sqluser, Authentication.sqlpass); 
                 query_count = 0;
             }
-            if (con == null || con.isClosed()) {
-                Class.forName("com.mysql.jdbc.Driver");
-                con = DriverManager.getConnection(Authentication.sql_url, Authentication.sql_user, Authentication.sql_pass);
-            }
-        } catch (Exception e) {
+            if (con == null || con.isClosed()) {  
+                Class.forName("com.mysql.jdbc.Driver");  
+                con = DriverManager.getConnection(Authentication.sqlurl, Authentication.sqluser, Authentication.sqlpass);
+            }  
+        } catch(Exception e) {
             e.printStackTrace();
+            try{
+                con = DriverManager.getConnection(Authentication.sqlurl, Authentication.sqluser, Authentication.sqlpass);
+            } catch(Exception err){
+                err.printStackTrace();
+            }
         }
-
+ 
         query_count++;
-        return con;
+        return con;  
     }
 
     public static ResultSet getResultSet(String query) {

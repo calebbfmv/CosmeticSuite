@@ -7,8 +7,10 @@ import java.util.List;
 import org.arkham.cs.CosmeticSuite;
 import org.arkham.cs.effects.CustomEffect;
 import org.arkham.cs.effects.ParticleEffect;
+import org.arkham.cs.handler.PurchaseHandler;
 import org.arkham.cs.hats.Hat;
 import org.arkham.cs.interfaces.Button;
+import org.arkham.cs.utils.NameUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -58,9 +60,9 @@ public class GUIManager implements Listener {
 			for(String s : hats.getKeys(false)){
 				List<String> lore = hats.getStringList(s + ".lore");
 				Material mat = Material.matchMaterial(hats.getString(s + ".item"));
-				String permission = hats.getString(s + ".permission");
+				String permission = "cosmetics.hats." + mat.name().toLowerCase();
 				ItemStack item = new ItemStack(mat);
-				new Hat(slot, item, Category.HATS);
+				new Hat(slot, item, Category.HATS, permission);
 				slot++;
 			}
 		}
@@ -100,6 +102,7 @@ public class GUIManager implements Listener {
 
 	@EventHandler
 	public void onClick(InventoryClickEvent event){
+		Player player = (Player) event.getWhoClicked();
 		if(event.getInventory() == null){
 			return;
 		}
@@ -107,20 +110,26 @@ public class GUIManager implements Listener {
 			return;
 		}
 		ItemStack item = event.getCurrentItem();
-		if(!item.hasItemMeta()){
-			return;
-		}
-		if(!item.getItemMeta().hasDisplayName()){
-			return;
-		}
 		if(ClickableItem.fromItem(item) == null){
+			if(GUIPage.getCurrent(player) == null){
+				return;
+			}
 			Button button = Button.getButton(GUIPage.getCurrent((Player) event.getWhoClicked()).getCategory(), event.getRawSlot());
 			if(button == null){
 				System.out.println("Null button");
 				return;
 			}
-			button.onClick((Player) event.getWhoClicked());
 			event.setCancelled(true);
+			boolean isUnlocked = PurchaseHandler.hasPurchased(player, button);
+			List<Button> buttons = PurchaseHandler.purchased(player);
+			System.out.println("Purchased: " + isUnlocked);
+			System.out.println("Current Buttons: " + NameUtils.formatButtons(buttons, ' ', false));
+			if(!isUnlocked){
+				PurchaseHandler.addPurchase(player, button);
+			    buttons = PurchaseHandler.purchased(player);
+				System.out.println("Current Buttons: " + NameUtils.formatButtons(buttons, ' ', false));
+				return;
+			}
 			return;
 		}
 		event.setCancelled(true);
@@ -131,6 +140,7 @@ public class GUIManager implements Listener {
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event){
 		final Player player = event.getPlayer();
+		PurchaseHandler.setUpPurchases(player);
 		new BukkitRunnable() {
 			@Override
 			public void run() {

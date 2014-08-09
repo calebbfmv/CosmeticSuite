@@ -15,7 +15,6 @@ import org.bukkit.inventory.ItemStack;
 public class CustomEffect extends Button {
 
 	private ParticleEffect effect;
-	private String permission;
 	private Material display;
 	private int amount;
 	private static ArrayList<CustomEffect> effects = new ArrayList<>();
@@ -29,9 +28,8 @@ public class CustomEffect extends Button {
 	 * @param amount
 	 */
 	public CustomEffect(int slot, Category cat, ParticleEffect effect, String permission, Material display, int amount) {
-		super(slot, cat);
+		super(slot, cat, permission);
 		this.effect = effect;
-		this.permission = permission;
 		this.display = display;
 		this.amount = amount;
 		effects.add(this);
@@ -46,12 +44,6 @@ public class CustomEffect extends Button {
 		ItemStack item = new ItemStack(display);
 		return item;
 	}
-
-	@Override
-	public String getPermission() {
-		return permission;
-	}
-
 
 	@Override
 	public void onClick(Player player) {

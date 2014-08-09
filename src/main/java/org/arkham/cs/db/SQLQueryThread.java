@@ -3,12 +3,16 @@ package org.arkham.cs.db;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class SQLQueryThread extends Thread {
 	
-	public static List<String> sql_query = new ArrayList<>();
+	public static volatile CopyOnWriteArrayList<String> sql_query = new CopyOnWriteArrayList<>();
+	
+	public SQLQueryThread(){
+		start();
+		setName("Cosmetics-SQL");
+	}
 
 	@Override
 	public void run() {
@@ -20,6 +24,7 @@ public class SQLQueryThread extends Thread {
 			for (String query : sql_query) {
 				Connection con = null;
 				PreparedStatement pst = null;
+				System.out.println("Executing "+ query);
 				try {
 					pst = SQLConnectionThread.getConnection().prepareStatement(query);
 					pst.executeUpdate();

@@ -28,8 +28,9 @@ public class CosmeticSuite extends JavaPlugin {
 		guiManager.loadPages();
 		effectManager = new EffectManager();
 		cCommand = new CosmeticCommand();
-		SQLQueryThread.addQuery("CREATE DATABASE IF NOT EXISTS " + Authentication.sql_db);
-		SQLQueryThread.addQuery("CREATE TABLE IF NOT EXISTS `purchases` (`player` varchar(64), `buttons` int)");
+		new SQLQueryThread();
+		SQLQueryThread.addQuery("CREATE DATABASE IF NOT EXISTS " + Authentication.sqldb);
+		SQLQueryThread.addQuery("CREATE TABLE IF NOT EXISTS `purchases` (`player` varchar(64) PRIMARY KEY , `buttons` longtext)");
 		getServer().getPluginManager().registerEvents(guiManager, instance);
 	}
 	
