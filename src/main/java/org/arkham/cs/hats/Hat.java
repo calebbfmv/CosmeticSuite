@@ -1,16 +1,14 @@
 package org.arkham.cs.hats;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.server.v1_7_R4.PacketPlayOutEntityEquipment;
 
-import org.arkham.cs.CosmeticSuite;
 import org.arkham.cs.gui.Category;
-import org.arkham.cs.gui.GUIManager;
-import org.arkham.cs.gui.GUIPage;
-import org.arkham.cs.handler.PurchaseHandler;
 import org.arkham.cs.interfaces.Button;
+import org.arkham.cs.utils.Rank;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
@@ -21,7 +19,9 @@ import org.bukkit.inventory.ItemStack;
 public class Hat extends Button {
 
 	private ItemStack item;
-	private static List<Hat> hats = new ArrayList<>();
+	public static List<Hat> hats = new ArrayList<>();
+	private Rank rank;
+	private static HashMap<Rank, List<Hat>> hatsByRank = new HashMap<>();
 
 	/**
 	 * @param slot
@@ -29,21 +29,42 @@ public class Hat extends Button {
 	 * @param name
 	 * @param lore
 	 */
-	public Hat(int slot, ItemStack item, Category name, String permission) {
+	public Hat(int slot, ItemStack item, Category name, String permission, Rank rank) {
 		super(slot, name, permission);
 		this.item = item;
+		this.rank = rank;
+		List<Hat> h = hatsByRank.get(rank);
+		if(h == null){
+			h = new ArrayList<>();
+		}
+		h.add(this);
+		hatsByRank.put(rank, h);
 		hats.add(this);
 	}
 	
-	public Hat(Material mat, int slot){
-		this(slot, new ItemStack(mat), Category.HATS, "cosmetics.hats." + mat.name().toLowerCase());
+	/**
+	 * @param slot
+	 * @param item
+	 */
+	public Hat(int slot, ItemStack item, Rank rank){
+		this(slot, item, Category.HATS, "cosmetics.hats." + item.getType().name().toLowerCase(), rank);
+	}
+    /**
+     * @param mat
+     * @param slot
+     */
+	public Hat(Material mat, int slot, Rank rank){
+		this(slot, new ItemStack(mat), Category.HATS, "cosmetics.hats." + mat.name().toLowerCase(), rank);
 	}
 
 	@Override
 	public ItemStack getDisplay() {
 		return item;
 	}
-
+	
+	public static List<Hat> getHats(Rank rank){
+		return hatsByRank.get(rank);
+	}
 
 	@Override
 	public void onClick(Player player) {
@@ -56,28 +77,12 @@ public class Hat extends Button {
 		}
 		player.closeInventory();
 	}
-
-	public static void populate(Player player){
-		CosmeticSuite suite =  CosmeticSuite.getInstance();
-		if(suite == null){
-			return;
-		}
-		GUIManager manager = suite.getGuiManager();
-		if(manager == null){
-			return;
-		}
-		List<GUIPage> pages = manager.getPages(Category.HATS);
-		GUIPage page = pages.get(0);
-		if(page == null){
-			return;
-		}
-		for(Hat hat : hats){
-			if(PurchaseHandler.hasPurchased(player, hat)){
-				page.getInv().setItem(hat.getSlot(), hat.noPermissionItem().getItem());
-			} else {
-				page.getInv().setItem(hat.getSlot(), hat.getDisplay());
-			}
-		}
+	
+	public Rank getRank() {
+		return rank;
 	}
 
+	public void setRank(Rank rank) {
+		this.rank = rank;
+	}
 }

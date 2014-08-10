@@ -2,7 +2,11 @@ package org.arkham.cs.gui;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
+import org.arkham.cs.CosmeticSuite;
+import org.arkham.cs.handler.PurchaseHandler;
+import org.arkham.cs.interfaces.Button;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -30,17 +34,22 @@ public class GUIPage {
 		title = ChatColor.translateAlternateColorCodes('&', title);
 		this.inv = Bukkit.createInventory(null, 45, title);
 		this.cat = cat;
+		inv.setItem(0, BaseItems.back().getItem());
+		inv.setItem(44, BaseItems.next().getItem());
 	}
 
-	public int firstEmptySlot() {
+	public int firstEmptySlot(boolean space) {
 		int first = 0;
 		for (int i = 0; i < 45; i++) {
 			if (inv.getItem(i) == null || inv.getItem(i).getType() == Material.AIR) {
+				if(!space){
+					return inv.firstEmpty();
+				}
 				if((i-1) <= -1){
-					return first;
+					return inv.firstEmpty();
 				}
 				if((i + 1) > 44){
-					return 69;
+					return inv.firstEmpty();
 				}
 				ItemStack b4 = inv.getItem(i - 1);
 				ItemStack after = inv.getItem(i + 1);
@@ -95,5 +104,24 @@ public class GUIPage {
 			}
 		}
 		return null;
+	}
+	
+	public static void addButton(Button button, Category cat, Player player){
+		List<GUIPage> pages = CosmeticSuite.getInstance().getGuiManager().getPages(cat);
+		int i = 0;
+		for(GUIPage page : pages){
+			i++;
+			if(page.getInv().getItem(43) != null && page.getInv().getItem(43).getType() != Material.AIR){
+				System.out.println("Page #" + i + " is full, moving onto the next page.");
+				continue;
+			}
+			int firstEmtpy = page.getInv().firstEmpty();
+			if(button.getSlot() != firstEmtpy){
+				button.setSlot(firstEmtpy);
+			}
+			ItemStack display = !PurchaseHandler.hasPurchased(player, button) ? button.noPermissionItem().getItem() : button.getDisplay();
+			page.getInv().setItem(firstEmtpy, display);
+			break;
+		}
 	}
 }

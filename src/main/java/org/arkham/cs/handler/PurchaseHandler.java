@@ -18,10 +18,14 @@ public class PurchaseHandler {
 
 	public static void addPurchase(Player player, Button button){
 		if(hasPurchased(player, button)){
+			System.out.println("Has Purchased");
 			return;
 		}
 		String name = "'" + player.getUniqueId().toString() + "'";
-		List<Button> buttons = purchases.get(player.getUniqueId()) == null ? purchased(player) : purchases.get(player.getUniqueId());
+		List<Button> buttons = purchases.get(player.getUniqueId());
+		if(buttons == null){
+			buttons = purchased(player);
+		}
 		buttons.add(button);
 		purchases.put(player.getUniqueId(), buttons);
 		String query1 = "SELECT * FROM `purchases` WHERE `player` =" + name + "";
@@ -29,6 +33,7 @@ public class PurchaseHandler {
 		ResultSet res = SQLConnectionThread.getResultSet(query1);
 		try {
 			if(!res.next()){
+				System.out.println("Res did not next()");
 				query = "INSERT INTO `purchases` VALUES(" + name + ", '" + button.getPermission() + "')"; 
 			}
 		} catch (SQLException e) {
@@ -45,7 +50,7 @@ public class PurchaseHandler {
 			return true;
 		}
 		if(purchases.get(player.getUniqueId()) == null){
-			purchases.put(player.getUniqueId(), purchased(player));
+			return false;
 		}
 		return purchases.get(player.getUniqueId()).contains(button);
 	}
@@ -59,8 +64,7 @@ public class PurchaseHandler {
 			ResultSet res = SQLConnectionThread.getResultSet(query);
 			try {
 				if(res.next()){
-					buttons.addAll(Button.deserialize(res.getString("buttons")));
-				} else {
+					buttons.addAll(Button.deserialize(res.getString("buttons")));	
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -70,7 +74,6 @@ public class PurchaseHandler {
 	}
 
 	public static void setUpPurchases(Player player){
-		System.out.println("Syncing purchases for " + player.getUniqueId().toString() + " [" + player.getName() + "]");
 		List<Button> buttons = new ArrayList<>();
 		String uuid = "'" + player.getUniqueId().toString() + "'";
 		String query = "SELECT * FROM `purchases` WHERE `player` =" + uuid + "";
@@ -79,11 +82,13 @@ public class PurchaseHandler {
 			if(res.next()){
 				buttons.addAll(Button.deserialize(res.getString("buttons")));
 			} else {
+				SQLQueryThread.addQuery("INSERT INTO `purchases` VALUES(" + uuid + ", 'none')");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		purchases.put(player.getUniqueId(), buttons);
+		System.out.println(buttons);
 	}
 }
 

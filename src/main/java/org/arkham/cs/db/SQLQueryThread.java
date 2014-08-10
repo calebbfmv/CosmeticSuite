@@ -24,7 +24,6 @@ public class SQLQueryThread extends Thread {
 			for (String query : sql_query) {
 				Connection con = null;
 				PreparedStatement pst = null;
-				System.out.println("Executing "+ query);
 				try {
 					pst = SQLConnectionThread.getConnection().prepareStatement(query);
 					pst.executeUpdate();

@@ -24,7 +24,8 @@ public abstract class Button {
 	private Category cat;
 	private String permission;
 	private static HashMap<Category, HashMap<Integer, Button>> buttons = new HashMap<>();
-	private static HashMap<String, Button> buttonPerms = new HashMap<>();
+	public static HashMap<String, Button> buttonPerms = new HashMap<>();
+	private static ArrayList<Button> allButtons = new ArrayList<>();
 
 	public Button(int slot, Category cat, String permission){
 		this.slot = slot;		
@@ -37,6 +38,7 @@ public abstract class Button {
 		this.permission = permission;
 		HashMap<Integer, Button> bs = buttons.get(cat) == null ? new HashMap<Integer, Button>() : buttons.get(cat);
 		bs.put(slot, this);
+		allButtons.add(this);
 		buttons.put(cat, bs);
 		buttonPerms.put(permission, this);
 	}
@@ -59,7 +61,7 @@ public abstract class Button {
 			}
 		};
 	}
-	
+
 	private String name(ItemStack item){
 		String name = item.getItemMeta().getDisplayName();
 		if(name == null){
@@ -79,8 +81,9 @@ public abstract class Button {
 		return slot;
 	}
 
-	public static Button fromId(int id){
-		return null;
+	public void setSlot(int slot){
+		this.slot = slot;
+		buttons.get(getCategory()).put(slot, this);
 	}
 
 	public int getId(){
@@ -90,30 +93,36 @@ public abstract class Button {
 	public Category getCategory() {
 		return cat;
 	}
-	
+
 	public static Button getButton(Category cat, int slot){
 		return buttons.get(cat).get(slot);
 	}
-	
+
 	public static Button fromPermission(String perm){
-		return buttonPerms.get(perm.toLowerCase());
+		return buttonPerms.get(perm);
 	}
-	
+
 	public static String serialze(List<Button> buttons){
 		StringBuilder builder = new StringBuilder();
 		int buttonsSize = buttons.size();
 		for(int i = 0; i < buttonsSize; i++){
 			Button button = buttons.get(i);
-			if(i == (buttonsSize - 1)){
-				builder.append(button.getPermission());
-			} else {
-				builder.append(button.getPermission() + ",");
-			}
+			builder.append(button.getPermission() + ",");
 		}
 		return builder.toString();
 	}
-	
+
 	public static List<Button> deserialize(String permissions){
+		if(buttonPerms.isEmpty()){
+			System.out.println("ButtonPerms is empty, filling it");
+			for(Button button : allButtons){
+				buttonPerms.put(button.getPermission(), button);
+			}
+		}
+		if(!permissions.contains(",") ){
+			System.out.println("No comma, must be " + permissions);
+			return new ArrayList<>();
+		}
 		String[] str = permissions.split(",");
 		List<Button> buttons = new ArrayList<>();
 		for(int i = 0; i < str.length; i++){

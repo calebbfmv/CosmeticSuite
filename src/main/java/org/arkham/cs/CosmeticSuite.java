@@ -8,6 +8,7 @@ import org.arkham.cs.effects.EffectManager;
 import org.arkham.cs.gui.GUIManager;
 import org.arkham.cs.handler.FileHandler;
 import org.arkham.cs.utils.BubbleListener;
+import org.arkham.cs.utils.FlyListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class CosmeticSuite extends JavaPlugin {
@@ -30,7 +31,9 @@ public class CosmeticSuite extends JavaPlugin {
 		effectManager = new EffectManager();
 		cCommand = new CosmeticCommand();
 		new BubbleListener();
+		new FlyListener();
 		new SQLQueryThread();
+		GUIManager.setUpHeroHats();
 		SQLQueryThread.addQuery("CREATE DATABASE IF NOT EXISTS " + Authentication.sqldb);
 		SQLQueryThread.addQuery("CREATE TABLE IF NOT EXISTS `purchases` (`player` varchar(64) PRIMARY KEY , `buttons` longtext)");
 		getServer().getPluginManager().registerEvents(guiManager, instance);

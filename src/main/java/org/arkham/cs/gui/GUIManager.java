@@ -5,12 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.arkham.cs.CosmeticSuite;
-import org.arkham.cs.effects.CustomEffect;
-import org.arkham.cs.effects.ParticleEffect;
-import org.arkham.cs.handler.PurchaseHandler;
 import org.arkham.cs.hats.Hat;
 import org.arkham.cs.interfaces.Button;
-import org.arkham.cs.utils.NameUtils;
+import org.arkham.cs.utils.Rank;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -51,51 +48,74 @@ public class GUIManager implements Listener {
 
 	@SuppressWarnings("unused")
 	private void loadPagesFromYML(){
-		ConfigurationSection hats = CosmeticSuite.getInstance().getFileHandler().getHatConfig().getConfigurationSection("hats");
 		ConfigurationSection effects = CosmeticSuite.getInstance().getFileHandler().getEffectConfig().getConfigurationSection("effects");
 		ConfigurationSection fireworks = CosmeticSuite.getInstance().getFileHandler().getFireworkConfig().getConfigurationSection("fireworks");
-		if(hats != null){
-			new GUIPage(ChatColor.AQUA  + "Hats", Category.HATS);
+		{
 			int slot = 0;
-			for(String s : hats.getKeys(false)){
-				List<String> lore = hats.getStringList(s + ".lore");
-				Material mat = Material.matchMaterial(hats.getString(s + ".item"));
-				String permission = "cosmetics.hats." + mat.name().toLowerCase();
-				ItemStack item = new ItemStack(mat);
-				new Hat(slot, item, Category.HATS, permission);
+			int created = 1;
+			GUIPage page = new GUIPage(ChatColor.YELLOW  + "Hats", Category.HATS);
+			for(Material mat : Material.values()){
 				slot++;
+				if(slot >= 45){
+					created++;
+					new GUIPage(ChatColor.YELLOW  + "Hats: " + ChatColor.RED + (created), Category.HATS);
+					slot = 0;
+				}
 			}
 		}
-		if(effects != null){
-			new GUIPage(ChatColor.RED + "Effects", Category.EFFECTS);
-			int slot = 0;
-			for(String s : effects.getKeys(false)){
-				String e = effects.getString(s + ".effectType");
-				String permission = "cosmetics.effects." + s; 
-				Material display = Material.matchMaterial(effects.getString(s + ".item"));
-				ParticleEffect effect = ParticleEffect.fromName(e);
-				int amount = effects.getInt(s + ".amount", 15);
-				String displayName = effect.name();
-				StringBuilder builder = new StringBuilder();
-				builder.append(ChatColor.GOLD + ChatColor.BOLD.toString());
-				if(displayName.contains("_")){
-					String[] str = displayName.split("_");
-					for(int i = 0; i < str.length; i++){
-						String name = str[i];
-						builder.append(name.substring(0, 1).toUpperCase());
-						builder.append(name.substring(1).toLowerCase());
-						builder.append(" ");
-					}
-				} else {
-					builder.append(displayName.substring(0, 1).toUpperCase());
-					builder.append(displayName.substring(1).toLowerCase());
-				}
-				new CustomEffect(slot, Category.EFFECTS, effect, permission, display, amount);
-				slot++;
+		//		if(effects != null){
+		//			new GUIPage(ChatColor.RED + "Effects", Category.EFFECTS);
+		//			int slot = 0;
+		//			for(String s : effects.getKeys(false)){
+		//				String e = effects.getString(s + ".effectType");
+		//				String permission = "cosmetics.effects." + s; 
+		//				Material display = Material.matchMaterial(effects.getString(s + ".item"));
+		//				ParticleEffect effect = ParticleEffect.fromName(e);
+		//				int amount = effects.getInt(s + ".amount", 15);
+		//				String displayName = effect.name();
+		//				StringBuilder builder = new StringBuilder();
+		//				builder.append(ChatColor.GOLD + ChatColor.BOLD.toString());
+		//				if(displayName.contains("_")){
+		//					String[] str = displayName.split("_");
+		//					for(int i = 0; i < str.length; i++){
+		//						String name = str[i];
+		//						builder.append(name.substring(0, 1).toUpperCase());
+		//						builder.append(name.substring(1).toLowerCase());
+		//						builder.append(" ");
+		//					}
+		//				} else {
+		//					builder.append(displayName.substring(0, 1).toUpperCase());
+		//					builder.append(displayName.substring(1).toLowerCase());
+		//				}
+		//				new CustomEffect(slot, Category.EFFECTS, effect, permission, display, amount);
+		//				slot++;
+		//			}
+		//		}
+	}
+
+	private static String[] herohats() {
+		String stuff = "Dirt, Stone, Grass, Podzol, Cobblestone, Sandstone, Glass, Sand, Log, Wood, Iron_block, Gold_block, Diamond_block, Emerald_block, Glowstone, Ice, Pumpkin, Clay, Snow_block, diamond_ore, gold_ore, iron_ore, coal_ore, redstone_ore, lapis_ore, emerald_ore, Netherrack, Netherbrick, StoneBrick, Melon, Quartz, Hay, Coal, PackedIce, Leaves, Chest, CraftingTable, Anvil, Enderchest, Furnace, EnchantmentTable, EndFrame, Cactus, Fence, Jukebox, Redstone, TnT, Beacon, RedstoneLamp, Dispenser, NoteBlock";
+		return stuff.split(", ");
+	}
+
+	public static void setUpHeroHats() {
+		String[] hats = herohats();
+		for (int i = 0; i < hats.length; i++) {
+			String s = hats[i];
+			s = s.toUpperCase();
+			if(s.equalsIgnoreCase("Netherbrick")){
+				break;
+			}
+			if(s.equalsIgnoreCase("podzol")){
+				ItemStack item = new ItemStack(Material.DIRT, 1, (byte) 2);
+				new Hat(i, item, Rank.HERO);
+			} else {
+				Material mat = Material.valueOf(s);
+				new Hat(mat, i, Rank.HERO);
 			}
 		}
 	}
-	
+
 	public List<GUIPage> getPages(Category cat){
 		return pages.get(cat);
 	}
@@ -119,38 +139,26 @@ public class GUIManager implements Listener {
 				System.out.println("Null button");
 				return;
 			}
+			button.onClick(player);
 			event.setCancelled(true);
-			boolean isUnlocked = PurchaseHandler.hasPurchased(player, button);
-			List<Button> buttons = PurchaseHandler.purchased(player);
-			System.out.println("Purchased: " + isUnlocked);
-			System.out.println("Current Buttons: " + NameUtils.formatButtons(buttons, ' ', false));
-			if(!isUnlocked){
-				PurchaseHandler.addPurchase(player, button);
-			    buttons = PurchaseHandler.purchased(player);
-				System.out.println("Current Buttons: " + NameUtils.formatButtons(buttons, ' ', false));
-				return;
-			}
 			return;
 		}
 		event.setCancelled(true);
 		ClickableItem cItem = ClickableItem.fromItem(item);
 		cItem.doClick((Player) event.getWhoClicked());
 	}
-	
+
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event){
 		final Player player = event.getPlayer();
-		PurchaseHandler.setUpPurchases(player);
 		new BukkitRunnable() {
 			@Override
 			public void run() {
 				player.openInventory(main);
-				Hat.populate(player);
-				CustomEffect.populate(player);
 			}
-		}.runTaskLater(CosmeticSuite.getInstance(), 5L);
+		}.runTaskLater(CosmeticSuite.getInstance(), 40L);
 	}
-	
+
 	public Inventory getMain(){
 		return main;
 	}

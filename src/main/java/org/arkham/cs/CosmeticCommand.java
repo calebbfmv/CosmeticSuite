@@ -5,6 +5,9 @@ import java.util.List;
 import org.arkham.cs.gui.Category;
 import org.arkham.cs.gui.GUIManager;
 import org.arkham.cs.gui.GUIPage;
+import org.arkham.cs.handler.PurchaseHandler;
+import org.arkham.cs.hats.Hat;
+import org.arkham.cs.utils.Rank;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -13,7 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
 public class CosmeticCommand implements CommandExecutor {
-	
+
 	public CosmeticCommand(){
 		CosmeticSuite cs = CosmeticSuite.getInstance();
 		cs.getCommand("cosmetics").setExecutor(this);
@@ -59,9 +62,9 @@ public class CosmeticCommand implements CommandExecutor {
 				ChatColor.GREEN + "==============================================",
 				ChatColor.GOLD + "/cosmetics - " + ChatColor.GRAY + " Opens the main GUI.",
 				ChatColor.GOLD + "Arguments: ",
-				"  " + ChatColor.RED + "-h - " + ChatColor.GRAY + "Open the Hat's GUI",
-				"  " + ChatColor.RED + "-e - " + ChatColor.GRAY + "Open the Effects's GUI",
-				"  " + ChatColor.RED + "-f - " + ChatColor.GRAY + "Open the Fireworks's GUI",
+				"  " + ChatColor.RED + "-h | " + ChatColor.GRAY + "Open the Hat's GUI",
+				"  " + ChatColor.RED + "-e | " + ChatColor.GRAY + "Open the Effects's GUI",
+				"  " + ChatColor.RED + "-f | " + ChatColor.GRAY + "Open the Fireworks's GUI",
 				ChatColor.GREEN + "=============================================="
 		};
 		player.sendMessage(help);
@@ -95,6 +98,17 @@ public class CosmeticCommand implements CommandExecutor {
 			return;
 		}
 		player.openInventory(page.getInv());
+	}
+
+	public void openHatsFor(Rank rank, Player player){
+		PurchaseHandler.setUpPurchases(player);
+		for(Hat hat : Hat.getHats(rank)){
+			if(!PurchaseHandler.hasPurchased(player, hat)){
+				PurchaseHandler.addPurchase(player, hat);
+			}
+			GUIPage.addButton(hat, Category.HATS, player);
+		}
+		openHats(player);
 	}
 
 }
