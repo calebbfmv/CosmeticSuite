@@ -18,7 +18,6 @@ public class PurchaseHandler {
 
 	public static void addPurchase(Player player, Button button){
 		if(hasPurchased(player, button)){
-			System.out.println("Has Purchased");
 			return;
 		}
 		String name = "'" + player.getUniqueId().toString() + "'";
@@ -33,7 +32,6 @@ public class PurchaseHandler {
 		ResultSet res = SQLConnectionThread.getResultSet(query1);
 		try {
 			if(!res.next()){
-				System.out.println("Res did not next()");
 				query = "INSERT INTO `purchases` VALUES(" + name + ", '" + button.getPermission() + "')"; 
 			}
 		} catch (SQLException e) {
@@ -88,7 +86,6 @@ public class PurchaseHandler {
 			e.printStackTrace();
 		}
 		purchases.put(player.getUniqueId(), buttons);
-		System.out.println(buttons);
 	}
 }
 

@@ -28,9 +28,9 @@ public class GUIManager implements Listener {
 
 	public GUIManager(){
 		main = Bukkit.createInventory(null, 9, ChatColor.DARK_PURPLE + "Arkham Cosmetics");
-		main.setItem(3, BaseItems.hats().getItem());
-		main.setItem(4, BaseItems.fireworks().getItem());
-		main.setItem(5, BaseItems.effects().getItem());
+		main.setItem(4, BaseItems.hats().getItem());
+//		main.setItem(4, BaseItems.fireworks().getItem());
+//		main.setItem(5, BaseItems.effects().getItem());
 	}
 
 	public void loadPages(){

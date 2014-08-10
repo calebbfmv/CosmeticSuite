@@ -1,5 +1,6 @@
 package org.arkham.cs.gui;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +23,7 @@ public class GUIPage {
 	private Category cat;
 
 	private static HashMap<Integer, GUIPage> pages = new HashMap<>();
+	private static List<Button> addedButtons = new ArrayList<>();
 
 	public GUIPage(String title, Category cat) {
 		this.title = title;
@@ -105,14 +107,14 @@ public class GUIPage {
 		}
 		return null;
 	}
-	
+
 	public static void addButton(Button button, Category cat, Player player){
 		List<GUIPage> pages = CosmeticSuite.getInstance().getGuiManager().getPages(cat);
-		int i = 0;
+		if(addedButtons.contains(button)){
+			return;
+		}
 		for(GUIPage page : pages){
-			i++;
 			if(page.getInv().getItem(43) != null && page.getInv().getItem(43).getType() != Material.AIR){
-				System.out.println("Page #" + i + " is full, moving onto the next page.");
 				continue;
 			}
 			int firstEmtpy = page.getInv().firstEmpty();
@@ -121,6 +123,7 @@ public class GUIPage {
 			}
 			ItemStack display = !PurchaseHandler.hasPurchased(player, button) ? button.noPermissionItem().getItem() : button.getDisplay();
 			page.getInv().setItem(firstEmtpy, display);
+			addedButtons.add(button);
 			break;
 		}
 	}
