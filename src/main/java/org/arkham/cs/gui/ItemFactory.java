@@ -16,7 +16,7 @@ public class ItemFactory {
 		displayName = ChatColor.translateAlternateColorCodes('&', displayName);
 		meta.setDisplayName(displayName);
 		List<String> lore1 = new ArrayList<>();
-		if(lore.equals("")){
+		if(lore[0].equalsIgnoreCase("noLore")){
 			item.setItemMeta(meta);
 			return item;
 		}
@@ -30,7 +30,7 @@ public class ItemFactory {
 	}
 	
 	public static ItemStack create(Material mat, String displayName){
-		return create(mat, displayName, 1, (byte) 0, "");
+		return create(mat, displayName, 1, (byte) 0, "noLore");
 	}
 	
 	public static ItemStack create(Material mat, String displayName, String... lore){

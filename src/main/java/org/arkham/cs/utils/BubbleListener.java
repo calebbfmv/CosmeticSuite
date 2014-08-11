@@ -12,16 +12,21 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class BubbleListener implements Listener {
-	
+
 	public BubbleListener(){
 		Bukkit.getPluginManager().registerEvents(this, CosmeticSuite.getInstance());
 	}
 
-	public static String[] convertStringToBubbleChat(String msg){
+	public static String[] convertStringToBubbleChat(String msg, String player){
 		List<String> lmsg = new ArrayList<>();
-		String header = msg.split(":")[0];
-		lmsg.add(header);
-		msg = msg.replace(header + ": ", "");
+		if(msg.contains(":")){
+			String header = msg.split(":")[0];
+			lmsg.add(header);
+			msg = msg.replace(header + ": ", "");
+			msg = msg.replace(header + ":", "");
+		} else {
+			lmsg.add(player);
+		}
 		if(msg.length() <= 33){
 			lmsg.add(msg);
 			return lmsg.toArray(new String[lmsg.size()]);
@@ -33,7 +38,6 @@ public class BubbleListener implements Listener {
 			if(word_batch.length() >= 33){
 				if(word_batch.endsWith(" "))
 					word_batch = word_batch.substring(0, word_batch.length() - 1);
-
 				lmsg.add(word_batch);
 				word_batch = word + " ";
 				continue;
@@ -54,10 +58,11 @@ public class BubbleListener implements Listener {
 		final Location loc = pl.getLocation();
 		final Player fpl = pl;
 		final String fmsg = msg;
-		final String[] bubble_msg = convertStringToBubbleChat(fmsg);
+		final String[] bubble_msg = convertStringToBubbleChat(fmsg, pl.getName());
 		final double y_boost = bubble_msg.length * 0.20D;
 		final int length = fmsg.length();
-		if(fpl.hasMetadata("hologram")){
+		if(pl.hasMetadata("hologram")){
+			System.out.println("Has");
 			CosmeticSuite.getInstance().getServer().getScheduler().runTask(CosmeticSuite.getInstance(), new Runnable(){
 				@Override
 				public void run(){
@@ -66,14 +71,12 @@ public class BubbleListener implements Listener {
 					fpl.removeMetadata("hologram", CosmeticSuite.getInstance());
 				}
 			});
-		} else {
-			CosmeticSuite.getInstance().getServer().getScheduler().runTaskAsynchronously(CosmeticSuite.getInstance(), new Runnable(){
-				@Override
-				public void run(){
-					new Hologram(CosmeticSuite.getInstance(), fpl, bubble_msg).show(loc.add(0, (0.5 + y_boost), 0), ((4 * 20L) + length));
-				}
-			});
 		}
+		CosmeticSuite.getInstance().getServer().getScheduler().runTaskAsynchronously(CosmeticSuite.getInstance(), new Runnable(){
+			@Override
+			public void run(){
+				new Hologram(CosmeticSuite.getInstance(), fpl, bubble_msg).show(loc.add(0, (0.5 + y_boost), 0), ((4 * 20L) + length));
+			}
+		});
 	}
-
 }

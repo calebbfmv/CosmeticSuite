@@ -26,6 +26,10 @@
 			<id>citizens-repo</id>
 			<url>http://repo.citizensnpcs.co</url>
 		</repository>
+		<repository>
+			<id>elmakers-repo</id>
+			<url>http://maven.elmakers.com/repository/ </url>
+		</repository>
 	</repositories>
 
 	<dependencies>
@@ -42,6 +46,12 @@
 		<dependency>
 			<groupId>net.milkbowl.vault</groupId>
 			<artifactId>VaultAPI</artifactId>
+			<version>1.4</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>de.slikey</groupId>
+			<artifactId>EffectLib</artifactId>
 			<version>1.4</version>
 			<scope>provided</scope>
 		</dependency>

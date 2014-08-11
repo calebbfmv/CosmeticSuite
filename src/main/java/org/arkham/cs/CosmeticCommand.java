@@ -5,8 +5,10 @@ import java.util.List;
 import org.arkham.cs.gui.Category;
 import org.arkham.cs.gui.GUIManager;
 import org.arkham.cs.gui.GUIPage;
+import org.arkham.cs.handler.PlayerHandler;
 import org.arkham.cs.handler.PurchaseHandler;
 import org.arkham.cs.hats.Hat;
+import org.arkham.cs.utils.PlayerMetaDataUtil;
 import org.arkham.cs.utils.Rank;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -30,6 +32,7 @@ public class CosmeticCommand implements CommandExecutor {
 		Player player = (Player) sender;
 		if (args.length == 0) {
 			Inventory inv = CosmeticSuite.getInstance().getGuiManager().getMain();
+			PlayerMetaDataUtil.setInGUI(player);
 			player.openInventory(inv);
 			return true;
 		}
@@ -71,6 +74,7 @@ public class CosmeticCommand implements CommandExecutor {
 	}
 
 	public void openEffects(Player player) {
+		PlayerMetaDataUtil.setInGUI(player);
 		GUIManager manager = CosmeticSuite.getInstance().getGuiManager();
 		List<GUIPage> pages = manager.getPages(Category.EFFECTS);
 		GUIPage page = pages.get(0);
@@ -81,16 +85,47 @@ public class CosmeticCommand implements CommandExecutor {
 	}
 
 	public void openHats(Player player) {
+		PlayerMetaDataUtil.setInGUI(player);
 		GUIManager manager = CosmeticSuite.getInstance().getGuiManager();
 		List<GUIPage> pages = manager.getPages(Category.HATS);
 		GUIPage page = pages.get(0);
 		if(page == null){
+			System.out.println("Page is null");
 			return;
 		}
-		player.openInventory(page.getInv());
+		if(PlayerHandler.isNothingSpecial(player)){
+			System.out.println("Player is nothing speicial");
+			player.openInventory(page.getInv());
+			return;
+		}
+		Rank rank = PlayerHandler.getRank(player);
+		PurchaseHandler.setUpPurchases(player);
+		if(rank == Rank.SUPERHERO){
+			for(Hat hat : Hat.getHats(Rank.HERO)){
+				if(!PurchaseHandler.hasPurchased(player, hat)){
+					PurchaseHandler.addPurchase(player, hat);
+				}
+				GUIPage.addButton(hat, Category.HATS, player);
+			}
+			for(Hat hat : Hat.getHats(Rank.SUPERHERO)){
+				if(!PurchaseHandler.hasPurchased(player, hat)){
+					PurchaseHandler.addPurchase(player, hat);
+				}
+				GUIPage.addButton(hat, Category.HATS, player);
+			}
+			player.openInventory(page.getInv());
+			return;
+		}
+		for(Hat hat : Hat.getHats(rank)){
+			if(!PurchaseHandler.hasPurchased(player, hat)){
+				PurchaseHandler.addPurchase(player, hat);
+			}
+			GUIPage.addButton(hat, Category.HATS, player);
+		}
 	}
 
 	public void openFireworks(Player player) {
+		PlayerMetaDataUtil.setInGUI(player);
 		GUIManager manager = CosmeticSuite.getInstance().getGuiManager();
 		List<GUIPage> pages = manager.getPages(Category.FIREWORKS);
 		GUIPage page = pages.get(0);
@@ -98,17 +133,6 @@ public class CosmeticCommand implements CommandExecutor {
 			return;
 		}
 		player.openInventory(page.getInv());
-	}
-
-	public void openHatsFor(Rank rank, Player player){
-		PurchaseHandler.setUpPurchases(player);
-		for(Hat hat : Hat.getHats(rank)){
-			if(!PurchaseHandler.hasPurchased(player, hat)){
-				PurchaseHandler.addPurchase(player, hat);
-			}
-			GUIPage.addButton(hat, Category.HATS, player);
-		}
-		openHats(player);
 	}
 
 }

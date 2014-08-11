@@ -10,15 +10,18 @@ import org.arkham.cs.interfaces.Button;
 import org.arkham.cs.utils.Rank;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.Wool;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class GUIManager implements Listener {
@@ -26,19 +29,19 @@ public class GUIManager implements Listener {
 	private Inventory main;
 	private HashMap<Category, List<GUIPage>> pages = new HashMap<>();
 
-	public GUIManager(){
+	public GUIManager() {
 		main = Bukkit.createInventory(null, 9, ChatColor.DARK_PURPLE + "Arkham Cosmetics");
 		main.setItem(4, BaseItems.hats().getItem());
-//		main.setItem(4, BaseItems.fireworks().getItem());
-//		main.setItem(5, BaseItems.effects().getItem());
+		// main.setItem(4, BaseItems.fireworks().getItem());
+		// main.setItem(5, BaseItems.effects().getItem());
 	}
 
-	public void loadPages(){
+	public void loadPages() {
 		loadPagesFromYML();
-		for(Category cat :  Category.values()){
+		for (Category cat : Category.values()) {
 			List<GUIPage> pages = new ArrayList<>();
-			for(GUIPage page :  GUIPage.getPages().values()){
-				if(page.getCategory() == cat){
+			for (GUIPage page : GUIPage.getPages().values()) {
+				if (page.getCategory() == cat) {
 					pages.add(page);
 				}
 			}
@@ -47,54 +50,56 @@ public class GUIManager implements Listener {
 	}
 
 	@SuppressWarnings("unused")
-	private void loadPagesFromYML(){
+	private void loadPagesFromYML() {
 		ConfigurationSection effects = CosmeticSuite.getInstance().getFileHandler().getEffectConfig().getConfigurationSection("effects");
 		ConfigurationSection fireworks = CosmeticSuite.getInstance().getFileHandler().getFireworkConfig().getConfigurationSection("fireworks");
 		{
 			int slot = 0;
 			int created = 1;
-			GUIPage page = new GUIPage(ChatColor.YELLOW  + "Hats", Category.HATS);
-			for(Material mat : Material.values()){
+			GUIPage page = new GUIPage(ChatColor.BLACK + "Hats", Category.HATS);
+			for (Material mat : Material.values()) {
 				slot++;
-				if(slot >= 45){
+				if (slot >= 45) {
 					created++;
-					new GUIPage(ChatColor.YELLOW  + "Hats: " + ChatColor.RED + (created), Category.HATS);
+					new GUIPage(ChatColor.BLACK + "Hats: " + ChatColor.DARK_RED + (created), Category.HATS);
 					slot = 0;
 				}
 			}
 		}
-		//		if(effects != null){
-		//			new GUIPage(ChatColor.RED + "Effects", Category.EFFECTS);
-		//			int slot = 0;
-		//			for(String s : effects.getKeys(false)){
-		//				String e = effects.getString(s + ".effectType");
-		//				String permission = "cosmetics.effects." + s; 
-		//				Material display = Material.matchMaterial(effects.getString(s + ".item"));
-		//				ParticleEffect effect = ParticleEffect.fromName(e);
-		//				int amount = effects.getInt(s + ".amount", 15);
-		//				String displayName = effect.name();
-		//				StringBuilder builder = new StringBuilder();
-		//				builder.append(ChatColor.GOLD + ChatColor.BOLD.toString());
-		//				if(displayName.contains("_")){
-		//					String[] str = displayName.split("_");
-		//					for(int i = 0; i < str.length; i++){
-		//						String name = str[i];
-		//						builder.append(name.substring(0, 1).toUpperCase());
-		//						builder.append(name.substring(1).toLowerCase());
-		//						builder.append(" ");
-		//					}
-		//				} else {
-		//					builder.append(displayName.substring(0, 1).toUpperCase());
-		//					builder.append(displayName.substring(1).toLowerCase());
-		//				}
-		//				new CustomEffect(slot, Category.EFFECTS, effect, permission, display, amount);
-		//				slot++;
-		//			}
-		//		}
+		// if(effects != null){
+		// new GUIPage(ChatColor.RED + "Effects", Category.EFFECTS);
+		// int slot = 0;
+		// for(String s : effects.getKeys(false)){
+		// String e = effects.getString(s + ".effectType");
+		// String permission = "cosmetics.effects." + s;
+		// Material display = Material.matchMaterial(effects.getString(s +
+		// ".item"));
+		// ParticleEffect effect = ParticleEffect.fromName(e);
+		// int amount = effects.getInt(s + ".amount", 15);
+		// String displayName = effect.name();
+		// StringBuilder builder = new StringBuilder();
+		// builder.append(ChatColor.GOLD + ChatColor.BOLD.toString());
+		// if(displayName.contains("_")){
+		// String[] str = displayName.split("_");
+		// for(int i = 0; i < str.length; i++){
+		// String name = str[i];
+		// builder.append(name.substring(0, 1).toUpperCase());
+		// builder.append(name.substring(1).toLowerCase());
+		// builder.append(" ");
+		// }
+		// } else {
+		// builder.append(displayName.substring(0, 1).toUpperCase());
+		// builder.append(displayName.substring(1).toLowerCase());
+		// }
+		// new CustomEffect(slot, Category.EFFECTS, effect, permission, display,
+		// amount);
+		// slot++;
+		// }
+		// }
 	}
 
 	private static String[] herohats() {
-		String stuff = "Dirt, Stone, Grass, Podzol, Cobblestone, Sandstone, Glass, Sand, Log, Wood, Iron_block, Gold_block, Diamond_block, Emerald_block, Glowstone, Ice, Pumpkin, Clay, Snow_block, diamond_ore, gold_ore, iron_ore, coal_ore, redstone_ore, lapis_ore, emerald_ore, Netherrack, Netherbrick, StoneBrick, Melon, Quartz, Hay, Coal, PackedIce, Leaves, Chest, CraftingTable, Anvil, Enderchest, Furnace, EnchantmentTable, EndFrame, Cactus, Fence, Jukebox, Redstone, TnT, Beacon, RedstoneLamp, Dispenser, NoteBlock";
+		String stuff = "Dirt, Stone, Grass, Podzol, Cobblestone, Sandstone, Glass, Sand, WoodLogs, Planks, Iron_block, Gold_block, Diamond_block, Emerald_block, Glowstone, Ice, Pumpkin, Clay, Snow_block, diamond_ore, gold_ore, iron_ore, coal_ore, redstone_ore, lapis_ore, emerald_ore, Netherrack, Netherbrick, StoneBrick, Melon_block, Quartz_block, Hay, Coal, PackedIce, Leaves, Chest, CraftingTable, Anvil, Enderchest, Furnace, EnchantmentTable, EndFrame, Cactus, Fence, Jukebox, Redstone_block, TnT, Beacon, RedstoneLamp, Dispenser, NoteBlock";
 		return stuff.split(", ");
 	}
 
@@ -103,12 +108,65 @@ public class GUIManager implements Listener {
 		for (int i = 0; i < hats.length; i++) {
 			String s = hats[i];
 			s = s.toUpperCase();
-			if(s.equalsIgnoreCase("Netherbrick")){
-				break;
-			}
-			if(s.equalsIgnoreCase("podzol")){
+			s = s.replace(" ", "_");
+			if (s.equalsIgnoreCase("WoodLogs")) {
+				ItemStack oak = new ItemStack(Material.LOG);
+				ItemStack spruce = new ItemStack(Material.LOG, 1, (byte) 1);
+				ItemStack birch = new ItemStack(Material.LOG, 1, (byte) 2);
+				ItemStack jungle = new ItemStack(Material.LOG, 1, (byte) 3);
+				ItemStack acacia = new ItemStack(Material.LOG, 1, (byte) 4);
+				ItemStack dark = new ItemStack(Material.LOG, 1, (byte) 5);
+				new Hat(i, oak, Rank.HERO, "cosmetics.hats.wood.oak");
+				new Hat(i, spruce, Rank.HERO, "cosmetics.hats.wood.spruce");
+				new Hat(i, birch, Rank.HERO, "cosmetics.hats.wood.birch");
+				new Hat(i, jungle, Rank.HERO, "cosmetics.hats.wood.jungle");
+				new Hat(i, acacia, Rank.HERO, "cosmetics.hats.wood.acacia");
+				new Hat(i, dark, Rank.HERO, "cosmetics.hats.wood.dark");
+			} else if (s.equalsIgnoreCase("Leaves")) {
+				ItemStack oak = new ItemStack(Material.LEAVES);
+				ItemStack spruce = new ItemStack(Material.LEAVES, 1, (byte) 1);
+				ItemStack birch = new ItemStack(Material.LEAVES, 1, (byte) 2);
+				ItemStack jungle = new ItemStack(Material.LEAVES, 1, (byte) 3);
+				new Hat(i, oak, Rank.HERO, "cosmetics.hats.leaves.oak");
+				new Hat(i, spruce, Rank.HERO, "cosmetics.hats.leaves.spruce");
+				new Hat(i, birch, Rank.HERO, "cosmetics.hats.leaves.birch");
+				new Hat(i, jungle, Rank.HERO, "cosmetics.hats.leaves.jungle");
+			} else if (s.equalsIgnoreCase("Planks")) {
+				ItemStack oak = new ItemStack(Material.WOOD);
+				ItemStack spruce = new ItemStack(Material.WOOD, 1, (byte) 1);
+				ItemStack birch = new ItemStack(Material.WOOD, 1, (byte) 2);
+				ItemStack jungle = new ItemStack(Material.WOOD, 1, (byte) 3);
+				ItemStack acacia = new ItemStack(Material.WOOD, 1, (byte) 4);
+				ItemStack dark = new ItemStack(Material.WOOD, 1, (byte) 5);
+				new Hat(i, oak, Rank.HERO, "cosmetics.hats.planks.oak");
+				new Hat(i, spruce, Rank.HERO, "cosmetics.hats.planks.spruce");
+				new Hat(i, birch, Rank.HERO, "cosmetics.hats.planks.birch");
+				new Hat(i, jungle, Rank.HERO, "cosmetics.hats.planks.jungle");
+				new Hat(i, acacia, Rank.HERO, "cosmetics.hats.planks.acacia");
+				new Hat(i, dark, Rank.HERO, "cosmetics.hats.planks.dark");
+			} else if (s.equalsIgnoreCase("Netherbrick")) {
+				s = Material.NETHER_BRICK.name();
+			} else if (s.equalsIgnoreCase("Redstonelamp")) {
+				s = Material.REDSTONE_LAMP_ON.name();
+			} else if (s.equalsIgnoreCase("Endframe")) {
+				s = Material.ENDER_PORTAL_FRAME.name();
+			} else if (s.equalsIgnoreCase("podzol")) {
 				ItemStack item = new ItemStack(Material.DIRT, 1, (byte) 2);
-				new Hat(i, item, Rank.HERO);
+				new Hat(i, item, Category.HATS, "cosmetics.hats.podzol", Rank.HERO);
+			} else if(s.equalsIgnoreCase("stonebrick")){
+				s = Material.SMOOTH_BRICK.name();
+			} else  if(s.equalsIgnoreCase("hay")){
+				s = Material.HAY_BLOCK.name();
+			} else if(s.equalsIgnoreCase("packedice")){
+				s = Material.PACKED_ICE.name();
+			} else if(s.equalsIgnoreCase("craftingtable")){
+				s = Material.WORKBENCH.name();
+			} else if(s.equalsIgnoreCase("enderchest")){
+				s = Material.ENDER_CHEST.name();
+			} else if(s.equalsIgnoreCase("enchantmenttable")){
+				s = Material.ENCHANTMENT_TABLE.name();
+			} else if(s.equalsIgnoreCase("noteblock")){
+				s = Material.NOTE_BLOCK.name();
 			} else {
 				Material mat = Material.valueOf(s);
 				new Hat(mat, i, Rank.HERO);
@@ -116,40 +174,104 @@ public class GUIManager implements Listener {
 		}
 	}
 
-	public List<GUIPage> getPages(Category cat){
+	private static String[] superherohats() {
+		String stuff = "Sponge, Bookshelf, Lava, Water, Endportal, Stained Glass, Colored Clay, Colored Wools, Jack o’ lantern, Ladder, Vines, Rails, Bars, Lilypad, ColoredPanes, Hopper, Cobweb";
+		return stuff.split(", ");
+	}
+
+	public static void setUpSuperHeroHats() {
+		System.out.println("Setting up superhero hats");
+		String[] str = superherohats();
+		for (int i = 0; i < str.length; i++) {
+			String s = str[i];
+			s = s.toUpperCase();
+			if (s.equalsIgnoreCase("endportal")) {
+				s = Material.ENDER_PORTAL.name();
+			} else if (s.equalsIgnoreCase("stained glass")) {
+				stainedglass(i);
+			} else if (s.equalsIgnoreCase("colored clay")) {
+				coloredclay(i);
+			} else if (s.equalsIgnoreCase("colored wools")) {
+				coloredwool(i);
+			} else if (s.equalsIgnoreCase("Jack o’ lantern")) {
+				s = Material.JACK_O_LANTERN.name();
+			} else if (s.equalsIgnoreCase("vines")) {
+				s = Material.VINE.name();
+			} else if (s.equalsIgnoreCase("rails")) {
+				ItemStack a_rail = new ItemStack(Material.ACTIVATOR_RAIL);
+				ItemStack d_rail = new ItemStack(Material.DETECTOR_RAIL);
+				ItemStack rail = new ItemStack(Material.RAILS);
+				ItemStack p_rail = new ItemStack(Material.POWERED_RAIL);
+				new Hat(i, rail, Rank.SUPERHERO, "cosmetics.hats.rail");
+				new Hat(i, a_rail, Rank.SUPERHERO, "cosmetics.hats.rail.activator");
+				new Hat(i, d_rail, Rank.SUPERHERO, "cosmetics.hats.rail.detector");
+				new Hat(i, p_rail, Rank.SUPERHERO, "cosmetics.hats.rail.powered");
+			} else if (s.equalsIgnoreCase("lilypad")) {
+				s = Material.WATER_LILY.name();
+			} else if (s.equalsIgnoreCase("coloredpanes")) {
+				stainedglass_panes(i);
+			} else if (s.equalsIgnoreCase("hopper")) {
+				s = Material.HOPPER.name();
+			} else if (s.equalsIgnoreCase("cobweb")) {
+				s = Material.WEB.name();
+			} else if(s.equalsIgnoreCase("bars")){
+				s = Material.IRON_BARDING.name();
+			} else {
+				Material mat = Material.valueOf(s);
+				new Hat(mat, i, Rank.SUPERHERO);
+			}
+		}
+	}
+
+	public List<GUIPage> getPages(Category cat) {
 		return pages.get(cat);
+	}
+	
+	@EventHandler
+	public void onClose(InventoryCloseEvent event){
+		Player player = (Player) event.getPlayer();
+		if(player.hasMetadata("switchedPages")){
+			return;
+		}
+		if(player.hasMetadata("inGUI")){
+			player.removeMetadata("inGUI", CosmeticSuite.getInstance());
+		}
 	}
 
 	@EventHandler
-	public void onClick(InventoryClickEvent event){
+	public void onClick(InventoryClickEvent event) {
 		Player player = (Player) event.getWhoClicked();
-		if(event.getInventory() == null){
+		if (event.getInventory() == null) {
 			return;
 		}
-		if(event.getCurrentItem() == null){
+		if (event.getCurrentItem() == null) {
 			return;
 		}
 		ItemStack item = event.getCurrentItem();
-		if(ClickableItem.fromItem(item) == null){
-			if(GUIPage.getCurrent(player) == null){
+		if(!player.hasMetadata("inGUI")){
+			System.out.println("No MetaData");
+			return;
+		}
+		event.setCancelled(true);
+		if (ClickableItem.fromItem(item) == null) {
+			if (GUIPage.getCurrent(player) == null) {
 				return;
 			}
 			Button button = Button.getButton(GUIPage.getCurrent((Player) event.getWhoClicked()).getCategory(), event.getRawSlot());
-			if(button == null){
+			if (button == null) {
 				System.out.println("Null button");
 				return;
 			}
 			button.onClick(player);
-			event.setCancelled(true);
 			return;
 		}
-		event.setCancelled(true);
+		System.out.println("Clicked button");
 		ClickableItem cItem = ClickableItem.fromItem(item);
 		cItem.doClick((Player) event.getWhoClicked());
 	}
 
 	@EventHandler
-	public void onJoin(PlayerJoinEvent event){
+	public void onJoin(PlayerJoinEvent event) {
 		final Player player = event.getPlayer();
 		new BukkitRunnable() {
 			@Override
@@ -159,7 +281,120 @@ public class GUIManager implements Listener {
 		}.runTaskLater(CosmeticSuite.getInstance(), 40L);
 	}
 
-	public Inventory getMain(){
+	public Inventory getMain() {
 		return main;
+	}
+
+	private static void stainedglass(int i) {
+		ItemStack stainedglass = new ItemStack(Material.STAINED_GLASS);
+		ItemStack stainedglass_orange = new ItemStack(Material.STAINED_GLASS, 1, (short) 1);
+		ItemStack stainedglass_magenta = new ItemStack(Material.STAINED_GLASS, 1, (short) 2);
+		ItemStack stainedglass_light_blue = new ItemStack(Material.STAINED_GLASS, 1, (short) 3);
+		ItemStack stainedglass_yellow = new ItemStack(Material.STAINED_GLASS, 1, (short) 4);
+		ItemStack stainedglass_lime = new ItemStack(Material.STAINED_GLASS, 1, (short) 5);
+		ItemStack stainedglass_pink = new ItemStack(Material.STAINED_GLASS, 1, (short) 6);
+		ItemStack stainedglass_gray = new ItemStack(Material.STAINED_GLASS, 1, (short) 7);
+		ItemStack stainedglass_light_gray = new ItemStack(Material.STAINED_GLASS, 1, (short) 8);
+		ItemStack stainedglass_cyan = new ItemStack(Material.STAINED_GLASS, 1, (short) 9);
+		ItemStack stainedglass_purple = new ItemStack(Material.STAINED_GLASS, 1, (short) 10);
+		ItemStack stainedglass_blue = new ItemStack(Material.STAINED_GLASS, 1, (short) 11);
+		ItemStack stainedglass_brown = new ItemStack(Material.STAINED_GLASS, 1, (short) 12);
+		ItemStack stainedglass_green = new ItemStack(Material.STAINED_GLASS, 1, (short) 13);
+		ItemStack stainedglass_red = new ItemStack(Material.STAINED_GLASS, 1, (short) 14);
+		ItemStack stainedglass_black = new ItemStack(Material.STAINED_GLASS, 1, (short) 15);
+		new Hat(i, stainedglass, Rank.SUPERHERO, "cosmetics.hats.stainedglass");
+		new Hat(i, stainedglass_black, Rank.SUPERHERO, "cosmetics.hats.stainedglass.black");
+		new Hat(i, stainedglass_blue, Rank.SUPERHERO, "cosmetics.hats.stainedglass.blue");
+		new Hat(i, stainedglass_brown, Rank.SUPERHERO, "cosmetics.hats.stainedglass.brown");
+		new Hat(i, stainedglass_cyan, Rank.SUPERHERO, "cosmetics.hats.stainedglass.cyan");
+		new Hat(i, stainedglass_gray, Rank.SUPERHERO, "cosmetics.hats.stainedglass.gray");
+		new Hat(i, stainedglass_green, Rank.SUPERHERO, "cosmetics.hats.stainedglass.green");
+		new Hat(i, stainedglass_light_blue, Rank.SUPERHERO, "cosmetics.hats.stainedglass.light_blue");
+		new Hat(i, stainedglass_light_gray, Rank.SUPERHERO, "cosmetics.hats.stainedglass.light_gray");
+		new Hat(i, stainedglass_lime, Rank.SUPERHERO, "cosmetics.hats.stainedglass.lime");
+		new Hat(i, stainedglass_magenta, Rank.SUPERHERO, "cosmetics.hats.stainedglass.magenta");
+		new Hat(i, stainedglass_orange, Rank.SUPERHERO, "cosmetics.hats.stainedglass.orange");
+		new Hat(i, stainedglass_pink, Rank.SUPERHERO, "cosmetics.hats.stainedglass.pink");
+		new Hat(i, stainedglass_purple, Rank.SUPERHERO, "cosmetics.hats.stainedglass.purple");
+		new Hat(i, stainedglass_red, Rank.SUPERHERO, "cosmetics.hats.stainedglass.red");
+		new Hat(i, stainedglass_yellow, Rank.SUPERHERO, "cosmetics.hats.stainedglass.yellow");
+	}
+
+	private static void coloredclay(int i) {
+		ItemStack stainedclay = new ItemStack(Material.STAINED_CLAY);
+		ItemStack stainedclay_orange = new ItemStack(Material.STAINED_CLAY, 1, (short) 1);
+		ItemStack stainedclay_magenta = new ItemStack(Material.STAINED_CLAY, 1, (short) 2);
+		ItemStack stainedclay_light_blue = new ItemStack(Material.STAINED_CLAY, 1, (short) 3);
+		ItemStack stainedclay_yellow = new ItemStack(Material.STAINED_CLAY, 1, (short) 4);
+		ItemStack stainedclay_lime = new ItemStack(Material.STAINED_CLAY, 1, (short) 5);
+		ItemStack stainedclay_pink = new ItemStack(Material.STAINED_CLAY, 1, (short) 6);
+		ItemStack stainedclay_gray = new ItemStack(Material.STAINED_CLAY, 1, (short) 7);
+		ItemStack stainedclay_light_gray = new ItemStack(Material.STAINED_CLAY, 1, (short) 8);
+		ItemStack stainedclay_cyan = new ItemStack(Material.STAINED_CLAY, 1, (short) 9);
+		ItemStack stainedclay_purple = new ItemStack(Material.STAINED_CLAY, 1, (short) 10);
+		ItemStack stainedclay_blue = new ItemStack(Material.STAINED_CLAY, 1, (short) 11);
+		ItemStack stainedclay_brown = new ItemStack(Material.STAINED_CLAY, 1, (short) 12);
+		ItemStack stainedclay_green = new ItemStack(Material.STAINED_CLAY, 1, (short) 13);
+		ItemStack stainedclay_red = new ItemStack(Material.STAINED_CLAY, 1, (short) 14);
+		ItemStack stainedclay_black = new ItemStack(Material.STAINED_CLAY, 1, (short) 15);
+		new Hat(i, stainedclay, Rank.SUPERHERO, "cosmetics.hats.stainedclay");
+		new Hat(i, stainedclay_black, Rank.SUPERHERO, "cosmetics.hats.stainedclay.black");
+		new Hat(i, stainedclay_blue, Rank.SUPERHERO, "cosmetics.hats.stainedclay.blue");
+		new Hat(i, stainedclay_brown, Rank.SUPERHERO, "cosmetics.hats.stainedclay.brown");
+		new Hat(i, stainedclay_cyan, Rank.SUPERHERO, "cosmetics.hats.stainedclay.cyan");
+		new Hat(i, stainedclay_gray, Rank.SUPERHERO, "cosmetics.hats.stainedclay.gray");
+		new Hat(i, stainedclay_green, Rank.SUPERHERO, "cosmetics.hats.stainedclay.green");
+		new Hat(i, stainedclay_light_blue, Rank.SUPERHERO, "cosmetics.hats.stainedclay.light_blue");
+		new Hat(i, stainedclay_light_gray, Rank.SUPERHERO, "cosmetics.hats.stainedclay.light_gray");
+		new Hat(i, stainedclay_lime, Rank.SUPERHERO, "cosmetics.hats.stainedclay.lime");
+		new Hat(i, stainedclay_magenta, Rank.SUPERHERO, "cosmetics.hats.stainedclay.magenta");
+		new Hat(i, stainedclay_orange, Rank.SUPERHERO, "cosmetics.hats.stainedclay.orange");
+		new Hat(i, stainedclay_pink, Rank.SUPERHERO, "cosmetics.hats.stainedclay.pink");
+		new Hat(i, stainedclay_purple, Rank.SUPERHERO, "cosmetics.hats.stainedclay.purple");
+		new Hat(i, stainedclay_red, Rank.SUPERHERO, "cosmetics.hats.stainedclay.red");
+		new Hat(i, stainedclay_yellow, Rank.SUPERHERO, "cosmetics.hats.stainedclay.yellow");
+	}
+
+	private static void coloredwool(int i) {
+		for (DyeColor color : DyeColor.values()) {
+			Wool wool = new Wool(color);
+			ItemStack item = wool.toItemStack();
+			new Hat(i, item, Rank.SUPERHERO, "cosmetics.hats.wool." + color.name().toLowerCase());
+		}
+	}
+
+	private static void stainedglass_panes(int i) {
+		ItemStack stainedglasspane = new ItemStack(Material.STAINED_GLASS_PANE);
+		ItemStack stainedglasspane_orange = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 1);
+		ItemStack stainedglasspane_magenta = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 2);
+		ItemStack stainedglasspane_light_blue = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 3);
+		ItemStack stainedglasspane_yellow = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 4);
+		ItemStack stainedglasspane_lime = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 5);
+		ItemStack stainedglasspane_pink = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 6);
+		ItemStack stainedglasspane_gray = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 7);
+		ItemStack stainedglasspane_light_gray = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 8);
+		ItemStack stainedglasspane_cyan = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 9);
+		ItemStack stainedglasspane_purple = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 10);
+		ItemStack stainedglasspane_blue = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 11);
+		ItemStack stainedglasspane_brown = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 12);
+		ItemStack stainedglasspane_green = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 13);
+		ItemStack stainedglasspane_red = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 14);
+		ItemStack stainedglasspane_black = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 15);
+		new Hat(i, stainedglasspane, Rank.SUPERHERO, "cosmetics.hats.stainedglasspane");
+		new Hat(i, stainedglasspane_black, Rank.SUPERHERO, "cosmetics.hats.stainedglasspane.black");
+		new Hat(i, stainedglasspane_blue, Rank.SUPERHERO, "cosmetics.hats.stainedglasspane.blue");
+		new Hat(i, stainedglasspane_brown, Rank.SUPERHERO, "cosmetics.hats.stainedglasspane.brown");
+		new Hat(i, stainedglasspane_cyan, Rank.SUPERHERO, "cosmetics.hats.stainedglasspane.cyan");
+		new Hat(i, stainedglasspane_gray, Rank.SUPERHERO, "cosmetics.hats.stainedglasspane.gray");
+		new Hat(i, stainedglasspane_green, Rank.SUPERHERO, "cosmetics.hats.stainedglasspane.green");
+		new Hat(i, stainedglasspane_light_blue, Rank.SUPERHERO, "cosmetics.hats.stainedglasspane.light_blue");
+		new Hat(i, stainedglasspane_light_gray, Rank.SUPERHERO, "cosmetics.hats.stainedglasspane.light_gray");
+		new Hat(i, stainedglasspane_lime, Rank.SUPERHERO, "cosmetics.hats.stainedglasspane.lime");
+		new Hat(i, stainedglasspane_magenta, Rank.SUPERHERO, "cosmetics.hats.stainedglasspane.magenta");
+		new Hat(i, stainedglasspane_orange, Rank.SUPERHERO, "cosmetics.hats.stainedglasspane.orange");
+		new Hat(i, stainedglasspane_pink, Rank.SUPERHERO, "cosmetics.hats.stainedglasspane.pink");
+		new Hat(i, stainedglasspane_purple, Rank.SUPERHERO, "cosmetics.hats.stainedglasspane.purple");
+		new Hat(i, stainedglasspane_red, Rank.SUPERHERO, "cosmetics.hats.stainedglasspane.red");
+		new Hat(i, stainedglasspane_yellow, Rank.SUPERHERO, "cosmetics.hats.stainedglasspane.yellow");
 	}
 }

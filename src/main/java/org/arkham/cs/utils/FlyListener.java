@@ -1,6 +1,7 @@
 package org.arkham.cs.utils;
 
 import org.arkham.cs.CosmeticSuite;
+import org.arkham.cs.handler.PlayerHandler;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,6 +21,16 @@ public class FlyListener implements Listener  {
 			return;
 		}
 		if(player.hasPermission("cosmetics.*")){
+			return;
+		}
+		boolean serverIsInFly = CosmeticSuite.getInstance().getConfig().getBoolean("flyable", false);
+		if(serverIsInFly){
+			if(PlayerHandler.isHero(player) || PlayerHandler.isSuperHero(player)){
+				return;
+			}
+			if(PlayerHandler.isNothingSpecial(player)){
+				event.setCancelled(true);
+			}
 			return;
 		}
 		if(player.hasMetadata("cosmetics-fly")){

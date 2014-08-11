@@ -20,6 +20,14 @@ public class PlayerMetaDataUtil {
 		player.removeMetadata("cosmetics-fly", CosmeticSuite.getInstance());
 	}
 	
+	public static void setInGUI(Player player){
+		FixedMetadataValue value = new FixedMetadataValue(CosmeticSuite.getInstance(), "true");
+		player.setMetadata("inGUI", value);
+	}
 	
+	public static void setSwitchPage(Player player){
+		FixedMetadataValue value = new FixedMetadataValue(CosmeticSuite.getInstance(), "true");
+		player.setMetadata("switchedPages", value);
+	}
 
 }

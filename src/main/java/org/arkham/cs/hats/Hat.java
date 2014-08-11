@@ -37,17 +37,23 @@ public class Hat extends Button {
 		if(h == null){
 			h = new ArrayList<>();
 		}
+		if(rank == Rank.SUPERHERO){
+			h.addAll(hatsByRank.get(Rank.HERO));
+		}
 		h.add(this);
 		hatsByRank.put(rank, h);
 		hats.add(this);
 	}
-	
+		
 	/**
+	 * 
 	 * @param slot
 	 * @param item
+	 * @param rank
+	 * @param permission
 	 */
-	public Hat(int slot, ItemStack item, Rank rank){
-		this(slot, item, Category.HATS, "cosmetics.hats." + item.getType().name().toLowerCase(), rank);
+	public Hat(int slot, ItemStack item, Rank rank, String permission){
+		this(slot, item, Category.HATS, permission, rank);
 	}
     /**
      * @param mat

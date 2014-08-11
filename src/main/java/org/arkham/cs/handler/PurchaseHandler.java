@@ -27,7 +27,7 @@ public class PurchaseHandler {
 		}
 		buttons.add(button);
 		purchases.put(player.getUniqueId(), buttons);
-		String query1 = "SELECT * FROM `purchases` WHERE `player` =" + name + "";
+		String query1 = "SELECT `buttons` FROM `purchases` WHERE `player` =" + name + "";
 		String query = "UPDATE `purchases` SET `buttons`='" + Button.serialze(buttons)+ "' WHERE `player`=" + name;
 		ResultSet res = SQLConnectionThread.getResultSet(query1);
 		try {

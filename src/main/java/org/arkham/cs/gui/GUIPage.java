@@ -34,33 +34,22 @@ public class GUIPage {
 		}
 		pages.put(id, this);
 		title = ChatColor.translateAlternateColorCodes('&', title);
-		this.inv = Bukkit.createInventory(null, 45, title);
+		this.inv = Bukkit.createInventory(null, 54, title);
 		this.cat = cat;
-		inv.setItem(0, BaseItems.back().getItem());
-		inv.setItem(44, BaseItems.next().getItem());
-	}
-
-	public int firstEmptySlot(boolean space) {
-		int first = 0;
-		for (int i = 0; i < 45; i++) {
-			if (inv.getItem(i) == null || inv.getItem(i).getType() == Material.AIR) {
-				if(!space){
-					return inv.firstEmpty();
-				}
-				if((i-1) <= -1){
-					return inv.firstEmpty();
-				}
-				if((i + 1) > 44){
-					return inv.firstEmpty();
-				}
-				ItemStack b4 = inv.getItem(i - 1);
-				ItemStack after = inv.getItem(i + 1);
-				if(b4 == null && after == null){
-					return i;
-				}
-			}
+		for(int i = 36; i < inv.getSize() - 9; i ++){
+			ItemStack item = ItemFactory.create(Material.STAINED_GLASS_PANE, ChatColor.BLACK + " ", 1, (byte) 15, "noLore");
+			inv.setItem(i, item);
 		}
-		return first;
+		inv.setItem(53, BaseItems.next().getItem());
+		inv.setItem(45, BaseItems.back().getItem());
+		inv.setItem(46, BaseItems.back().getItem());
+		inv.setItem(47, BaseItems.back().getItem());
+		inv.setItem(48, BaseItems.back().getItem());
+		inv.setItem(53, BaseItems.next().getItem());
+		inv.setItem(52, BaseItems.next().getItem());
+		inv.setItem(51, BaseItems.next().getItem());
+		inv.setItem(50, BaseItems.next().getItem());
+		inv.setItem(49, ItemFactory.create(Material.NETHER_STAR, ChatColor.YELLOW + "Arkham" + ChatColor.DARK_RED + "Network"));
 	}
 
 	public Category getCategory() {
@@ -108,17 +97,17 @@ public class GUIPage {
 		return null;
 	}
 
-	public static void addButton(Button button, Category cat, Player player){
+	public static void addButton(Button button, Category cat, Player player) {
 		List<GUIPage> pages = CosmeticSuite.getInstance().getGuiManager().getPages(cat);
-		if(addedButtons.contains(button)){
+		if (addedButtons.contains(button)) {
 			return;
 		}
-		for(GUIPage page : pages){
-			if(page.getInv().getItem(43) != null && page.getInv().getItem(43).getType() != Material.AIR){
+		for (GUIPage page : pages) {
+			if (page.getInv().getItem(35) != null && page.getInv().getItem(35).getType() != Material.AIR) {
 				continue;
 			}
 			int firstEmtpy = page.getInv().firstEmpty();
-			if(button.getSlot() != firstEmtpy){
+			if (button.getSlot() != firstEmtpy) {
 				button.setSlot(firstEmtpy);
 			}
 			ItemStack display = !PurchaseHandler.hasPurchased(player, button) ? button.noPermissionItem().getItem() : button.getDisplay();

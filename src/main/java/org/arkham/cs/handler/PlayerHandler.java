@@ -1,22 +1,33 @@
 package org.arkham.cs.handler;
 
-import org.arkham.cs.interfaces.Button;
+import org.arkham.cs.utils.Rank;
 import org.bukkit.entity.Player;
 
 public class PlayerHandler {
 	
-	public static boolean canPurchase(Button button, Player player){
-		if(player.hasPermission(button.getPermission())){
-			return true;
+	public static Rank getRank(Player player){
+		if(player.isOp()){
+			return Rank.SUPERHERO;
 		}
-		if(PurchaseHandler.hasPurchased(player, button)){
-			return true;
+		if(player.hasPermission("cosmetics.hero")){
+			return Rank.HERO;
 		}
-		return false;
+		if(player.hasPermission("cosmetics.superhero")){
+			return Rank.SUPERHERO;
+		}
+		return Rank.DEFAULT;
 	}
 	
-	public static void purchase(Button button, Player player){
-		PurchaseHandler.addPurchase(player, button);
+	public static boolean isSuperHero(Player player){
+		return getRank(player) == Rank.SUPERHERO;
+	}
+	
+	public static boolean isHero(Player player){
+		return getRank(player) ==  Rank.HERO;
+	}
+	
+	public static boolean isNothingSpecial(Player player){
+		return getRank(player) == Rank.DEFAULT;
 	}
 
 }

@@ -34,6 +34,7 @@ public class CosmeticSuite extends JavaPlugin {
 		new FlyListener();
 		new SQLQueryThread();
 		GUIManager.setUpHeroHats();
+		GUIManager.setUpSuperHeroHats();
 		SQLQueryThread.addQuery("CREATE DATABASE IF NOT EXISTS " + Authentication.sqldb);
 		SQLQueryThread.addQuery("CREATE TABLE IF NOT EXISTS `purchases` (`player` varchar(64) PRIMARY KEY , `buttons` longtext)");
 		getServer().getPluginManager().registerEvents(guiManager, instance);
