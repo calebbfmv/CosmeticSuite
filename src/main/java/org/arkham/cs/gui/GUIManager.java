@@ -5,14 +5,16 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.arkham.cs.CosmeticSuite;
+import org.arkham.cs.handler.PurchaseHandler;
 import org.arkham.cs.hats.Hat;
 import org.arkham.cs.interfaces.Button;
+import org.arkham.cs.utils.ParticleLibManager;
+import org.arkham.cs.utils.ParticleLibManager.FancyEffects;
 import org.arkham.cs.utils.Rank;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,7 +24,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Wool;
-import org.bukkit.scheduler.BukkitRunnable;
 
 public class GUIManager implements Listener {
 
@@ -51,18 +52,29 @@ public class GUIManager implements Listener {
 
 	@SuppressWarnings("unused")
 	private void loadPagesFromYML() {
-		ConfigurationSection effects = CosmeticSuite.getInstance().getFileHandler().getEffectConfig().getConfigurationSection("effects");
-		ConfigurationSection fireworks = CosmeticSuite.getInstance().getFileHandler().getFireworkConfig().getConfigurationSection("fireworks");
+		/**
+		 * Dis is the hats, looks ugly, ik.
+		 */
 		{
-			int slot = 0;
 			int created = 1;
-			GUIPage page = new GUIPage(ChatColor.BLACK + "Hats", Category.HATS);
-			for (Material mat : Material.values()) {
-				slot++;
-				if (slot >= 45) {
+			new GUIPage(ChatColor.BLACK + "Hats: " + ChatColor.DARK_RED + (1), Category.HATS);
+			new GUIPage(ChatColor.BLACK + "Hats: " + ChatColor.DARK_RED + (2), Category.HATS);
+			new GUIPage(ChatColor.BLACK + "Hats: " + ChatColor.DARK_RED + (3), Category.HATS);
+			new GUIPage(ChatColor.BLACK + "Hats: " + ChatColor.DARK_RED + (4), Category.HATS);
+			new GUIPage(ChatColor.BLACK + "Hats: " + ChatColor.DARK_RED + (5), Category.HATS);
+		}
+		
+		/**
+		 * Dis is effects 
+		 */
+		{
+			int created = 1;
+			new GUIPage("Particle Effects " + 1, Category.EFFECTS);
+			for(int i = 0; i < ParticleLibManager.FancyEffects.values().length; i++){
+				FancyEffects fancy = FancyEffects.values()[i];
+				if(i % 35 == 0){
 					created++;
-					new GUIPage(ChatColor.BLACK + "Hats: " + ChatColor.DARK_RED + (created), Category.HATS);
-					slot = 0;
+					new GUIPage("Particle Effects " + created, Category.EFFECTS);
 				}
 			}
 		}
@@ -247,9 +259,9 @@ public class GUIManager implements Listener {
 		if (event.getCurrentItem() == null) {
 			return;
 		}
+		
 		ItemStack item = event.getCurrentItem();
 		if(!player.hasMetadata("inGUI")){
-			System.out.println("No MetaData");
 			return;
 		}
 		event.setCancelled(true);
@@ -259,28 +271,20 @@ public class GUIManager implements Listener {
 			}
 			Button button = Button.getButton(GUIPage.getCurrent((Player) event.getWhoClicked()).getCategory(), event.getRawSlot());
 			if (button == null) {
-				System.out.println("Null button");
 				return;
 			}
 			button.onClick(player);
 			return;
 		}
-		System.out.println("Clicked button");
 		ClickableItem cItem = ClickableItem.fromItem(item);
 		cItem.doClick((Player) event.getWhoClicked());
 	}
-
+	
 	@EventHandler
-	public void onJoin(PlayerJoinEvent event) {
-		final Player player = event.getPlayer();
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				player.openInventory(main);
-			}
-		}.runTaskLater(CosmeticSuite.getInstance(), 40L);
+	public void onJoin(PlayerJoinEvent event){
+		PurchaseHandler.setUpPurchases(event.getPlayer());
 	}
-
+	
 	public Inventory getMain() {
 		return main;
 	}

@@ -377,6 +377,10 @@ public enum ParticleEffect {
 	public void display(Location center, float offsetX, float offsetY, float offsetZ, float speed, int amount, Player... players) {
 		sendPacket(Arrays.asList(players), instantiatePacket(name, center, offsetX, offsetY, offsetZ, speed, amount));
 	}
+	
+	public void display(Location center, float speed, int amount){
+		display(center, MAX_RANGE, 0, 0, 0, speed, amount);
+	}
 
 	/**
 	 * Displays a particle effect which is only visible for all players within a certain range in the world of @param center

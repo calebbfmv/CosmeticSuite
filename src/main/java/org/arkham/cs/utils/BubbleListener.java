@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.arkham.cs.CosmeticSuite;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,14 +20,7 @@ public class BubbleListener implements Listener {
 
 	public static String[] convertStringToBubbleChat(String msg, String player){
 		List<String> lmsg = new ArrayList<>();
-		if(msg.contains(":")){
-			String header = msg.split(":")[0];
-			lmsg.add(header);
-			msg = msg.replace(header + ": ", "");
-			msg = msg.replace(header + ":", "");
-		} else {
-			lmsg.add(player);
-		}
+		lmsg.add(ChatColor.AQUA + player);
 		if(msg.length() <= 33){
 			lmsg.add(msg);
 			return lmsg.toArray(new String[lmsg.size()]);
@@ -62,7 +56,6 @@ public class BubbleListener implements Listener {
 		final double y_boost = bubble_msg.length * 0.20D;
 		final int length = fmsg.length();
 		if(pl.hasMetadata("hologram")){
-			System.out.println("Has");
 			CosmeticSuite.getInstance().getServer().getScheduler().runTask(CosmeticSuite.getInstance(), new Runnable(){
 				@Override
 				public void run(){

@@ -63,18 +63,7 @@ public abstract class Button {
 	}
 
 	private String name(ItemStack item){
-		String name = item.getItemMeta().getDisplayName();
-		if(name == null){
-			StringBuilder builder = new StringBuilder();
-			String[] str = item.getType().name().split("_");
-			for(int i = 0; i < str.length; i++){
-				String n = str[i];
-				n = n.substring(0, 1).toUpperCase() + n.substring(1).toLowerCase();
-				builder.append(n + " ");
-			}
-			name = builder.toString();
-		}
-		return name;
+		return "Locked";
 	}
 
 	public int getSlot(){

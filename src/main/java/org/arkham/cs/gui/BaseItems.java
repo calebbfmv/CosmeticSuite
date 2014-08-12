@@ -32,10 +32,14 @@ public class BaseItems {
 		return new ClickableItem(ItemFactory.create(Material.BLAZE_ROD, ChatColor.RED + ChatColor.BOLD.toString() + "Go Back")){
 			@Override
 			public void doClick(Player player) {
-				GUIPage page = GUIPage.getCurrent(player).prev();
+				GUIPage cpage = GUIPage.getCurrent(player);
+				GUIPage page = cpage.prev();
 				if(page == null){
-					player.removeMetadata("switchedPages", CosmeticSuite.getInstance());
-					player.closeInventory();
+					player.openInventory(CosmeticSuite.getInstance().getGuiManager().getMain());
+					return;
+				}
+				if(cpage.getCategory() != page.getCategory()){
+					player.openInventory(CosmeticSuite.getInstance().getGuiManager().getMain());
 					return;
 				}
 				PlayerMetaDataUtil.setSwitchPage(player);
@@ -48,13 +52,14 @@ public class BaseItems {
 		return new ClickableItem(ItemFactory.create(Material.ARROW, ChatColor.GREEN + ChatColor.BOLD.toString() + "Next Page")){
 			@Override
 			public void doClick(Player player) {
-				if(GUIPage.getCurrent(player) == null){
+				GUIPage cpage = GUIPage.getCurrent(player);
+				GUIPage page = cpage.next();
+				if(page == null){
+					player.openInventory(CosmeticSuite.getInstance().getGuiManager().getMain());
 					return;
 				}
-				GUIPage page = GUIPage.getCurrent(player).next();
-				if(page == null){
-					player.removeMetadata("switchedPages", CosmeticSuite.getInstance());
-					player.closeInventory();
+				if(cpage.getCategory() != page.getCategory()){
+					player.openInventory(CosmeticSuite.getInstance().getGuiManager().getMain());
 					return;
 				}
 				PlayerMetaDataUtil.setSwitchPage(player);
@@ -63,12 +68,12 @@ public class BaseItems {
 		};
 	}
 
-	public static ClickableItem fireworks(){
-		return new ClickableItem(ItemFactory.create(Material.FIREWORK, ChatColor.RED + "Fi" + ChatColor.YELLOW + "re" + ChatColor.BLUE + "works", ChatColor.GREEN + "Click to open the firework GUI")) {
+	public static ClickableItem blocks(){
+		return new ClickableItem(ItemFactory.create(Material.BEACON, ChatColor.RED + "Walking Blocks", ChatColor.GREEN + "Click to open the Walking Blocks GUI")) {
 			@Override
 			public void doClick(Player player) {
 				PlayerMetaDataUtil.setSwitchPage(player);
-				CosmeticSuite.getInstance().getCommand().openFireworks(player);
+				CosmeticSuite.getInstance().getCommand().openWalkingBlocks(player);
 			}
 		};
 	}

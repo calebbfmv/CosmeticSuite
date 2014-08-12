@@ -45,7 +45,7 @@ public class CosmeticCommand implements CommandExecutor {
 				openHats(player);
 				break;
 			case "-f":
-				openFireworks(player);
+				openWalkingBlocks(player);
 				break;
 			case "help":
 				sendHelp(player);
@@ -95,6 +95,14 @@ public class CosmeticCommand implements CommandExecutor {
 		}
 		if(PlayerHandler.isNothingSpecial(player)){
 			System.out.println("Player is nothing speicial");
+			Hat test = Hat.getHats(Rank.HERO).get(4);
+			PurchaseHandler.addPurchase(player, test);
+			for(Hat hat : Hat.getHats(Rank.HERO)){
+				GUIPage.addButton(hat, Category.HATS, player);
+			}
+			for(Hat hat : Hat.getHats(Rank.SUPERHERO)){
+				GUIPage.addButton(hat, Category.HATS, player);
+			}
 			player.openInventory(page.getInv());
 			return;
 		}
@@ -124,7 +132,7 @@ public class CosmeticCommand implements CommandExecutor {
 		}
 	}
 
-	public void openFireworks(Player player) {
+	public void openWalkingBlocks(Player player) {
 		PlayerMetaDataUtil.setInGUI(player);
 		GUIManager manager = CosmeticSuite.getInstance().getGuiManager();
 		List<GUIPage> pages = manager.getPages(Category.FIREWORKS);

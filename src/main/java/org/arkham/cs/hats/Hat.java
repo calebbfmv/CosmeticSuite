@@ -44,7 +44,7 @@ public class Hat extends Button {
 		hatsByRank.put(rank, h);
 		hats.add(this);
 	}
-		
+
 	/**
 	 * 
 	 * @param slot
@@ -55,10 +55,10 @@ public class Hat extends Button {
 	public Hat(int slot, ItemStack item, Rank rank, String permission){
 		this(slot, item, Category.HATS, permission, rank);
 	}
-    /**
-     * @param mat
-     * @param slot
-     */
+	/**
+	 * @param mat
+	 * @param slot
+	 */
 	public Hat(Material mat, int slot, Rank rank){
 		this(slot, new ItemStack(mat), Category.HATS, "cosmetics.hats." + mat.name().toLowerCase(), rank);
 	}
@@ -67,23 +67,23 @@ public class Hat extends Button {
 	public ItemStack getDisplay() {
 		return item;
 	}
-	
+
 	public static List<Hat> getHats(Rank rank){
 		return hatsByRank.get(rank);
 	}
 
 	@Override
 	public void onClick(Player player) {
-		player.getInventory().setHelmet(player.getInventory().getHelmet());
-		PacketPlayOutEntityEquipment equip = new PacketPlayOutEntityEquipment(player.getEntityId(), 1, CraftItemStack.asNMSCopy(getDisplay()));
+		PacketPlayOutEntityEquipment equip = new PacketPlayOutEntityEquipment(player.getEntityId(), 4, CraftItemStack.asNMSCopy(item));
 		for(Player p :  Bukkit.getOnlinePlayers()){
-			if(!p.getName().equalsIgnoreCase(player.getName())){
-				((CraftPlayer)p).getHandle().playerConnection.sendPacket(equip);
+			if(p.getUniqueId().equals(player.getUniqueId())){
+				continue;
 			}
+			((CraftPlayer)p).getHandle().playerConnection.sendPacket(equip);
 		}
 		player.closeInventory();
 	}
-	
+
 	public Rank getRank() {
 		return rank;
 	}

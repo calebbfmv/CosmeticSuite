@@ -79,8 +79,6 @@ public class PurchaseHandler {
 		try {
 			if(res.next()){
 				buttons.addAll(Button.deserialize(res.getString("buttons")));
-			} else {
-				SQLQueryThread.addQuery("INSERT INTO `purchases` VALUES(" + uuid + ", 'none')");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
