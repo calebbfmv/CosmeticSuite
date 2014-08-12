@@ -1,5 +1,6 @@
 package org.arkham.cs.utils;
 
+import org.arkham.cs.effects.ParticleEffect;
 import org.bukkit.entity.Player;
 
 import de.slikey.effectlib.EffectLib;
@@ -15,7 +16,6 @@ import de.slikey.effectlib.effect.FountainLocationEffect;
 
 public class ParticleLibManager {
 
-	@SuppressWarnings("unused")
 	private static EffectManager effectManager;
 
 	public ParticleLibManager() {
@@ -340,11 +340,122 @@ public class ParticleLibManager {
 				case FOUNTAINLOCATIONEFFECT:
 					FountainLocationEffect fle = new FountainLocationEffect(effectManager, player.getLocation());
 					fle.start();
+					break;
+				default:
+					break;
 				}
 			case PARTICLE_EFFECT:
+				ParticleEffect effect = ParticleEffect.ANGRY_VILLAGER;
 				switch (this) {
-
+				case ANGRY_VILLAGER:
+					effect = ParticleEffect.ANGRY_VILLAGER;
+					break;
+				case BUBBLE:
+					effect = ParticleEffect.BUBBLE;
+					break;
+				case CLOUD:
+					effect = ParticleEffect.CLOUD;
+					break;
+				case CRIT:
+					effect = ParticleEffect.CRIT;
+					break;
+				case DEPTH_SUSPEND:
+					effect = ParticleEffect.DEPTH_SUSPEND;
+					break;
+				case DRIP_LAVA:
+					effect = ParticleEffect.DRIP_LAVA;
+					break;
+				case DRIP_WATER:
+					effect = ParticleEffect.DRIP_WATER;
+					break;
+				case EXPLODE:
+					effect = ParticleEffect.EXPLODE;
+					break;
+				case FLAME:
+					effect = ParticleEffect.EXPLODE;
+					break;
+				case FOOTSTEP:
+					effect = ParticleEffect.EXPLODE;
+					break;
+				case HAPPY_VILLAGER:
+					effect = ParticleEffect.EXPLODE;
+					break;
+				case HEART:
+					effect = ParticleEffect.EXPLODE;
+					break;
+				case HUGE_EXPLOSION:
+					effect = ParticleEffect.EXPLODE;
+					break;
+				case FIREWORKS_SPARK:
+					effect = ParticleEffect.EXPLODE;
+					break;
+				case ENCHANTMENT_TABLE:
+					effect = ParticleEffect.EXPLODE;
+					break;
+				case INSTANT_SPELL:
+					effect = ParticleEffect.EXPLODE;
+					break;
+				case LARGE_EXPLODE:
+					effect = ParticleEffect.EXPLODE;
+					break;
+				case LARGE_SMOKE:
+					effect = ParticleEffect.EXPLODE;
+					break;
+				case LAVA:
+					effect = ParticleEffect.EXPLODE;
+					break;
+				case MAGIC_CRIT:
+					effect = ParticleEffect.EXPLODE;
+					break;
+				case MOB_SPELL:
+					effect = ParticleEffect.EXPLODE;
+					break;
+				case MOB_SPELL_AMBIENT:
+					effect = ParticleEffect.EXPLODE;
+					break;
+				case NOTE:
+					effect = ParticleEffect.EXPLODE;
+					break;
+				case PORTAL:
+					effect = ParticleEffect.EXPLODE;
+					break;
+				case RED_DUST:
+					effect = ParticleEffect.EXPLODE;
+					break;
+				case SLIME:
+					effect = ParticleEffect.EXPLODE;
+					break;
+				case SMOKE:
+					effect = ParticleEffect.EXPLODE;
+					break;
+				case SNOW_SHOVEL:
+					effect = ParticleEffect.EXPLODE;
+					break;
+				case SNOWBALL_POOF:
+					effect = ParticleEffect.EXPLODE;
+					break;
+				case SPELL:
+					effect = ParticleEffect.EXPLODE;
+					break;
+				case SPLASH:
+					effect = ParticleEffect.EXPLODE;
+					break;
+				case SUSPEND:
+					effect = ParticleEffect.EXPLODE;
+					break;
+				case TOWN_AURA:
+					effect = ParticleEffect.EXPLODE;
+					break;
+				case WAKE:
+					effect = ParticleEffect.EXPLODE;
+					break;
+				case WITCH_MAGIC:
+					effect = ParticleEffect.EXPLODE;
+					break;
+				default:
+					break;
 				}
+				effect.display(player.getLocation(), 10F, 10);
 			}
 		}
 

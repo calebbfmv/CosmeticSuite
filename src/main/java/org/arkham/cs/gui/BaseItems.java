@@ -69,7 +69,7 @@ public class BaseItems {
 	}
 
 	public static ClickableItem blocks(){
-		return new ClickableItem(ItemFactory.create(Material.BEACON, ChatColor.RED + "Walking Blocks", ChatColor.GREEN + "Click to open the Walking Blocks GUI")) {
+		return new ClickableItem(ItemFactory.create(Material.BEACON, ChatColor.RED + "Cursed Blocks", ChatColor.GREEN + "Click to open the Cursed Blocks GUI")) {
 			@Override
 			public void doClick(Player player) {
 				PlayerMetaDataUtil.setSwitchPage(player);

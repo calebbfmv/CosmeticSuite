@@ -4,6 +4,6 @@ public enum Category {
 	
 	HATS,
 	EFFECTS,
-	FIREWORKS;
+	CURSE_BLOCKS;
 
 }

@@ -7,8 +7,10 @@ import org.arkham.cs.db.SQLQueryThread;
 import org.arkham.cs.effects.EffectManager;
 import org.arkham.cs.gui.GUIManager;
 import org.arkham.cs.handler.FileHandler;
+import org.arkham.cs.interfaces.Button;
 import org.arkham.cs.utils.BubbleListener;
 import org.arkham.cs.utils.FlyListener;
+import org.arkham.cs.utils.MoveListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class CosmeticSuite extends JavaPlugin {
@@ -33,11 +35,22 @@ public class CosmeticSuite extends JavaPlugin {
 		new BubbleListener();
 		new FlyListener();
 		new SQLQueryThread();
+		new MoveListener();
 		GUIManager.setUpHeroHats();
 		GUIManager.setUpSuperHeroHats();
+		GUIManager.setUpHeroCurseBlocks();
 		SQLQueryThread.addQuery("CREATE DATABASE IF NOT EXISTS " + Authentication.sqldb);
 		SQLQueryThread.addQuery("CREATE TABLE IF NOT EXISTS `purchases` (`player` varchar(64) PRIMARY KEY , `buttons` longtext)");
+		SQLQueryThread.addQuery("CREATE TABLE IF NOT EXISTS `colors` (`player` varchar(64) PRIMARY KEY , `code` varchar(2)");
 		getServer().getPluginManager().registerEvents(guiManager, instance);
+//		getLogger().info("Printing Permiossion nodes now: ");
+		StringBuilder builder = new StringBuilder();
+		for(Button button : Button.allButtons){
+			builder.append(button.getPermission() + "  \n");
+		}
+		getLogger().info("===========================");
+//		getLogger().info("\n" + builder.toString());
+		getLogger().info("===========================");
 	}
 	
 	public CosmeticCommand getCommand(){

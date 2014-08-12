@@ -8,6 +8,7 @@ import org.arkham.cs.gui.GUIPage;
 import org.arkham.cs.handler.PlayerHandler;
 import org.arkham.cs.handler.PurchaseHandler;
 import org.arkham.cs.hats.Hat;
+import org.arkham.cs.utils.CurseBlock;
 import org.arkham.cs.utils.PlayerMetaDataUtil;
 import org.arkham.cs.utils.Rank;
 import org.bukkit.ChatColor;
@@ -90,16 +91,9 @@ public class CosmeticCommand implements CommandExecutor {
 		List<GUIPage> pages = manager.getPages(Category.HATS);
 		GUIPage page = pages.get(0);
 		if(page == null){
-			System.out.println("Page is null");
 			return;
 		}
 		if(PlayerHandler.isNothingSpecial(player)){
-			System.out.println("Player is nothing speicial");
-			Hat test = Hat.getHats(Rank.HERO).get(4);
-			PurchaseHandler.addPurchase(player, test);
-			for(Hat hat : Hat.getHats(Rank.HERO)){
-				GUIPage.addButton(hat, Category.HATS, player);
-			}
 			for(Hat hat : Hat.getHats(Rank.SUPERHERO)){
 				GUIPage.addButton(hat, Category.HATS, player);
 			}
@@ -107,38 +101,36 @@ public class CosmeticCommand implements CommandExecutor {
 			return;
 		}
 		Rank rank = PlayerHandler.getRank(player);
-		PurchaseHandler.setUpPurchases(player);
-		if(rank == Rank.SUPERHERO){
-			for(Hat hat : Hat.getHats(Rank.HERO)){
-				if(!PurchaseHandler.hasPurchased(player, hat)){
-					PurchaseHandler.addPurchase(player, hat);
-				}
-				GUIPage.addButton(hat, Category.HATS, player);
-			}
-			for(Hat hat : Hat.getHats(Rank.SUPERHERO)){
-				if(!PurchaseHandler.hasPurchased(player, hat)){
-					PurchaseHandler.addPurchase(player, hat);
-				}
-				GUIPage.addButton(hat, Category.HATS, player);
-			}
-			player.openInventory(page.getInv());
-			return;
-		}
 		for(Hat hat : Hat.getHats(rank)){
 			if(!PurchaseHandler.hasPurchased(player, hat)){
 				PurchaseHandler.addPurchase(player, hat);
 			}
 			GUIPage.addButton(hat, Category.HATS, player);
 		}
+		player.openInventory(page.getInv());
 	}
 
 	public void openWalkingBlocks(Player player) {
 		PlayerMetaDataUtil.setInGUI(player);
 		GUIManager manager = CosmeticSuite.getInstance().getGuiManager();
-		List<GUIPage> pages = manager.getPages(Category.FIREWORKS);
+		List<GUIPage> pages = manager.getPages(Category.CURSE_BLOCKS);
 		GUIPage page = pages.get(0);
 		if(page == null){
 			return;
+		}
+		if(PlayerHandler.isNothingSpecial(player)){
+			for(CurseBlock hat : CurseBlock.getByRank(Rank.HERO)){
+				GUIPage.addButton(hat, Category.CURSE_BLOCKS, player);
+			}
+			player.openInventory(page.getInv());
+			return;
+		}
+		Rank rank = PlayerHandler.getRank(player);
+		for(CurseBlock hat : CurseBlock.getByRank(Rank.HERO)){
+			if(!PurchaseHandler.hasPurchased(player, hat)){
+				PurchaseHandler.addPurchase(player, hat);
+			}
+			GUIPage.addButton(hat, Category.CURSE_BLOCKS, player);
 		}
 		player.openInventory(page.getInv());
 	}

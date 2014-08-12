@@ -8,6 +8,7 @@ import org.arkham.cs.CosmeticSuite;
 import org.arkham.cs.handler.PurchaseHandler;
 import org.arkham.cs.hats.Hat;
 import org.arkham.cs.interfaces.Button;
+import org.arkham.cs.utils.CurseBlock;
 import org.arkham.cs.utils.ParticleLibManager;
 import org.arkham.cs.utils.ParticleLibManager.FancyEffects;
 import org.arkham.cs.utils.Rank;
@@ -16,6 +17,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -33,6 +35,7 @@ public class GUIManager implements Listener {
 	public GUIManager() {
 		main = Bukkit.createInventory(null, 9, ChatColor.DARK_PURPLE + "Arkham Cosmetics");
 		main.setItem(4, BaseItems.hats().getItem());
+		main.setItem(3, BaseItems.blocks().getItem());
 		// main.setItem(4, BaseItems.fireworks().getItem());
 		// main.setItem(5, BaseItems.effects().getItem());
 	}
@@ -78,36 +81,13 @@ public class GUIManager implements Listener {
 				}
 			}
 		}
-		// if(effects != null){
-		// new GUIPage(ChatColor.RED + "Effects", Category.EFFECTS);
-		// int slot = 0;
-		// for(String s : effects.getKeys(false)){
-		// String e = effects.getString(s + ".effectType");
-		// String permission = "cosmetics.effects." + s;
-		// Material display = Material.matchMaterial(effects.getString(s +
-		// ".item"));
-		// ParticleEffect effect = ParticleEffect.fromName(e);
-		// int amount = effects.getInt(s + ".amount", 15);
-		// String displayName = effect.name();
-		// StringBuilder builder = new StringBuilder();
-		// builder.append(ChatColor.GOLD + ChatColor.BOLD.toString());
-		// if(displayName.contains("_")){
-		// String[] str = displayName.split("_");
-		// for(int i = 0; i < str.length; i++){
-		// String name = str[i];
-		// builder.append(name.substring(0, 1).toUpperCase());
-		// builder.append(name.substring(1).toLowerCase());
-		// builder.append(" ");
-		// }
-		// } else {
-		// builder.append(displayName.substring(0, 1).toUpperCase());
-		// builder.append(displayName.substring(1).toLowerCase());
-		// }
-		// new CustomEffect(slot, Category.EFFECTS, effect, permission, display,
-		// amount);
-		// slot++;
-		// }
-		// }
+		/**
+		 * Dis is Curse blocks 
+		 */
+		{
+			int created = 1;
+			new GUIPage("Curse Blocks " + created, Category.CURSE_BLOCKS);
+		}
 	}
 
 	private static String[] herohats() {
@@ -128,21 +108,21 @@ public class GUIManager implements Listener {
 				ItemStack jungle = new ItemStack(Material.LOG, 1, (byte) 3);
 				ItemStack acacia = new ItemStack(Material.LOG, 1, (byte) 4);
 				ItemStack dark = new ItemStack(Material.LOG, 1, (byte) 5);
-				new Hat(i, oak, Rank.HERO, "cosmetics.hats.wood.oak");
-				new Hat(i, spruce, Rank.HERO, "cosmetics.hats.wood.spruce");
-				new Hat(i, birch, Rank.HERO, "cosmetics.hats.wood.birch");
-				new Hat(i, jungle, Rank.HERO, "cosmetics.hats.wood.jungle");
-				new Hat(i, acacia, Rank.HERO, "cosmetics.hats.wood.acacia");
-				new Hat(i, dark, Rank.HERO, "cosmetics.hats.wood.dark");
+				new Hat(i, oak, Rank.HERO, "cosmetics.hats.oak_log");
+				new Hat(i, spruce, Rank.HERO, "cosmetics.hats.spruce_log");
+				new Hat(i, birch, Rank.HERO, "cosmetics.hats.birch_log");
+				new Hat(i, jungle, Rank.HERO, "cosmetics.hats.jungle_log");
+				new Hat(i, acacia, Rank.HERO, "cosmetics.hats.acacia_log");
+				new Hat(i, dark, Rank.HERO, "cosmetics.hats.dark_log");
 			} else if (s.equalsIgnoreCase("Leaves")) {
 				ItemStack oak = new ItemStack(Material.LEAVES);
 				ItemStack spruce = new ItemStack(Material.LEAVES, 1, (byte) 1);
 				ItemStack birch = new ItemStack(Material.LEAVES, 1, (byte) 2);
 				ItemStack jungle = new ItemStack(Material.LEAVES, 1, (byte) 3);
-				new Hat(i, oak, Rank.HERO, "cosmetics.hats.leaves.oak");
-				new Hat(i, spruce, Rank.HERO, "cosmetics.hats.leaves.spruce");
-				new Hat(i, birch, Rank.HERO, "cosmetics.hats.leaves.birch");
-				new Hat(i, jungle, Rank.HERO, "cosmetics.hats.leaves.jungle");
+				new Hat(i, oak, Rank.HERO, "cosmetics.hats.oak_leaves");
+				new Hat(i, spruce, Rank.HERO, "cosmetics.hats.spruce_leaves");
+				new Hat(i, birch, Rank.HERO, "cosmetics.hats.birch_leaves");
+				new Hat(i, jungle, Rank.HERO, "cosmetics.hats.jungle_leaves");
 			} else if (s.equalsIgnoreCase("Planks")) {
 				ItemStack oak = new ItemStack(Material.WOOD);
 				ItemStack spruce = new ItemStack(Material.WOOD, 1, (byte) 1);
@@ -150,12 +130,12 @@ public class GUIManager implements Listener {
 				ItemStack jungle = new ItemStack(Material.WOOD, 1, (byte) 3);
 				ItemStack acacia = new ItemStack(Material.WOOD, 1, (byte) 4);
 				ItemStack dark = new ItemStack(Material.WOOD, 1, (byte) 5);
-				new Hat(i, oak, Rank.HERO, "cosmetics.hats.planks.oak");
-				new Hat(i, spruce, Rank.HERO, "cosmetics.hats.planks.spruce");
-				new Hat(i, birch, Rank.HERO, "cosmetics.hats.planks.birch");
-				new Hat(i, jungle, Rank.HERO, "cosmetics.hats.planks.jungle");
-				new Hat(i, acacia, Rank.HERO, "cosmetics.hats.planks.acacia");
-				new Hat(i, dark, Rank.HERO, "cosmetics.hats.planks.dark");
+				new Hat(i, oak, Rank.HERO, "cosmetics.hats.oak_plank");
+				new Hat(i, spruce, Rank.HERO, "cosmetics.hats.spruce_plank");
+				new Hat(i, birch, Rank.HERO, "cosmetics.hats.birch_plank");
+				new Hat(i, jungle, Rank.HERO, "cosmetics.hats.jungle_plank");
+				new Hat(i, acacia, Rank.HERO, "cosmetics.hats.acacia_plank");
+				new Hat(i, dark, Rank.HERO, "cosmetics.hats.dark_plank");
 			} else if (s.equalsIgnoreCase("Netherbrick")) {
 				s = Material.NETHER_BRICK.name();
 			} else if (s.equalsIgnoreCase("Redstonelamp")) {
@@ -192,7 +172,6 @@ public class GUIManager implements Listener {
 	}
 
 	public static void setUpSuperHeroHats() {
-		System.out.println("Setting up superhero hats");
 		String[] str = superherohats();
 		for (int i = 0; i < str.length; i++) {
 			String s = str[i];
@@ -215,9 +194,9 @@ public class GUIManager implements Listener {
 				ItemStack rail = new ItemStack(Material.RAILS);
 				ItemStack p_rail = new ItemStack(Material.POWERED_RAIL);
 				new Hat(i, rail, Rank.SUPERHERO, "cosmetics.hats.rail");
-				new Hat(i, a_rail, Rank.SUPERHERO, "cosmetics.hats.rail.activator");
-				new Hat(i, d_rail, Rank.SUPERHERO, "cosmetics.hats.rail.detector");
-				new Hat(i, p_rail, Rank.SUPERHERO, "cosmetics.hats.rail.powered");
+				new Hat(i, a_rail, Rank.SUPERHERO, "cosmetics.hats.activator_rail");
+				new Hat(i, d_rail, Rank.SUPERHERO, "cosmetics.hats.detector_rail");
+				new Hat(i, p_rail, Rank.SUPERHERO, "cosmetics.hats.powered_rail");
 			} else if (s.equalsIgnoreCase("lilypad")) {
 				s = Material.WATER_LILY.name();
 			} else if (s.equalsIgnoreCase("coloredpanes")) {
@@ -231,6 +210,55 @@ public class GUIManager implements Listener {
 			} else {
 				Material mat = Material.valueOf(s);
 				new Hat(mat, i, Rank.SUPERHERO);
+			}
+		}
+	}
+	
+	private static String[] heroCurseBlocks(){
+		String stuff = "Dirt, Stone, Grass, Podzol, Cobblestone, Sandstone, Glass, Sand, Woods, Planks, Iron_block, Pumpkin, Netherrack, Nether_brick, Chest";
+		return stuff.split(", ");
+	}
+	
+	public static void setUpHeroCurseBlocks(){
+		String[] blocks = heroCurseBlocks();
+		for(int i = 0; i < blocks.length; i++){
+			String s = blocks[i];
+			s = s.toUpperCase();
+			if(s.equalsIgnoreCase("podZol")){
+				ItemStack item = new ItemStack(Material.DIRT, 1, (byte) 2);
+				String permission = "cosmetics.cursedblocks.podzol";
+				new CurseBlock(i, permission, item, Rank.HERO); 
+			} else if(s.equalsIgnoreCase("woods")){
+				ItemStack oak = new ItemStack(Material.LOG);
+				ItemStack spruce = new ItemStack(Material.LOG, 1, (byte) 1);
+				ItemStack birch = new ItemStack(Material.LOG, 1, (byte) 2);
+				ItemStack jungle = new ItemStack(Material.LOG, 1, (byte) 3);
+				ItemStack acacia = new ItemStack(Material.LOG, 1, (byte) 4);
+				ItemStack dark = new ItemStack(Material.LOG, 1, (byte) 5);
+				new CurseBlock(i, "cosmetics.cursedblocks.oak_log", oak, Rank.HERO);
+				new CurseBlock(i, "cosmetics.cursedblocks.spruce_log", spruce, Rank.HERO);
+				new CurseBlock(i, "cosmetics.cursedblocks.birch_log", birch, Rank.HERO);
+				new CurseBlock(i, "cosmetics.cursedblocks.jungle_log", jungle, Rank.HERO);
+				new CurseBlock(i, "cosmetics.cursedblocks.acacia_log", acacia, Rank.HERO);
+				new CurseBlock(i, "cosmetics.cursedblocks.dark_log", dark, Rank.HERO);
+			} else if(s.equalsIgnoreCase("planks")){
+				ItemStack oak = new ItemStack(Material.WOOD);
+				ItemStack spruce = new ItemStack(Material.WOOD, 1, (byte) 1);
+				ItemStack birch = new ItemStack(Material.WOOD, 1, (byte) 2);
+				ItemStack jungle = new ItemStack(Material.WOOD, 1, (byte) 3);
+				ItemStack acacia = new ItemStack(Material.WOOD, 1, (byte) 4);
+				ItemStack dark = new ItemStack(Material.WOOD, 1, (byte) 5);
+				new CurseBlock(i, "cosmetics.cursedblocks.oak_plank", oak, Rank.HERO);
+				new CurseBlock(i, "cosmetics.cursedblocks.spruce_plank", spruce, Rank.HERO);
+				new CurseBlock(i, "cosmetics.cursedblocks.birch_plank", birch, Rank.HERO);
+				new CurseBlock(i, "cosmetics.cursedblocks.jungle_plank", jungle, Rank.HERO);
+				new CurseBlock(i, "cosmetics.cursedblocks.acacia_plank", acacia, Rank.HERO);
+				new CurseBlock(i, "cosmetics.cursedblocks.dark_plank", dark, Rank.HERO);
+			} else {
+				Material mat = Material.valueOf(s);
+				ItemStack item = new ItemStack(mat);
+				String permission = "cosmetics.cursedblocks." + mat.name().toLowerCase();
+				new CurseBlock(i, permission, item, Rank.HERO);
 			}
 		}
 	}
@@ -253,18 +281,20 @@ public class GUIManager implements Listener {
 	@EventHandler
 	public void onClick(InventoryClickEvent event) {
 		Player player = (Player) event.getWhoClicked();
+		if(player.hasMetadata("inGUI")){
+			event.setCancelled(true);
+			event.setResult(Result.DENY);
+		}
 		if (event.getInventory() == null) {
 			return;
 		}
 		if (event.getCurrentItem() == null) {
 			return;
 		}
-		
 		ItemStack item = event.getCurrentItem();
-		if(!player.hasMetadata("inGUI")){
+		if(item.getType() == Material.STAINED_GLASS_PANE || item.getType() == Material.NETHER_STAR){
 			return;
 		}
-		event.setCancelled(true);
 		if (ClickableItem.fromItem(item) == null) {
 			if (GUIPage.getCurrent(player) == null) {
 				return;

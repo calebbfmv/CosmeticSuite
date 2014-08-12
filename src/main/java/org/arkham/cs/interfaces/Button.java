@@ -25,7 +25,7 @@ public abstract class Button {
 	private String permission;
 	private static HashMap<Category, HashMap<Integer, Button>> buttons = new HashMap<>();
 	public static HashMap<String, Button> buttonPerms = new HashMap<>();
-	private static ArrayList<Button> allButtons = new ArrayList<>();
+	public static ArrayList<Button> allButtons = new ArrayList<>();
 
 	public Button(int slot, Category cat, String permission){
 		this.slot = slot;		
