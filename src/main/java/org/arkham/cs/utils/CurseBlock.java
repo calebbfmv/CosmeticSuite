@@ -39,6 +39,10 @@ public class CurseBlock extends Button {
 		blocksByRank.put(rank, cbs);
 	}
 	
+	public CurseBlock(int i, ItemStack item, Rank rank, String permission){
+		this(i, permission, item, rank);
+	}
+	
 	public Rank getRank(){
 		return rank;
 	}

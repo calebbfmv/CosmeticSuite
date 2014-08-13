@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.arkham.cs.CosmeticSuite;
+import org.arkham.cs.effects.CustomEffect;
 import org.arkham.cs.handler.PurchaseHandler;
 import org.arkham.cs.hats.Hat;
 import org.arkham.cs.interfaces.Button;
@@ -74,6 +75,7 @@ public class GUIManager implements Listener {
 			new GUIPage("Particle Effects " + 1, Category.EFFECTS);
 			for(int i = 0; i < ParticleLibManager.FancyEffects.values().length; i++){
 				FancyEffects fancy = FancyEffects.values()[i];
+				new CustomEffect(i, Category.EFFECTS, fancy, "cosmetics.effects." +fancy.name().toLowerCase(), Material.EYE_OF_ENDER, 0);
 				if(i % 35 == 0){
 					created++;
 					new GUIPage("Particle Effects " + created, Category.EFFECTS);
@@ -87,6 +89,13 @@ public class GUIManager implements Listener {
 			int created = 1;
 			new GUIPage("Curse Blocks " + created, Category.CURSE_BLOCKS);
 		}
+	}
+	
+	public static void setUp(){
+		setUpHeroHats();
+		setUpSuperHeroHats(); 
+		setUpHeroCurseBlocks();
+		setUpSuperHeroCurseBlocks();
 	}
 
 	private static String[] herohats() {
@@ -262,6 +271,30 @@ public class GUIManager implements Listener {
 		}
 	}
 
+	private static String[] superherocurseblocks(){
+		String stuff = "Sponge, Bookshelf, Stained Glass, Diamond_Block, Gold_Block, Emerald_Block, ColoredWool, ColoredClays, Hay_block";
+		return stuff.split(", ");
+	}
+
+	public static void setUpSuperHeroCurseBlocks(){
+		String[] blocks = superherocurseblocks();
+		for(int i = 0; i < blocks.length; i++){
+			String s = blocks[i];
+			s = s.toUpperCase();
+			if (s.equalsIgnoreCase("stained glass")) {
+				stainedglassB(i);
+			} else if (s.equalsIgnoreCase("ColoredClays")) {
+				coloredclayB(i);
+			} else if (s.equalsIgnoreCase("ColoredWool")) {
+				coloredwoolB(i);
+			} else {
+				Material mat = Material.valueOf(s);
+				ItemStack item = new ItemStack(mat);
+				new CurseBlock(i, item, Rank.SUPERHERO, "cosmetics.cursedblocks." + mat.name().toLowerCase());
+			}
+		}
+	}
+
 	public List<GUIPage> getPages(Category cat) {
 		return pages.get(cat);
 	}
@@ -392,7 +425,7 @@ public class GUIManager implements Listener {
 		for (DyeColor color : DyeColor.values()) {
 			Wool wool = new Wool(color);
 			ItemStack item = wool.toItemStack();
-			new Hat(i, item, Rank.SUPERHERO, "cosmetics.hats.wool." + color.name().toLowerCase());
+			new Hat(i, item, Rank.SUPERHERO, "cosmetics.hats." + color.name().toLowerCase() + "_wool");
 		}
 	}
 
@@ -429,5 +462,84 @@ public class GUIManager implements Listener {
 		new Hat(i, stainedglasspane_purple, Rank.SUPERHERO, "cosmetics.hats.stainedglasspane.purple");
 		new Hat(i, stainedglasspane_red, Rank.SUPERHERO, "cosmetics.hats.stainedglasspane.red");
 		new Hat(i, stainedglasspane_yellow, Rank.SUPERHERO, "cosmetics.hats.stainedglasspane.yellow");
+	}
+	
+
+	private static void coloredwoolB(int i) {
+		for (DyeColor color : DyeColor.values()) {
+			Wool wool = new Wool(color);
+			ItemStack item = wool.toItemStack();
+			new CurseBlock(i, "cosmetics.cursedblocks." + color.name().toLowerCase() + "_wool", item, Rank.SUPERHERO);
+		}
+	}
+
+	private static void coloredclayB(int i) {
+		ItemStack stainedclay = new ItemStack(Material.STAINED_CLAY);
+		ItemStack stainedclay_orange = new ItemStack(Material.STAINED_CLAY, 1, (short) 1);
+		ItemStack stainedclay_magenta = new ItemStack(Material.STAINED_CLAY, 1, (short) 2);
+		ItemStack stainedclay_light_blue = new ItemStack(Material.STAINED_CLAY, 1, (short) 3);
+		ItemStack stainedclay_yellow = new ItemStack(Material.STAINED_CLAY, 1, (short) 4);
+		ItemStack stainedclay_lime = new ItemStack(Material.STAINED_CLAY, 1, (short) 5);
+		ItemStack stainedclay_pink = new ItemStack(Material.STAINED_CLAY, 1, (short) 6);
+		ItemStack stainedclay_gray = new ItemStack(Material.STAINED_CLAY, 1, (short) 7);
+		ItemStack stainedclay_light_gray = new ItemStack(Material.STAINED_CLAY, 1, (short) 8);
+		ItemStack stainedclay_cyan = new ItemStack(Material.STAINED_CLAY, 1, (short) 9);
+		ItemStack stainedclay_purple = new ItemStack(Material.STAINED_CLAY, 1, (short) 10);
+		ItemStack stainedclay_blue = new ItemStack(Material.STAINED_CLAY, 1, (short) 11);
+		ItemStack stainedclay_brown = new ItemStack(Material.STAINED_CLAY, 1, (short) 12);
+		ItemStack stainedclay_green = new ItemStack(Material.STAINED_CLAY, 1, (short) 13);
+		ItemStack stainedclay_red = new ItemStack(Material.STAINED_CLAY, 1, (short) 14);
+		ItemStack stainedclay_black = new ItemStack(Material.STAINED_CLAY, 1, (short) 15);
+		new CurseBlock(i, stainedclay, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay");
+		new CurseBlock(i, stainedclay_black, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.black");
+		new CurseBlock(i, stainedclay_blue, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.blue");
+		new CurseBlock(i, stainedclay_brown, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.brown");
+		new CurseBlock(i, stainedclay_cyan, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.cyan");
+		new CurseBlock(i, stainedclay_gray, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.gray");
+		new CurseBlock(i, stainedclay_green, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.green");
+		new CurseBlock(i, stainedclay_light_blue, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.light_blue");
+		new CurseBlock(i, stainedclay_light_gray, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.light_gray");
+		new CurseBlock(i, stainedclay_lime, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.lime");
+		new CurseBlock(i, stainedclay_magenta, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.magenta");
+		new Hat(i, stainedclay_orange, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.orange");
+		new CurseBlock(i, stainedclay_pink, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.pink");
+		new CurseBlock(i, stainedclay_purple, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.purple");
+		new CurseBlock(i, stainedclay_red, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.red");
+		new CurseBlock(i, stainedclay_yellow, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.yellow");
+	}
+
+	private static void stainedglassB(int i) {
+		ItemStack stainedclay = new ItemStack(Material.STAINED_GLASS);
+		ItemStack stainedclay_orange = new ItemStack(Material.STAINED_GLASS, 1, (short) 1);
+		ItemStack stainedclay_magenta = new ItemStack(Material.STAINED_GLASS, 1, (short) 2);
+		ItemStack stainedclay_light_blue = new ItemStack(Material.STAINED_GLASS, 1, (short) 3);
+		ItemStack stainedclay_yellow = new ItemStack(Material.STAINED_GLASS, 1, (short) 4);
+		ItemStack stainedclay_lime = new ItemStack(Material.STAINED_GLASS, 1, (short) 5);
+		ItemStack stainedclay_pink = new ItemStack(Material.STAINED_GLASS, 1, (short) 6);
+		ItemStack stainedclay_gray = new ItemStack(Material.STAINED_GLASS, 1, (short) 7);
+		ItemStack stainedclay_light_gray = new ItemStack(Material.STAINED_GLASS, 1, (short) 8);
+		ItemStack stainedclay_cyan = new ItemStack(Material.STAINED_GLASS, 1, (short) 9);
+		ItemStack stainedclay_purple = new ItemStack(Material.STAINED_GLASS, 1, (short) 10);
+		ItemStack stainedclay_blue = new ItemStack(Material.STAINED_GLASS, 1, (short) 11);
+		ItemStack stainedclay_brown = new ItemStack(Material.STAINED_GLASS, 1, (short) 12);
+		ItemStack stainedclay_green = new ItemStack(Material.STAINED_GLASS, 1, (short) 13);
+		ItemStack stainedclay_red = new ItemStack(Material.STAINED_GLASS, 1, (short) 14);
+		ItemStack stainedclay_black = new ItemStack(Material.STAINED_GLASS, 1, (short) 15);
+		new CurseBlock(i, stainedclay, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass");
+		new CurseBlock(i, stainedclay_black, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.black");
+		new CurseBlock(i, stainedclay_blue, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.blue");
+		new CurseBlock(i, stainedclay_brown, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.brown");
+		new CurseBlock(i, stainedclay_cyan, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.cyan");
+		new CurseBlock(i, stainedclay_gray, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.gray");
+		new CurseBlock(i, stainedclay_green, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.green");
+		new CurseBlock(i, stainedclay_light_blue, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.light_blue");
+		new CurseBlock(i, stainedclay_light_gray, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.light_gray");
+		new CurseBlock(i, stainedclay_lime, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.lime");
+		new CurseBlock(i, stainedclay_magenta, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.magenta");
+		new Hat(i, stainedclay_orange, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.orange");
+		new CurseBlock(i, stainedclay_pink, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.pink");
+		new CurseBlock(i, stainedclay_purple, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.purple");
+		new CurseBlock(i, stainedclay_red, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.red");
+		new CurseBlock(i, stainedclay_yellow, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.yellow");
 	}
 }
