@@ -15,7 +15,6 @@ public class SQLConnectionThread {
                 if(con != null){
                     con.close();
                 }
- 
                 con = DriverManager.getConnection(Authentication.sqlurl, Authentication.sqluser, Authentication.sqlpass); 
                 query_count = 0;
             }

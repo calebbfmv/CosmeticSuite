@@ -11,6 +11,8 @@ import org.arkham.cs.hats.Hat;
 import org.arkham.cs.utils.CurseBlock;
 import org.arkham.cs.utils.PlayerMetaDataUtil;
 import org.arkham.cs.utils.Rank;
+import org.arkham.cs.utils.kits.HeroKit;
+import org.arkham.cs.utils.kits.SuperHeroKit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -119,19 +121,34 @@ public class CosmeticCommand implements CommandExecutor {
 			return;
 		}
 		if(PlayerHandler.isNothingSpecial(player)){
-			for(CurseBlock hat : CurseBlock.getByRank(Rank.HERO)){
+			for(CurseBlock hat : CurseBlock.getByRank(Rank.SUPERHERO)){
 				GUIPage.addButton(hat, Category.CURSE_BLOCKS, player);
 			}
 			player.openInventory(page.getInv());
 			return;
 		}
-//		Rank rank = PlayerHandler.getRank(player);
-		for(CurseBlock hat : CurseBlock.getByRank(Rank.HERO)){
+		Rank rank = PlayerHandler.getRank(player);
+		for(CurseBlock hat : CurseBlock.getByRank(rank)){
 			if(!PurchaseHandler.hasPurchased(player, hat)){
 				PurchaseHandler.addPurchase(player, hat);
 			}
 			GUIPage.addButton(hat, Category.CURSE_BLOCKS, player);
 		}
+		player.openInventory(page.getInv());
+	}
+	
+	public void openKits(Player player){
+		PlayerMetaDataUtil.setInGUI(player);
+		GUIManager manager = CosmeticSuite.getInstance().getGuiManager();
+		List<GUIPage> pages = manager.getPages(Category.KITS);
+		GUIPage page = pages.get(0);
+		if(page == null){
+			return;
+		}
+		SuperHeroKit shk = manager.getSuperHeroKit();
+		HeroKit hk = manager.getHeroKit();
+		GUIPage.addButton(hk, Category.KITS, player);
+		GUIPage.addButton(shk, Category.KITS, player);
 		player.openInventory(page.getInv());
 	}
 

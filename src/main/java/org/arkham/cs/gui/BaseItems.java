@@ -77,4 +77,14 @@ public class BaseItems {
 			}
 		};
 	}
+	
+	public static ClickableItem kits(){
+		return new ClickableItem(ItemFactory.create(Material.DIAMOND_CHESTPLATE, ChatColor.YELLOW + "Kits", ChatColor.GREEN + "Click to open the Kits GUI")) {
+			@Override
+			public void doClick(Player player) {
+				PlayerMetaDataUtil.setSwitchPage(player);
+				CosmeticSuite.getInstance().getCommand().openKits(player);
+			}
+		};
+	}
 }

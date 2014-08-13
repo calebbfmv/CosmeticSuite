@@ -12,6 +12,8 @@ import org.arkham.cs.interfaces.Button;
 import org.arkham.cs.utils.CurseBlock;
 import org.arkham.cs.utils.ParticleLibManager;
 import org.arkham.cs.utils.ParticleLibManager.FancyEffects;
+import org.arkham.cs.utils.kits.HeroKit;
+import org.arkham.cs.utils.kits.SuperHeroKit;
 import org.arkham.cs.utils.Rank;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -32,12 +34,29 @@ public class GUIManager implements Listener {
 
 	private Inventory main;
 	private HashMap<Category, List<GUIPage>> pages = new HashMap<>();
+	private static HeroKit heroKit;
+	private static SuperHeroKit superHeroKit;
+
+	/**
+	 * @return the heroKit
+	 */
+	public HeroKit getHeroKit() {
+		return heroKit;
+	}
+
+	/**
+	 * @return the superHeroKit
+	 */
+	public SuperHeroKit getSuperHeroKit() {
+		return superHeroKit;
+	}
 
 	public GUIManager() {
 		main = Bukkit.createInventory(null, 9, ChatColor.DARK_PURPLE + "Arkham Cosmetics");
 		main.setItem(4, BaseItems.hats().getItem());
 		main.setItem(3, BaseItems.blocks().getItem());
 		main.setItem(5, BaseItems.effects().getItem());
+		main.setItem(6, BaseItems.kits().getItem());
 	}
 
 	public void loadPages() {
@@ -89,6 +108,12 @@ public class GUIManager implements Listener {
 			int created = 1;
 			new GUIPage("Curse Blocks " + created, Category.CURSE_BLOCKS);
 		}
+		/**
+		 * Dis is Kits
+		 */
+		{
+			new GUIPage("Kits", Category.KITS);
+		}
 	}
 	
 	public static void setUp(){
@@ -96,6 +121,8 @@ public class GUIManager implements Listener {
 		setUpSuperHeroHats(); 
 		setUpHeroCurseBlocks();
 		setUpSuperHeroCurseBlocks();
+		heroKit = new HeroKit();
+		superHeroKit = new SuperHeroKit();
 	}
 
 	private static String[] herohats() {
