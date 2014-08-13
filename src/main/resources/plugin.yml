@@ -5,4 +5,5 @@ description: ${project.description}
 commands:
   cosmetics:
     aliases: [cs, csuite, cosmeticsuite, cosmetic]
+  color:
     

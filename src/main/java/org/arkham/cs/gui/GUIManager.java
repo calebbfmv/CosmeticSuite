@@ -36,8 +36,7 @@ public class GUIManager implements Listener {
 		main = Bukkit.createInventory(null, 9, ChatColor.DARK_PURPLE + "Arkham Cosmetics");
 		main.setItem(4, BaseItems.hats().getItem());
 		main.setItem(3, BaseItems.blocks().getItem());
-		// main.setItem(4, BaseItems.fireworks().getItem());
-		// main.setItem(5, BaseItems.effects().getItem());
+		main.setItem(5, BaseItems.effects().getItem());
 	}
 
 	public void loadPages() {
@@ -66,7 +65,7 @@ public class GUIManager implements Listener {
 			new GUIPage(ChatColor.BLACK + "Hats: " + ChatColor.DARK_RED + (4), Category.HATS);
 			new GUIPage(ChatColor.BLACK + "Hats: " + ChatColor.DARK_RED + (5), Category.HATS);
 		}
-		
+
 		/**
 		 * Dis is effects 
 		 */
@@ -213,12 +212,12 @@ public class GUIManager implements Listener {
 			}
 		}
 	}
-	
+
 	private static String[] heroCurseBlocks(){
 		String stuff = "Dirt, Stone, Grass, Podzol, Cobblestone, Sandstone, Glass, Sand, Woods, Planks, Iron_block, Pumpkin, Netherrack, Nether_brick, Chest";
 		return stuff.split(", ");
 	}
-	
+
 	public static void setUpHeroCurseBlocks(){
 		String[] blocks = heroCurseBlocks();
 		for(int i = 0; i < blocks.length; i++){
@@ -266,7 +265,7 @@ public class GUIManager implements Listener {
 	public List<GUIPage> getPages(Category cat) {
 		return pages.get(cat);
 	}
-	
+
 	@EventHandler
 	public void onClose(InventoryCloseEvent event){
 		Player player = (Player) event.getPlayer();
@@ -309,12 +308,12 @@ public class GUIManager implements Listener {
 		ClickableItem cItem = ClickableItem.fromItem(item);
 		cItem.doClick((Player) event.getWhoClicked());
 	}
-	
+
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event){
 		PurchaseHandler.setUpPurchases(event.getPlayer());
 	}
-	
+
 	public Inventory getMain() {
 		return main;
 	}

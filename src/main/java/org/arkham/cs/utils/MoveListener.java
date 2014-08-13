@@ -24,6 +24,14 @@ public class MoveListener implements Listener {
 		}
 		Player player = event.getPlayer();
 		Location loc = player.getLocation();
+		if(player.isFlying()){
+			TrailingBlock tb = TrailingBlock.get(player);
+			if(tb == null){
+				return;
+			}
+			tb.run(player);
+			return;
+		}
 		CurseBlock cb = CurseBlock.get(player);
 		if(cb == null){
 			return;

@@ -9,8 +9,10 @@ import org.arkham.cs.gui.GUIManager;
 import org.arkham.cs.handler.FileHandler;
 import org.arkham.cs.interfaces.Button;
 import org.arkham.cs.utils.BubbleListener;
+import org.arkham.cs.utils.ChatColorManager;
 import org.arkham.cs.utils.FlyListener;
 import org.arkham.cs.utils.MoveListener;
+import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class CosmeticSuite extends JavaPlugin {
@@ -20,6 +22,9 @@ public class CosmeticSuite extends JavaPlugin {
 	private EffectManager effectManager;
 	private FileHandler fileHandler;
 	private CosmeticCommand cCommand;
+	private ChatColorManager cManager;
+	
+	public static final String PREFIX = ChatColor.AQUA + "[ArkhamCosmetics] " + ChatColor.YELLOW;
 	
 	public void onEnable(){
 		instance = this;
@@ -32,10 +37,13 @@ public class CosmeticSuite extends JavaPlugin {
 		guiManager.loadPages();
 		effectManager = new EffectManager();
 		cCommand = new CosmeticCommand();
+		cManager = new ChatColorManager();
 		new BubbleListener();
 		new FlyListener();
 		new SQLQueryThread();
 		new MoveListener();
+		new ColorCommand(this);
+		new PortalCommand();
 		GUIManager.setUpHeroHats();
 		GUIManager.setUpSuperHeroHats();
 		GUIManager.setUpHeroCurseBlocks();
@@ -71,6 +79,10 @@ public class CosmeticSuite extends JavaPlugin {
 	
 	public EffectManager getEffectManager(){
 		return effectManager;
+	}
+	
+	public ChatColorManager getChatColorManager(){
+		return cManager;
 	}
 
 }

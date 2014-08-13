@@ -55,7 +55,7 @@ public class CurseBlock extends Button {
 		String item = "bob";
 		String[] str = this.getPermission().split(".");
 		str = NameUtils.formatAndReturn(str, " ", true);
-		item = str[str.length - 1];
+		item = str[2];
 		player.sendMessage(ChatColor.AQUA + "[ArkhamCosmetics] " + ChatColor.YELLOW + "You will now walk on " + item);
 	}
 	
@@ -66,5 +66,4 @@ public class CurseBlock extends Button {
 	public static List<CurseBlock> getByRank(Rank rank){
 		return blocksByRank.get(rank);
 	}
-
 }

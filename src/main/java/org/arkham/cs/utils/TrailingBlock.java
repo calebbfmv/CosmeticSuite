@@ -8,20 +8,20 @@ import org.bukkit.Material;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 
+@SuppressWarnings("deprecation")
 public class TrailingBlock {
-	
+
 	public FallingBlock block;
 	private boolean inUse;
 	private Rank rank;
-	
+
 	private static HashMap<UUID, TrailingBlock> tbs = new HashMap<>();
-	
-	@SuppressWarnings("deprecation")
-	public TrailingBlock(Player player){
+
+	public TrailingBlock(Player player) {
 		UUID uuid = player.getUniqueId();
 		this.inUse = true;
 		this.rank = PlayerHandler.getRank(player);
-		switch(rank){
+		switch (rank) {
 		case DEFAULT:
 			break;
 		case HERO:
@@ -51,11 +51,12 @@ public class TrailingBlock {
 	public Rank getRank() {
 		return rank;
 	}
-	
-	public void run(Player player){
+
+	public void run(Player player) {
+		player.getWorld().spawnFallingBlock(player.getLocation(), block.getMaterial(), (byte) 0);
 	}
-	
-	public static TrailingBlock get(Player player){
+
+	public static TrailingBlock get(Player player) {
 		UUID uuid = player.getUniqueId();
 		return tbs.get(uuid);
 	}

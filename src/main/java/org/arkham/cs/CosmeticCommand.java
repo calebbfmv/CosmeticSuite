@@ -125,7 +125,7 @@ public class CosmeticCommand implements CommandExecutor {
 			player.openInventory(page.getInv());
 			return;
 		}
-		Rank rank = PlayerHandler.getRank(player);
+//		Rank rank = PlayerHandler.getRank(player);
 		for(CurseBlock hat : CurseBlock.getByRank(Rank.HERO)){
 			if(!PurchaseHandler.hasPurchased(player, hat)){
 				PurchaseHandler.addPurchase(player, hat);
