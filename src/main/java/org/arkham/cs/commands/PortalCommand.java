@@ -1,4 +1,4 @@
-package org.arkham.cs;
+package org.arkham.cs.commands;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

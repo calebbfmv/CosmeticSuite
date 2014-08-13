@@ -1,6 +1,7 @@
-package org.arkham.cs;
+package org.arkham.cs.commands;
 
-import org.arkham.cs.utils.ChatColorManager;
+import org.arkham.cs.CosmeticSuite;
+import org.arkham.cs.handler.ChatColorManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

@@ -1,6 +1,8 @@
-package org.arkham.cs.utils;
+package org.arkham.cs.events;
 
 import org.arkham.cs.CosmeticSuite;
+import org.arkham.cs.cosmetics.CurseBlock;
+import org.arkham.cs.cosmetics.TrailingBlock;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;

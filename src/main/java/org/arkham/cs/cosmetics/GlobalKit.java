@@ -1,4 +1,4 @@
-package org.arkham.cs.utils.kits;
+package org.arkham.cs.cosmetics;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

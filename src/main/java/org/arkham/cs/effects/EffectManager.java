@@ -4,7 +4,8 @@ import java.util.HashMap;
 import java.util.UUID;
 
 import org.arkham.cs.CosmeticSuite;
-import org.arkham.cs.utils.ParticleLibManager.FancyEffects;
+import org.arkham.cs.cosmetics.CustomEffect;
+import org.arkham.cs.handler.ParticleLibManager.FancyEffects;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

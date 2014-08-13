@@ -1,4 +1,4 @@
-package org.arkham.cs.utils;
+package org.arkham.cs.handler;
 
 import org.arkham.cs.effects.ParticleEffect;
 import org.bukkit.entity.Player;

@@ -1,6 +1,7 @@
-package org.arkham.cs.utils;
+package org.arkham.cs.events;
 
 import org.arkham.cs.CosmeticSuite;
+import org.arkham.cs.cosmetics.TrailingBlock;
 import org.arkham.cs.handler.PlayerHandler;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

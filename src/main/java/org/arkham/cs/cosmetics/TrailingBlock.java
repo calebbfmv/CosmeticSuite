@@ -1,9 +1,10 @@
-package org.arkham.cs.utils;
+package org.arkham.cs.cosmetics;
 
 import java.util.HashMap;
 import java.util.UUID;
 
 import org.arkham.cs.handler.PlayerHandler;
+import org.arkham.cs.utils.Rank;
 import org.bukkit.Material;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;

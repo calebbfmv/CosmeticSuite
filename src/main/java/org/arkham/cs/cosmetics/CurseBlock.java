@@ -1,4 +1,4 @@
-package org.arkham.cs.utils;
+package org.arkham.cs.cosmetics;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,6 +7,8 @@ import java.util.UUID;
 
 import org.arkham.cs.gui.Category;
 import org.arkham.cs.interfaces.Button;
+import org.arkham.cs.utils.NameUtils;
+import org.arkham.cs.utils.Rank;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

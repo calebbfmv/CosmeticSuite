@@ -1,11 +1,12 @@
-package org.arkham.cs.effects;
+package org.arkham.cs.cosmetics;
 
 import java.util.ArrayList;
 
 import org.arkham.cs.CosmeticSuite;
+import org.arkham.cs.effects.EffectManager;
 import org.arkham.cs.gui.Category;
+import org.arkham.cs.handler.ParticleLibManager.FancyEffects;
 import org.arkham.cs.interfaces.Button;
-import org.arkham.cs.utils.ParticleLibManager.FancyEffects;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

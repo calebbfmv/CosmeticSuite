@@ -1,4 +1,4 @@
-package org.arkham.cs.utils;
+package org.arkham.cs.cosmetics;
 
 import java.util.HashMap;
 import java.util.UUID;

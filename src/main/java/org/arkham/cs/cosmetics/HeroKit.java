@@ -1,7 +1,8 @@
-package org.arkham.cs.utils.kits;
+package org.arkham.cs.cosmetics;
 
 import org.arkham.cs.CosmeticSuite;
 import org.arkham.cs.gui.Category;
+import org.arkham.cs.handler.KitManager;
 import org.arkham.cs.interfaces.Button;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

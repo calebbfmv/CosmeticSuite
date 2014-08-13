@@ -1,4 +1,4 @@
-package org.arkham.cs.hats;
+package org.arkham.cs.cosmetics;
 
 import java.util.ArrayList;
 import java.util.HashMap;

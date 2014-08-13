@@ -1,9 +1,10 @@
-package org.arkham.cs.utils;
+package org.arkham.cs.events;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.arkham.cs.CosmeticSuite;
+import org.arkham.cs.cosmetics.Hologram;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;

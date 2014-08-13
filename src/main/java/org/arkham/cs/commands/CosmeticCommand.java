@@ -1,18 +1,19 @@
-package org.arkham.cs;
+package org.arkham.cs.commands;
 
 import java.util.List;
 
+import org.arkham.cs.CosmeticSuite;
+import org.arkham.cs.cosmetics.CurseBlock;
+import org.arkham.cs.cosmetics.Hat;
+import org.arkham.cs.cosmetics.HeroKit;
+import org.arkham.cs.cosmetics.SuperHeroKit;
 import org.arkham.cs.gui.Category;
 import org.arkham.cs.gui.GUIManager;
 import org.arkham.cs.gui.GUIPage;
 import org.arkham.cs.handler.PlayerHandler;
 import org.arkham.cs.handler.PurchaseHandler;
-import org.arkham.cs.hats.Hat;
-import org.arkham.cs.utils.CurseBlock;
 import org.arkham.cs.utils.PlayerMetaDataUtil;
 import org.arkham.cs.utils.Rank;
-import org.arkham.cs.utils.kits.HeroKit;
-import org.arkham.cs.utils.kits.SuperHeroKit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

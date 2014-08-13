@@ -1,17 +1,18 @@
 package org.arkham.cs;
 
-import java.io.IOException;
-
+import org.arkham.cs.commands.ColorCommand;
+import org.arkham.cs.commands.CosmeticCommand;
+import org.arkham.cs.commands.PortalCommand;
 import org.arkham.cs.db.Authentication;
 import org.arkham.cs.db.SQLQueryThread;
 import org.arkham.cs.effects.EffectManager;
+import org.arkham.cs.events.BleedListener;
+import org.arkham.cs.events.BubbleListener;
+import org.arkham.cs.events.FlyListener;
+import org.arkham.cs.events.MoveListener;
 import org.arkham.cs.gui.GUIManager;
-import org.arkham.cs.handler.FileHandler;
+import org.arkham.cs.handler.ChatColorManager;
 import org.arkham.cs.interfaces.Button;
-import org.arkham.cs.utils.BubbleListener;
-import org.arkham.cs.utils.ChatColorManager;
-import org.arkham.cs.utils.FlyListener;
-import org.arkham.cs.utils.MoveListener;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -20,7 +21,6 @@ public class CosmeticSuite extends JavaPlugin {
 	private static CosmeticSuite instance;
 	private GUIManager guiManager;
 	private EffectManager effectManager;
-	private FileHandler fileHandler;
 	private CosmeticCommand cCommand;
 	private ChatColorManager cManager;
 	
@@ -28,11 +28,6 @@ public class CosmeticSuite extends JavaPlugin {
 	
 	public void onEnable(){
 		instance = this;
-		try {
-			fileHandler = new FileHandler(getDataFolder());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		guiManager = new GUIManager();
 		guiManager.loadPages();
 		effectManager = new EffectManager();
@@ -44,6 +39,7 @@ public class CosmeticSuite extends JavaPlugin {
 		new MoveListener();
 		new ColorCommand(this);
 		new PortalCommand();
+		new BleedListener(this);
 		GUIManager.setUp();
 		SQLQueryThread.addQuery("CREATE DATABASE IF NOT EXISTS " + Authentication.sqldb);
 		SQLQueryThread.addQuery("CREATE TABLE IF NOT EXISTS `purchases` (`player` varchar(64) PRIMARY KEY , `buttons` longtext)");
@@ -63,10 +59,7 @@ public class CosmeticSuite extends JavaPlugin {
 	public CosmeticCommand getCommand(){
 		return cCommand;
 	}
-	
-	public FileHandler getFileHandler() {
-		return fileHandler;
-	}
+
 
 	public static CosmeticSuite getInstance(){
 		return instance;

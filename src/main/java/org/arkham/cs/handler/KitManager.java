@@ -1,9 +1,11 @@
-package org.arkham.cs.utils.kits;
+package org.arkham.cs.handler;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.arkham.cs.CosmeticSuite;
+import org.arkham.cs.cosmetics.GlobalKit;
+import org.arkham.cs.cosmetics.HeroKit;
 import org.arkham.cs.db.SQLConnectionThread;
 import org.arkham.cs.db.SQLQueryThread;
 import org.bukkit.ChatColor;
