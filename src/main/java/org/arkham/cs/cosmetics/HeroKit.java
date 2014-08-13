@@ -1,6 +1,5 @@
 package org.arkham.cs.cosmetics;
 
-import org.arkham.cs.CosmeticSuite;
 import org.arkham.cs.gui.Category;
 import org.arkham.cs.handler.KitManager;
 import org.arkham.cs.interfaces.Button;
@@ -52,7 +51,6 @@ public class HeroKit extends Button implements GlobalKit {
 
 	@Override
 	public void onClick(Player player) {
-		player.sendMessage(CosmeticSuite.PREFIX + "You have redeemed the Hero Kit! You'll have to wait another 24 hours before using it again!");
 		KitManager.giveKit(player, this);
 	}
 }

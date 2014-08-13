@@ -43,8 +43,8 @@ public class CosmeticSuite extends JavaPlugin {
 		GUIManager.setUp();
 		SQLQueryThread.addQuery("CREATE DATABASE IF NOT EXISTS " + Authentication.sqldb);
 		SQLQueryThread.addQuery("CREATE TABLE IF NOT EXISTS `purchases` (`player` varchar(64) PRIMARY KEY , `buttons` longtext)");
-		SQLQueryThread.addQuery("CREATE TABLE IF NOT EXISTS `colors` (`player` varchar(64) PRIMARY KEY , `code` varchar(2)");
-		SQLQueryThread.addQuery("CREATE TABLE IF NOT EXISTS `globalkits` (`player` varchar(64) PRIMARY KEY , id int, `time` long");
+		SQLQueryThread.addQuery("CREATE TABLE IF NOT EXISTS `colors` (`player` varchar(64) PRIMARY KEY , `code` varchar(2))");
+		SQLQueryThread.addQuery("CREATE TABLE IF NOT EXISTS `globalkits` (`player` varchar(64), `id` int, `time` long)");
 		getServer().getPluginManager().registerEvents(guiManager, instance);
 //		getLogger().info("Printing Permiossion nodes now: ");
 		StringBuilder builder = new StringBuilder();

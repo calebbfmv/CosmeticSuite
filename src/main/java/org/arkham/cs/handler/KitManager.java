@@ -2,6 +2,7 @@ package org.arkham.cs.handler;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.concurrent.TimeUnit;
 
 import org.arkham.cs.CosmeticSuite;
 import org.arkham.cs.cosmetics.GlobalKit;
@@ -18,9 +19,10 @@ public class KitManager {
 			return;
 		}
 		kit.giveItems(player);
-		long current = System.currentTimeMillis();
+		long current = System.currentTimeMillis() / 1000;
 		int id = (kit instanceof HeroKit) ? 1 : 2;
-		SQLQueryThread.addQuery("INSERT INTO `globalkits` VALUES('" + player.getUniqueId().toString() + "', " + id + ", " + current + ")");
+		player.sendMessage(CosmeticSuite.PREFIX + "You have redeemed the " + (id == 1 ? "Hero": "SuperHero") + " Kit! You'll have to wait another 24 hours before using it again!");
+		SQLQueryThread.addQuery("INSERT INTO `globalkits` VALUES('" + player.getUniqueId().toString() + "', " + id + ", " + current + ") ");
 	}
 
 	public static boolean canUse(Player player, GlobalKit kit) {
@@ -31,8 +33,8 @@ public class KitManager {
 		try {
 			if (res.next()) {
 				String msg = getTimeRemaining(player, kit);
-				if(msg.equalsIgnoreCase("hecanuse")){
-					SQLQueryThread.addQuery("DELETE * FROM `globalkits` WHERE `player` =" + uuid + " AND `id`=" + id);
+				if (msg.equalsIgnoreCase("hecanuse")) {
+					SQLQueryThread.addQuery("DELETE FROM `globalkits` WHERE `player` =" + uuid + " AND `id`=" + id);
 					return true;
 				}
 				player.sendMessage(msg);
@@ -55,31 +57,31 @@ public class KitManager {
 		ResultSet res = SQLConnectionThread.getResultSet(query);
 		try {
 			if (res.next()) {
-				time = res.getInt("time");
+				time = res.getLong("time");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		long minutes = 0;
-		long seconds = 0;
-		long hours = 0;
-		time = System.currentTimeMillis() - time;
-		if(time <= 0){
+		int minutes = 0;
+		int seconds = 0;
+		int hours = 0;
+		long t = (TimeUnit.HOURS.toSeconds(24)) - ((System.currentTimeMillis() / 1000) - time);
+		if (t <= 0) {
 			builder.append("HeCanUse");
 			return builder.toString();
 		}
 		builder.append(CosmeticSuite.PREFIX + "Please wait another ");
-		seconds = time / 1000;
-		minutes = time / 1000 / 60;
-		hours = time / 1000 / 60 / 60;
-		if(hours > 0){
-			builder.append(hours + "h, " );
+		seconds = (int) (t % 60);
+		minutes = (int) ((t % 3600) / 60);
+		hours = (int) (t / 3600);
+		if (hours > 0) {
+			builder.append(hours + "h, ");
 		}
-		if(minutes > 0){
+		if (minutes > 0) {
 			builder.append(minutes + "m, ");
 		}
-		if(seconds > 0){
-			builder.append(minutes + "s");
+		if (seconds > 0) {
+			builder.append(seconds + "s");
 		}
 		builder.append(ChatColor.YELLOW + " before using this kit again");
 		return builder.toString();
