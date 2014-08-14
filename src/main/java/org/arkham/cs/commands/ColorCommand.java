@@ -23,12 +23,12 @@ public class ColorCommand implements CommandExecutor {
 		String prefix = CosmeticSuite.PREFIX;
 		ChatColorManager manager = CosmeticSuite.getInstance().getChatColorManager();
 		if(args.length != 2){
-			player.sendMessage(prefix + "Your current color is " + (manager.getColor(player) == null ? "none" : "&" + manager.getColor(player) + " and it looks like this!"));
+			player.sendMessage(prefix + "Your current color is " + (manager.getColor(player) == null ? "none" : "&" +  manager.getColor(player).getChar() + manager.getColor(player) + " and it looks like this!"));
 			player.sendMessage(prefix + "Please do /color set &<colorcode>");
 			return true;
 		}
 		if(!args[0].equalsIgnoreCase("set")){
-			player.sendMessage(prefix + "Your current color is " + (manager.getColor(player) == null ? "none" : "&" + manager.getColor(player).toString() + " and it looks like this!"));
+			player.sendMessage(prefix + "Your current color is " + (manager.getColor(player) == null ? "none" : "&" +  manager.getColor(player).getChar() + manager.getColor(player) + " and it looks like this!"));
 			player.sendMessage(prefix + "Please do /color set &<colorcode>");
 			return true;
 		}
@@ -42,7 +42,7 @@ public class ColorCommand implements CommandExecutor {
 			return true;
 		}
 		manager.setColor(player, ChatColor.getByChar(cha_r));
-		player.sendMessage(prefix + "Your new color is " + (manager.getColor(player) == null ? "none" : "&" + manager.getColor(player).toString() + " and it looks like this!"));
+		player.sendMessage(prefix + "Your new color is " + (manager.getColor(player) == null ? "none" : "&" + manager.getColor(player).getChar() + manager.getColor(player) + " and it looks like this!"));
 		return false;
 	}
 

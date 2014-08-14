@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.metadata.FixedMetadataValue;
 
 public class EffectManager implements Listener{
 	
@@ -30,16 +31,23 @@ public class EffectManager implements Listener{
 	
 	@EventHandler
 	public void onMove(PlayerMoveEvent event){
+		Player player = event.getPlayer();
+		if(player.isFlying()){
+			return;
+		}
 		if(event.getTo().getBlockX() == event.getFrom().getBlockX() && event.getTo().getBlockZ() == event.getFrom().getBlockZ()){
 			return;
 		}
-		Player player = event.getPlayer();
+		if(player.hasMetadata("effected")){
+			return;
+		}
 		CustomEffect effect = getEffect(player);
 		if(effect == null){
 			return;
 		}
 		FancyEffects playedEffect = effect.getEffect();
 		playedEffect.display(player);
+		player.setMetadata("effected", new FixedMetadataValue(CosmeticSuite.getInstance(), ""));
 	}
 
 }

@@ -5,10 +5,12 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.UUID;
 
+import org.arkham.cs.CosmeticSuite;
 import org.arkham.cs.db.SQLConnectionThread;
 import org.arkham.cs.db.SQLQueryThread;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class ChatColorManager {
 
@@ -18,23 +20,30 @@ public class ChatColorManager {
 
 	}
 
-	public void sync(Player player){
-		String uuid = "'" + player.getUniqueId() + "'";
-		String resultSet = "SELECT `code` FROM `colors` WHERE `player`=" + uuid;
-		ResultSet res = SQLConnectionThread.getResultSet(resultSet);
-		try {
-			if(res.next()){
-				String colorCode = res.getString("code");
-				System.out.println(colorCode);
-				ChatColor color = ChatColor.getByChar(colorCode);
-				colors.put(player.getUniqueId(), color);
-				res.close();
-			} else {
-				System.out.println("No result set???");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+	public void sync(final Player player){
+		if(colors.get(player.getUniqueId()) != null){
+			return;
 		}
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				String uuid = "'" + player.getUniqueId() + "'";
+				String resultSet = "SELECT `code` FROM `colors` WHERE `player`=" + uuid;
+				ResultSet res = SQLConnectionThread.getResultSet(resultSet);
+				try {
+					if(res.next()){
+						String colorCode = res.getString("code");
+						ChatColor color = ChatColor.getByChar(colorCode);
+						setColor(player, color);
+						res.close();
+					} else {
+						setColor(player, ChatColor.WHITE);
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}.runTaskAsynchronously(CosmeticSuite.getInstance());
 	}
 
 	public void setColor(Player player, ChatColor color){
@@ -43,25 +52,15 @@ public class ChatColorManager {
 	}
 
 	public boolean hasColor(Player player){
-		if(colors.get(player.getUniqueId()) != null){
-			return true;
-		}
-		String uuid = "'" + player.getUniqueId() + "'";
-		String resultSet = "SELECT `code` FROM `colors` WHERE `player`=" + uuid;
-		ResultSet res = SQLConnectionThread.getResultSet(resultSet);
-		try {
-			return res.next();
-		} catch (SQLException e){
-			e.printStackTrace();
-			return false;
-		}
+		return colors.get(player.getUniqueId()) != null;
 	}
-	
+
 	public ChatColor getColor(Player player){
-		if(!hasColor(player)){
+		ChatColor color = colors.get(player.getUniqueId());
+		if(color == null){
 			sync(player);
 		}
-		return colors.get(player.getUniqueId()) == null ? ChatColor.WHITE : colors.get(player.getUniqueId());
+		return color == null ? ChatColor.WHITE : color;
 	}
 
 }

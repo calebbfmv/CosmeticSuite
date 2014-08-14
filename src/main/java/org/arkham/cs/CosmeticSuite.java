@@ -13,6 +13,7 @@ import org.arkham.cs.events.FlyListener;
 import org.arkham.cs.events.MoveListener;
 import org.arkham.cs.gui.GUIManager;
 import org.arkham.cs.handler.ChatColorManager;
+import org.arkham.cs.handler.ParticleLibManager;
 import org.arkham.cs.interfaces.Button;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -25,7 +26,7 @@ public class CosmeticSuite extends JavaPlugin {
 	private CosmeticCommand cCommand;
 	private ChatColorManager cManager;
 	
-	public static final String PREFIX = ChatColor.translateAlternateColorCodes('&', "&8[&e&lA&b&lC&8]&c");
+	public static final String PREFIX = ChatColor.translateAlternateColorCodes('&', "&8[&e&lA&b&lC&8]&e");
 	
 	public void onEnable(){
 		instance = this;
@@ -40,11 +41,13 @@ public class CosmeticSuite extends JavaPlugin {
 		new SQLQueryThread();
 		new MoveListener();
 		new ColorCommand(this);
-		new PortalCommand();
+		new PortalCommand(this);
 		new BleedListener(this);
 		new CommandPreEvent(this);
+		new ParticleLibManager();
 		GUIManager.setUp();
 		SQLQueryThread.addQuery("CREATE DATABASE IF NOT EXISTS " + Authentication.sqldb);
+		SQLQueryThread.addQuery("DROP TABLE IF EXISTS `globalkits`");
 		SQLQueryThread.addQuery("CREATE TABLE IF NOT EXISTS `purchases` (`player` varchar(64) PRIMARY KEY , `buttons` longtext)");
 		SQLQueryThread.addQuery("CREATE TABLE IF NOT EXISTS `colors` (`player` varchar(64) PRIMARY KEY , `code` varchar(2))");
 		SQLQueryThread.addQuery("CREATE TABLE IF NOT EXISTS `globalkits` (`player` varchar(64), `id` int, `time` long)");

@@ -6,4 +6,5 @@ commands:
   cosmetics:
     aliases: [cs, csuite, cosmeticsuite, cosmetic]
   color:
+  portal:
     

@@ -13,7 +13,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
-import org.bukkit.block.DoubleChest;
 import org.bukkit.block.Furnace;
 import org.bukkit.craftbukkit.v1_7_R4.CraftServer;
 import org.bukkit.craftbukkit.v1_7_R4.CraftWorld;
@@ -62,6 +61,9 @@ public class MoveListener implements Listener {
 		if(below.getState() instanceof Furnace){
 			return;
 		}
+		if(blocks.containsKey(below.getLocation())){
+			return;
+		}
 		blocks.put(below.getLocation(), below.getType());
 		below.setType(cb.getDisplay().getType());
 		below.setData(cb.getDisplay().getData().getData());
@@ -75,16 +77,16 @@ public class MoveListener implements Listener {
 			}
 		}.runTaskLaterAsynchronously(CosmeticSuite.getInstance(), 20L * 5);
 	}
-	
+
 	public void play(final Location l, final Material m){
 		CosmeticSuite.getInstance().getServer().getScheduler().runTaskAsynchronously(CosmeticSuite.getInstance(), new Runnable(){
-             @SuppressWarnings("deprecation")
+			@SuppressWarnings("deprecation")
 			@Override
-             public void run(){
-                 int particle_id = m.getId();
-                 Packet particles = new PacketPlayOutWorldEvent(2001, Math.round(l.getBlockX()), Math.round(l.getBlockY()), Math.round(l.getBlockZ()), particle_id, false);
-                 ((CraftServer) CosmeticSuite.getInstance().getServer()).getServer().getPlayerList().sendPacketNearby(l.getBlockX(), l.getBlockY(), l.getBlockZ(), 16, ((CraftWorld) l.getWorld()).getHandle().dimension, particles);
-             }
-         });
+			public void run(){
+				int particle_id = m.getId();
+				Packet particles = new PacketPlayOutWorldEvent(2001, Math.round(l.getBlockX()), Math.round(l.getBlockY()), Math.round(l.getBlockZ()), particle_id, false);
+				((CraftServer) CosmeticSuite.getInstance().getServer()).getServer().getPlayerList().sendPacketNearby(l.getBlockX(), l.getBlockY(), l.getBlockZ(), 16, ((CraftWorld) l.getWorld()).getHandle().dimension, particles);
+			}
+		});
 	}
 }

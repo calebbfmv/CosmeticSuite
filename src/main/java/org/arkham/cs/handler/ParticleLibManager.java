@@ -1,7 +1,9 @@
 package org.arkham.cs.handler;
 
+import org.arkham.cs.CosmeticSuite;
 import org.arkham.cs.effects.ParticleEffect;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import de.slikey.effectlib.EffectLib;
 import de.slikey.effectlib.EffectManager;
@@ -304,7 +306,7 @@ public class ParticleLibManager {
 			return type;
 		}
 
-		public void display(Player player) {
+		public void display(final Player player) {
 			switch (this.type) {
 			case LIB_EFFECT:
 				switch (this) {
@@ -314,8 +316,20 @@ public class ParticleLibManager {
 					arc.start();
 					break;
 				case ATOMLOCATIONEFFECT:
-					AtomLocationEffect atom = new AtomLocationEffect(effectManager, player.getEyeLocation());
-					atom.start();
+					final AtomLocationEffect atom = new AtomLocationEffect(effectManager, player.getEyeLocation());
+					new BukkitRunnable(){
+						@Override
+						public void run(){
+							atom.start();
+							new BukkitRunnable() {
+								@Override
+								public void run() {
+									atom.cancel();
+									player.removeMetadata("effected", CosmeticSuite.getInstance());
+								}
+							}.runTaskLaterAsynchronously(CosmeticSuite.getInstance(), 20L*5);
+						}
+					}.runTaskAsynchronously(CosmeticSuite.getInstance());
 					break;
 				case BLEEDENTITYEFFECT:
 					BleedEntityEffect bl = new BleedEntityEffect(effectManager, player);

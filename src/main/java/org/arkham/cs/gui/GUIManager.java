@@ -53,12 +53,18 @@ public class GUIManager implements Listener {
 	}
 
 	public GUIManager() {
-		main = Bukkit.createInventory(null, 9, "Arkham Cosmetics");
-		main.setItem(3, BaseItems.hats().getItem());
+		main = Bukkit.createInventory(null, 27, "Arkham Cosmetics");
 		main.setItem(2, BaseItems.blocks().getItem());
-		main.setItem(4, ItemFactory.create(Material.STAINED_GLASS_PANE, ChatColor.BLACK + "", 0, (byte) 15, "noLore"));
+		main.setItem(3, BaseItems.hats().getItem());
+		main.setItem(4, BaseItems.pets().getItem());
 		main.setItem(5, BaseItems.effects().getItem());
 		main.setItem(6, BaseItems.kits().getItem());
+		for (int i = 9; i < 18; i++) {
+			main.setItem(i, ItemFactory.create(Material.STAINED_GLASS_PANE, ChatColor.BLACK + "", 0, (byte) 15, "noLore"));
+		}
+		main.setItem(23, BaseItems.portal().getItem());
+		main.setItem(22, ItemFactory.create(Material.STAINED_GLASS_PANE, ChatColor.BLACK + "", 0, (byte) 15, "noLore"));
+		main.setItem(21, BaseItems.color().getItem());
 	}
 
 	public void loadPages() {
@@ -85,30 +91,31 @@ public class GUIManager implements Listener {
 			new GUIPage(ChatColor.BLACK + "Hats: " + ChatColor.DARK_RED + (2), Category.HATS);
 			new GUIPage(ChatColor.BLACK + "Hats: " + ChatColor.DARK_RED + (3), Category.HATS);
 			new GUIPage(ChatColor.BLACK + "Hats: " + ChatColor.DARK_RED + (4), Category.HATS);
-			new GUIPage(ChatColor.BLACK + "Hats: " + ChatColor.DARK_RED + (5), Category.HATS);
 		}
 
 		/**
-		 * Dis is effects 
+		 * Dis is effects
 		 */
 		{
 			int created = 1;
 			new GUIPage("Particle Effects " + 1, Category.EFFECTS);
-			for(int i = 0; i < ParticleLibManager.FancyEffects.values().length; i++){
+			for (int i = 0; i < ParticleLibManager.FancyEffects.values().length; i++) {
 				FancyEffects fancy = FancyEffects.values()[i];
-				new CustomEffect(i, Category.EFFECTS, fancy, "cosmetics.effects." +fancy.name().toLowerCase(), Material.EYE_OF_ENDER, 0);
-				if(i % 35 == 0){
+				new CustomEffect(i, Category.EFFECTS, fancy, "cosmetics.effects." + fancy.name().toLowerCase(), Material.DIAMOND, 0, Rank.HERO);
+				if (i % 35 == 0) {
 					created++;
 					new GUIPage("Particle Effects " + created, Category.EFFECTS);
 				}
 			}
 		}
 		/**
-		 * Dis is Curse blocks 
+		 * Dis is Curse blocks
 		 */
 		{
 			int created = 1;
 			new GUIPage("Curse Blocks " + created, Category.CURSE_BLOCKS);
+			new GUIPage("Curse Blocks " + 2, Category.CURSE_BLOCKS);
+			new GUIPage("Curse Blocks " + 3, Category.CURSE_BLOCKS);
 		}
 		/**
 		 * Dis is Kits
@@ -117,10 +124,10 @@ public class GUIManager implements Listener {
 			new GUIPage("Kits", Category.KITS);
 		}
 	}
-	
-	public static void setUp(){
+
+	public static void setUp() {
 		setUpHeroHats();
-		setUpSuperHeroHats(); 
+		setUpSuperHeroHats();
 		setUpHeroCurseBlocks();
 		setUpSuperHeroCurseBlocks();
 		ItemStack hitem = new ItemStack(Material.INK_SACK, 1, (byte) 8);
@@ -136,7 +143,7 @@ public class GUIManager implements Listener {
 	}
 
 	private static String[] herohats() {
-		String stuff = "Dirt, Stone, Grass, Podzol, Cobblestone, Sandstone, Glass, Sand, WoodLogs, Planks, Iron_block, Gold_block, Diamond_block, Emerald_block, Glowstone, Ice, Pumpkin, Clay, Snow_block, diamond_ore, gold_ore, iron_ore, coal_ore, redstone_ore, lapis_ore, emerald_ore, Netherrack, Netherbrick, StoneBrick, Melon_block, Quartz_block, Hay, Coal, PackedIce, Leaves, Chest, CraftingTable, Anvil, Enderchest, Furnace, EnchantmentTable, EndFrame, Cactus, Fence, Jukebox, Redstone_block, TnT, Beacon, RedstoneLamp, Dispenser, NoteBlock";
+		String stuff = "Dirt, Stone, Grass, Podzol, Cobblestone, Sandstone, Glass, Sand, WoodLogs, Planks, Iron_block, Gold_block, Diamond_block, Emerald_block, Glowstone, Ice, Pumpkin, Clay, Snow_block, diamond_ore, gold_ore, iron_ore, coal_ore, redstone_ore, lapis_ore, emerald_ore, Netherrack, Netherbrick, StoneBrick, Melon_block, Quartz_block, Hay, Coal, PackedIce, Leaves, CraftingTable, Anvil, Enderchest, Furnace, EnchantmentTable, EndFrame, Cactus, Fence, Jukebox, Redstone_block, TnT, Beacon, RedstoneLamp, Dispenser, NoteBlock";
 		return stuff.split(", ");
 	}
 
@@ -190,19 +197,19 @@ public class GUIManager implements Listener {
 			} else if (s.equalsIgnoreCase("podzol")) {
 				ItemStack item = new ItemStack(Material.DIRT, 1, (byte) 2);
 				new Hat(i, item, Category.HATS, "cosmetics.hats.podzol", Rank.HERO);
-			} else if(s.equalsIgnoreCase("stonebrick")){
+			} else if (s.equalsIgnoreCase("stonebrick")) {
 				s = Material.SMOOTH_BRICK.name();
-			} else  if(s.equalsIgnoreCase("hay")){
+			} else if (s.equalsIgnoreCase("hay")) {
 				s = Material.HAY_BLOCK.name();
-			} else if(s.equalsIgnoreCase("packedice")){
+			} else if (s.equalsIgnoreCase("packedice")) {
 				s = Material.PACKED_ICE.name();
-			} else if(s.equalsIgnoreCase("craftingtable")){
+			} else if (s.equalsIgnoreCase("craftingtable")) {
 				s = Material.WORKBENCH.name();
-			} else if(s.equalsIgnoreCase("enderchest")){
+			} else if (s.equalsIgnoreCase("enderchest")) {
 				s = Material.ENDER_CHEST.name();
-			} else if(s.equalsIgnoreCase("enchantmenttable")){
+			} else if (s.equalsIgnoreCase("enchantmenttable")) {
 				s = Material.ENCHANTMENT_TABLE.name();
-			} else if(s.equalsIgnoreCase("noteblock")){
+			} else if (s.equalsIgnoreCase("noteblock")) {
 				s = Material.NOTE_BLOCK.name();
 			} else {
 				Material mat = Material.valueOf(s);
@@ -250,7 +257,7 @@ public class GUIManager implements Listener {
 				s = Material.HOPPER.name();
 			} else if (s.equalsIgnoreCase("cobweb")) {
 				s = Material.WEB.name();
-			} else if(s.equalsIgnoreCase("bars")){
+			} else if (s.equalsIgnoreCase("bars")) {
 				s = Material.IRON_BARDING.name();
 			} else {
 				Material mat = Material.valueOf(s);
@@ -259,21 +266,21 @@ public class GUIManager implements Listener {
 		}
 	}
 
-	private static String[] heroCurseBlocks(){
-		String stuff = "Dirt, Stone, Grass, Podzol, Cobblestone, Sandstone, Glass, Sand, Woods, Planks, Iron_block, Pumpkin, Netherrack, Nether_brick, Chest";
+	private static String[] heroCurseBlocks() {
+		String stuff = "Dirt, Stone, Grass, Podzol, Cobblestone, Sandstone, Glass, Sand, Woods, Planks, Iron_block, Pumpkin, Netherrack, Nether_brick";
 		return stuff.split(", ");
 	}
 
-	public static void setUpHeroCurseBlocks(){
+	public static void setUpHeroCurseBlocks() {
 		String[] blocks = heroCurseBlocks();
-		for(int i = 0; i < blocks.length; i++){
+		for (int i = 0; i < blocks.length; i++) {
 			String s = blocks[i];
 			s = s.toUpperCase();
-			if(s.equalsIgnoreCase("podZol")){
+			if (s.equalsIgnoreCase("podZol")) {
 				ItemStack item = new ItemStack(Material.DIRT, 1, (byte) 2);
 				String permission = "cosmetics.cursedblocks.podzol";
-				new CurseBlock(i, permission, item, Rank.HERO); 
-			} else if(s.equalsIgnoreCase("woods")){
+				new CurseBlock(i, permission, item, Rank.HERO);
+			} else if (s.equalsIgnoreCase("woods")) {
 				ItemStack oak = new ItemStack(Material.LOG);
 				ItemStack spruce = new ItemStack(Material.LOG, 1, (byte) 1);
 				ItemStack birch = new ItemStack(Material.LOG, 1, (byte) 2);
@@ -286,7 +293,7 @@ public class GUIManager implements Listener {
 				new CurseBlock(i, "cosmetics.cursedblocks.jungle_log", jungle, Rank.HERO);
 				new CurseBlock(i, "cosmetics.cursedblocks.acacia_log", acacia, Rank.HERO);
 				new CurseBlock(i, "cosmetics.cursedblocks.dark_log", dark, Rank.HERO);
-			} else if(s.equalsIgnoreCase("planks")){
+			} else if (s.equalsIgnoreCase("planks")) {
 				ItemStack oak = new ItemStack(Material.WOOD);
 				ItemStack spruce = new ItemStack(Material.WOOD, 1, (byte) 1);
 				ItemStack birch = new ItemStack(Material.WOOD, 1, (byte) 2);
@@ -308,14 +315,14 @@ public class GUIManager implements Listener {
 		}
 	}
 
-	private static String[] superherocurseblocks(){
+	private static String[] superherocurseblocks() {
 		String stuff = "Sponge, Bookshelf, Stained Glass, Diamond_Block, Gold_Block, Emerald_Block, ColoredWool, ColoredClays, Hay_block";
 		return stuff.split(", ");
 	}
 
-	public static void setUpSuperHeroCurseBlocks(){
+	public static void setUpSuperHeroCurseBlocks() {
 		String[] blocks = superherocurseblocks();
-		for(int i = 0; i < blocks.length; i++){
+		for (int i = 0; i < blocks.length; i++) {
 			String s = blocks[i];
 			s = s.toUpperCase();
 			if (s.equalsIgnoreCase("stained glass")) {
@@ -337,12 +344,12 @@ public class GUIManager implements Listener {
 	}
 
 	@EventHandler
-	public void onClose(InventoryCloseEvent event){
+	public void onClose(InventoryCloseEvent event) {
 		Player player = (Player) event.getPlayer();
-		if(player.hasMetadata("switchedPages")){
+		if (player.hasMetadata("switchedPages")) {
 			return;
 		}
-		if(player.hasMetadata("inGUI")){
+		if (player.hasMetadata("inGUI")) {
 			player.removeMetadata("inGUI", CosmeticSuite.getInstance());
 		}
 	}
@@ -350,7 +357,7 @@ public class GUIManager implements Listener {
 	@EventHandler
 	public void onClick(InventoryClickEvent event) {
 		Player player = (Player) event.getWhoClicked();
-		if(player.hasMetadata("inGUI")){
+		if (player.hasMetadata("inGUI")) {
 			event.setCancelled(true);
 			event.setResult(Result.DENY);
 		}
@@ -361,7 +368,11 @@ public class GUIManager implements Listener {
 			return;
 		}
 		ItemStack item = event.getCurrentItem();
-		if(item.getType() == Material.STAINED_GLASS_PANE || item.getType() == Material.NETHER_STAR){
+		if (item.getType() == Material.STAINED_GLASS_PANE) {
+			return;
+		}
+		if( item.getType() == Material.NETHER_STAR){
+			player.openInventory(getMain());
 			return;
 		}
 		if (ClickableItem.fromItem(item) == null) {
@@ -380,7 +391,7 @@ public class GUIManager implements Listener {
 	}
 
 	@EventHandler
-	public void onJoin(PlayerJoinEvent event){
+	public void onJoin(PlayerJoinEvent event) {
 		PurchaseHandler.setUpPurchases(event.getPlayer());
 		CosmeticSuite.getInstance().getChatColorManager().sync(event.getPlayer());
 	}
@@ -501,7 +512,6 @@ public class GUIManager implements Listener {
 		new Hat(i, stainedglasspane_red, Rank.SUPERHERO, "cosmetics.hats.stainedglasspane.red");
 		new Hat(i, stainedglasspane_yellow, Rank.SUPERHERO, "cosmetics.hats.stainedglasspane.yellow");
 	}
-	
 
 	private static void coloredwoolB(int i) {
 		for (DyeColor color : DyeColor.values()) {

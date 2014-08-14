@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.arkham.cs.CosmeticSuite;
 import org.arkham.cs.cosmetics.CurseBlock;
+import org.arkham.cs.cosmetics.CustomEffect;
 import org.arkham.cs.cosmetics.Hat;
 import org.arkham.cs.cosmetics.HeroKit;
 import org.arkham.cs.cosmetics.SuperHeroKit;
@@ -71,22 +72,28 @@ public class CosmeticCommand implements CommandExecutor {
 				ChatColor.GOLD + "Arguments: ",
 				"  " + ChatColor.RED + "-h | " + ChatColor.GRAY + "Open the Hat's GUI",
 				"  " + ChatColor.RED + "-e | " + ChatColor.GRAY + "Open the Effects's GUI",
-				"  " + ChatColor.RED + "-f | " + ChatColor.GRAY + "Open the Fireworks's GUI",
 				ChatColor.GREEN + "=============================================="
 		};
 		player.sendMessage(help);
 	}
 
 	public void openEffects(Player player) {
+		System.out.println("Shit and giggles");
 		PlayerMetaDataUtil.setInGUI(player);
 		GUIManager manager = CosmeticSuite.getInstance().getGuiManager();
 		List<GUIPage> pages = manager.getPages(Category.EFFECTS);
 		GUIPage page = pages.get(0);
 		if(page == null){
+			System.out.println("Null Page");
 			return;
 		}
+		for(CustomEffect hat : CustomEffect.getEffects()){
+			GUIPage.addButton(hat, Category.EFFECTS, player);
+		}
 		player.openInventory(page.getInv());
+		return;
 	}
+
 
 	public void openHats(Player player) {
 		PlayerMetaDataUtil.setInGUI(player);
@@ -137,7 +144,7 @@ public class CosmeticCommand implements CommandExecutor {
 		}
 		player.openInventory(page.getInv());
 	}
-	
+
 	public void openKits(Player player){
 		PlayerMetaDataUtil.setInGUI(player);
 		GUIManager manager = CosmeticSuite.getInstance().getGuiManager();

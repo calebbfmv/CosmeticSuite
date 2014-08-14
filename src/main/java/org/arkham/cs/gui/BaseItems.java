@@ -2,6 +2,7 @@ package org.arkham.cs.gui;
 
 import org.arkham.cs.CosmeticSuite;
 import org.arkham.cs.utils.PlayerMetaDataUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -19,7 +20,7 @@ public class BaseItems {
 	}
 
 	public static ClickableItem effects(){
-		return new ClickableItem(ItemFactory.create(Material.PORTAL,  ChatColor.YELLOW + ChatColor.BOLD.toString() + "Effects", 1, (byte) 90, ChatColor.AQUA + "Click to open the effects GUI")) {
+		return new ClickableItem(ItemFactory.create(Material.PORTAL,  ChatColor.YELLOW + ChatColor.BOLD.toString() + "Effects", ChatColor.AQUA + "Click to open the effects GUI")) {
 			@Override
 			public void doClick(Player player) {
 				PlayerMetaDataUtil.setSwitchPage(player);
@@ -87,4 +88,45 @@ public class BaseItems {
 			}
 		};
 	}
+	
+	public static ClickableItem pets(){
+		return new ClickableItem(ItemFactory.create(Material.BONE, ChatColor.YELLOW + ChatColor.BOLD.toString() + "Pets", ChatColor.AQUA + "Click to open the Kits GUI")) {
+			@Override
+			public void doClick(Player player) {
+				PlayerMetaDataUtil.setSwitchPage(player);
+				Bukkit.dispatchCommand(player, "pet select");
+			}
+		};
+	}
+	
+	public static ClickableItem color(){
+		return new ClickableItem(ItemFactory.create(Material.BOOK_AND_QUILL, ChatColor.YELLOW + ChatColor.BOLD.toString() + "Color Command", ChatColor.AQUA + "Click to execute the /color command,")) {
+			@Override
+			public void doClick(Player player) {
+				PlayerMetaDataUtil.setSwitchPage(player);
+				Bukkit.dispatchCommand(player, "color");
+			}
+		};
+	}
+	
+	public static ClickableItem itemcolor(){
+		return new ClickableItem(ItemFactory.create(Material.BOOK_AND_QUILL, ChatColor.YELLOW + ChatColor.BOLD.toString() + "Portal Command", ChatColor.AQUA + "Click to execute the /portal command,")) {
+			@Override
+			public void doClick(Player player) {
+				PlayerMetaDataUtil.setSwitchPage(player);
+				Bukkit.dispatchCommand(player, "portals");
+			}
+		};
+	}
+	
+	public static ClickableItem portal(){
+		return new ClickableItem(ItemFactory.create(Material.BOOK_AND_QUILL, ChatColor.YELLOW + ChatColor.BOLD.toString() + "Portal Command", ChatColor.AQUA + "Click to execute the /portal command,")) {
+			@Override
+			public void doClick(Player player) {
+				PlayerMetaDataUtil.setSwitchPage(player);
+				Bukkit.dispatchCommand(player, "portals");
+			}
+		};
+	}
+
 }
