@@ -28,17 +28,21 @@ public class ColorCommand implements CommandExecutor {
 			return true;
 		}
 		if(!args[0].equalsIgnoreCase("set")){
-			player.sendMessage(prefix + "Your current color is " + (manager.getColor(player) == null ? "none" : "&" + manager.getColor(player) + " and it looks like this!"));
+			player.sendMessage(prefix + "Your current color is " + (manager.getColor(player) == null ? "none" : "&" + manager.getColor(player).toString() + " and it looks like this!"));
 			player.sendMessage(prefix + "Please do /color set &<colorcode>");
 			return true;
 		}
-		String cha_r = args[1].split("&")[0];
+		String cha_r = args[1].replace("&", "");
 		if(ChatColor.getByChar(cha_r) == null){
 			player.sendMessage(prefix + "That color is not known!");
 			return true;
 		}
+		if(ChatColor.getByChar(cha_r) == ChatColor.YELLOW){
+			player.sendMessage(prefix + "You cannot have yellow chat!");
+			return true;
+		}
 		manager.setColor(player, ChatColor.getByChar(cha_r));
-		player.sendMessage(prefix + "Your new chat color is now &" + cha_r);
+		player.sendMessage(prefix + "Your new color is " + (manager.getColor(player) == null ? "none" : "&" + manager.getColor(player).toString() + " and it looks like this!"));
 		return false;
 	}
 

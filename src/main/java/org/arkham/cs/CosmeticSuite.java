@@ -8,6 +8,7 @@ import org.arkham.cs.db.SQLQueryThread;
 import org.arkham.cs.effects.EffectManager;
 import org.arkham.cs.events.BleedListener;
 import org.arkham.cs.events.BubbleListener;
+import org.arkham.cs.events.CommandPreEvent;
 import org.arkham.cs.events.FlyListener;
 import org.arkham.cs.events.MoveListener;
 import org.arkham.cs.gui.GUIManager;
@@ -24,10 +25,11 @@ public class CosmeticSuite extends JavaPlugin {
 	private CosmeticCommand cCommand;
 	private ChatColorManager cManager;
 	
-	public static final String PREFIX = ChatColor.AQUA + "[ArkhamCosmetics] " + ChatColor.YELLOW;
+	public static final String PREFIX = ChatColor.translateAlternateColorCodes('&', "&8[&e&lA&b&lC&8]&c");
 	
 	public void onEnable(){
 		instance = this;
+		getDataFolder().mkdirs();
 		guiManager = new GUIManager();
 		guiManager.loadPages();
 		effectManager = new EffectManager();
@@ -40,6 +42,7 @@ public class CosmeticSuite extends JavaPlugin {
 		new ColorCommand(this);
 		new PortalCommand();
 		new BleedListener(this);
+		new CommandPreEvent(this);
 		GUIManager.setUp();
 		SQLQueryThread.addQuery("CREATE DATABASE IF NOT EXISTS " + Authentication.sqldb);
 		SQLQueryThread.addQuery("CREATE TABLE IF NOT EXISTS `purchases` (`player` varchar(64) PRIMARY KEY , `buttons` longtext)");
@@ -52,7 +55,23 @@ public class CosmeticSuite extends JavaPlugin {
 			builder.append(button.getPermission() + "  \n");
 		}
 		getLogger().info("===========================");
-//		getLogger().info("\n" + builder.toString());
+		getLogger().info("Writing permiission nodes now.");
+//		File file = new File(this.getDataFolder(), "perms.txt");
+//		if(!file.exists()){
+//			try {
+//				file.createNewFile();
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//		try {
+//			PrintWriter writer = new PrintWriter(file);
+//			writer.write(builder.toString());
+//			writer.close();
+//		} catch (FileNotFoundException e) {
+//			e.printStackTrace();
+//		}
+		getLogger().info("Permission Nodes Wrtiten");
 		getLogger().info("===========================");
 	}
 	

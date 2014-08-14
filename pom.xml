@@ -48,12 +48,6 @@
 			<version>LATEST</version>
 		</dependency>
 		<dependency>
-			<groupId>net.milkbowl.vault</groupId>
-			<artifactId>VaultAPI</artifactId>
-			<version>1.4</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
 			<groupId>de.slikey</groupId>
 			<artifactId>EffectLib</artifactId>
 			<version>1.4</version>

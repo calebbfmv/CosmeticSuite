@@ -29,5 +29,13 @@ public class PlayerMetaDataUtil {
 		FixedMetadataValue value = new FixedMetadataValue(CosmeticSuite.getInstance(), "true");
 		player.setMetadata("switchedPages", value);
 	}
+	
+	public static void removeFromInGUI(Player player){
+		player.removeMetadata("inGUI",  CosmeticSuite.getInstance());
+	}
+	
+	public static void removeFromSwitching(Player player){
+		player.removeMetadata("switchedPages", CosmeticSuite.getInstance());
+	}
 
 }

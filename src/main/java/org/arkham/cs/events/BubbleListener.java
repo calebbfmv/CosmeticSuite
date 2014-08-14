@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.arkham.cs.CosmeticSuite;
 import org.arkham.cs.cosmetics.Hologram;
+import org.arkham.cs.handler.PlayerHandler;
+import org.arkham.cs.utils.Rank;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -19,9 +21,19 @@ public class BubbleListener implements Listener {
 		Bukkit.getPluginManager().registerEvents(this, CosmeticSuite.getInstance());
 	}
 
-	public static String[] convertStringToBubbleChat(String msg, String player){
+	public static String[] convertStringToBubbleChat(String msg, Player player){
 		List<String> lmsg = new ArrayList<>();
-		lmsg.add(ChatColor.AQUA + player);
+		Rank rank = PlayerHandler.getRank(player);
+		ChatColor color = ChatColor.WHITE;
+		if(rank == Rank.HERO){
+			color = ChatColor.AQUA;
+		}
+		if(rank == Rank.SUPERHERO){
+			color = ChatColor.DARK_RED;
+		}
+		lmsg.add(color + player.getName());
+		ChatColor pColor = CosmeticSuite.getInstance().getChatColorManager().getColor(player);
+		msg = pColor + msg;
 		if(msg.length() <= 33){
 			lmsg.add(msg);
 			return lmsg.toArray(new String[lmsg.size()]);
@@ -37,7 +49,6 @@ public class BubbleListener implements Listener {
 				word_batch = word + " ";
 				continue;
 			}
-
 			word_batch += word + " ";
 		}
 		if(word_batch.length() > 0){
@@ -50,10 +61,14 @@ public class BubbleListener implements Listener {
 	public void onChat(AsyncPlayerChatEvent event){
 		Player pl = event.getPlayer();
 		String msg = event.getMessage();
+		CosmeticSuite.getInstance().getChatColorManager().sync(pl);
+		System.out.println("Format " + event.getFormat() + " MSG " + msg);
+		ChatColor pColor = CosmeticSuite.getInstance().getChatColorManager().getColor(pl);
+		event.setFormat(event.getFormat().replace(msg, "") + pColor + msg);
 		final Location loc = pl.getLocation();
 		final Player fpl = pl;
 		final String fmsg = msg;
-		final String[] bubble_msg = convertStringToBubbleChat(fmsg, pl.getName());
+		final String[] bubble_msg = convertStringToBubbleChat(fmsg, pl);
 		final double y_boost = bubble_msg.length * 0.20D;
 		final int length = fmsg.length();
 		if(pl.hasMetadata("hologram")){

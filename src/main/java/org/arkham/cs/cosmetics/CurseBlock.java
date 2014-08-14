@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.arkham.cs.gui.Category;
 import org.arkham.cs.interfaces.Button;
 import org.arkham.cs.utils.NameUtils;
+import org.arkham.cs.utils.PlayerMetaDataUtil;
 import org.arkham.cs.utils.Rank;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -56,12 +57,12 @@ public class CurseBlock extends Button {
 
 	@Override
 	public void onClick(Player player) {
+		PlayerMetaDataUtil.removeFromSwitching(player);
 		blocks.put(player.getUniqueId(), this);
 		player.closeInventory();
 		String item = "bob";
 		String[] str = this.getPermission().split(".");
-		str = NameUtils.formatAndReturn(str, " ", true);
-		item = str[2];
+		str = NameUtils.formatAndReturn(str, ".", true);
 		player.sendMessage(ChatColor.AQUA + "[ArkhamCosmetics] " + ChatColor.YELLOW + "You will now walk on " + item);
 	}
 	

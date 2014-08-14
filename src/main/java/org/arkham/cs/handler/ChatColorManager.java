@@ -25,9 +25,12 @@ public class ChatColorManager {
 		try {
 			if(res.next()){
 				String colorCode = res.getString("code");
+				System.out.println(colorCode);
 				ChatColor color = ChatColor.getByChar(colorCode);
 				colors.put(player.getUniqueId(), color);
 				res.close();
+			} else {
+				System.out.println("No result set???");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

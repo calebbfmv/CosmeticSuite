@@ -53,8 +53,9 @@ public class GUIManager implements Listener {
 
 	public GUIManager() {
 		main = Bukkit.createInventory(null, 9, ChatColor.DARK_PURPLE + "Arkham Cosmetics");
-		main.setItem(4, BaseItems.hats().getItem());
-		main.setItem(3, BaseItems.blocks().getItem());
+		main.setItem(3, BaseItems.hats().getItem());
+		main.setItem(2, BaseItems.blocks().getItem());
+		main.setItem(4, ItemFactory.create(Material.STAINED_GLASS_PANE, ChatColor.BLACK + "", 0, (byte) 15, "noLore"));
 		main.setItem(5, BaseItems.effects().getItem());
 		main.setItem(6, BaseItems.kits().getItem());
 	}
@@ -372,6 +373,7 @@ public class GUIManager implements Listener {
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event){
 		PurchaseHandler.setUpPurchases(event.getPlayer());
+		CosmeticSuite.getInstance().getChatColorManager().sync(event.getPlayer());
 	}
 
 	public Inventory getMain() {

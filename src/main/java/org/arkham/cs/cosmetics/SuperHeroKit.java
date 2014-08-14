@@ -3,6 +3,7 @@ package org.arkham.cs.cosmetics;
 import org.arkham.cs.gui.Category;
 import org.arkham.cs.handler.KitManager;
 import org.arkham.cs.interfaces.Button;
+import org.arkham.cs.utils.PlayerMetaDataUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -57,6 +58,7 @@ public class SuperHeroKit extends Button implements GlobalKit {
 
 	@Override
 	public void onClick(Player player) {
+		PlayerMetaDataUtil.removeFromSwitching(player);
 		KitManager.giveKit(player, this);
 	}
 

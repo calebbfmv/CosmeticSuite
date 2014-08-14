@@ -8,6 +8,7 @@ import net.minecraft.server.v1_7_R4.PacketPlayOutEntityEquipment;
 
 import org.arkham.cs.gui.Category;
 import org.arkham.cs.interfaces.Button;
+import org.arkham.cs.utils.PlayerMetaDataUtil;
 import org.arkham.cs.utils.Rank;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -81,6 +82,7 @@ public class Hat extends Button {
 			}
 			((CraftPlayer)p).getHandle().playerConnection.sendPacket(equip);
 		}
+		PlayerMetaDataUtil.removeFromSwitching(player);
 		player.closeInventory();
 	}
 

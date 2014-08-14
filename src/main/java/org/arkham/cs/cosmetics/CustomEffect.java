@@ -7,6 +7,7 @@ import org.arkham.cs.effects.EffectManager;
 import org.arkham.cs.gui.Category;
 import org.arkham.cs.handler.ParticleLibManager.FancyEffects;
 import org.arkham.cs.interfaces.Button;
+import org.arkham.cs.utils.PlayerMetaDataUtil;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -46,6 +47,7 @@ public class CustomEffect extends Button {
 
 	@Override
 	public void onClick(Player player) {
+		PlayerMetaDataUtil.removeFromSwitching(player);
 		EffectManager manager = CosmeticSuite.getInstance().getEffectManager();
 		manager.setEffect(player, this);
 		player.closeInventory();
