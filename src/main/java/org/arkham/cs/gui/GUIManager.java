@@ -28,6 +28,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.Wool;
 
 public class GUIManager implements Listener {
@@ -52,7 +53,7 @@ public class GUIManager implements Listener {
 	}
 
 	public GUIManager() {
-		main = Bukkit.createInventory(null, 9, ChatColor.DARK_PURPLE + "Arkham Cosmetics");
+		main = Bukkit.createInventory(null, 9, "Arkham Cosmetics");
 		main.setItem(3, BaseItems.hats().getItem());
 		main.setItem(2, BaseItems.blocks().getItem());
 		main.setItem(4, ItemFactory.create(Material.STAINED_GLASS_PANE, ChatColor.BLACK + "", 0, (byte) 15, "noLore"));
@@ -122,8 +123,16 @@ public class GUIManager implements Listener {
 		setUpSuperHeroHats(); 
 		setUpHeroCurseBlocks();
 		setUpSuperHeroCurseBlocks();
-		heroKit = new HeroKit();
-		superHeroKit = new SuperHeroKit();
+		ItemStack hitem = new ItemStack(Material.INK_SACK, 1, (byte) 8);
+		ItemMeta meta = hitem.getItemMeta();
+		meta.setDisplayName(ChatColor.AQUA + "Kit Hero");
+		hitem.setItemMeta(meta);
+		heroKit = new HeroKit(hitem);
+		ItemStack item = new ItemStack(Material.INK_SACK, 1, (byte) 10);
+		ItemMeta hmeta = item.getItemMeta();
+		hmeta.setDisplayName(ChatColor.DARK_RED + "Kit SuperHero");
+		item.setItemMeta(hmeta);
+		superHeroKit = new SuperHeroKit(item);
 	}
 
 	private static String[] herohats() {
@@ -359,7 +368,7 @@ public class GUIManager implements Listener {
 			if (GUIPage.getCurrent(player) == null) {
 				return;
 			}
-			Button button = Button.getButton(GUIPage.getCurrent((Player) event.getWhoClicked()).getCategory(), event.getRawSlot());
+			Button button = Button.getButton(GUIPage.getCurrent((Player) event.getWhoClicked()).getCategory(), item);
 			if (button == null) {
 				return;
 			}

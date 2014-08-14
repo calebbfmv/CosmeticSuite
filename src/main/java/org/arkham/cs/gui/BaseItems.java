@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 public class BaseItems {
 
 	public static ClickableItem hats(){
-		return new ClickableItem(ItemFactory.create(Material.BUCKET, ChatColor.YELLOW + ChatColor.UNDERLINE.toString() + "Hats", ChatColor.GREEN + "Click to open the hat GUI")) {
+		return new ClickableItem(ItemFactory.create(Material.BUCKET, ChatColor.YELLOW + ChatColor.BOLD.toString() + "Hats", ChatColor.AQUA + "Click to open the hat GUI")) {
 			@Override
 			public void doClick(Player player) {
 				PlayerMetaDataUtil.setSwitchPage(player);
@@ -19,7 +19,7 @@ public class BaseItems {
 	}
 
 	public static ClickableItem effects(){
-		return new ClickableItem(ItemFactory.create(Material.FEATHER, ChatColor.MAGIC + "<>" + ChatColor.RESET + ChatColor.GOLD + "Effects", ChatColor.GREEN + "Click to open the effects GUI")) {
+		return new ClickableItem(ItemFactory.create(Material.PORTAL,  ChatColor.YELLOW + ChatColor.BOLD.toString() + "Effects", 1, (byte) 90, ChatColor.AQUA + "Click to open the effects GUI")) {
 			@Override
 			public void doClick(Player player) {
 				PlayerMetaDataUtil.setSwitchPage(player);
@@ -29,7 +29,7 @@ public class BaseItems {
 	}
 
 	public static ClickableItem back(){
-		return new ClickableItem(ItemFactory.create(Material.BLAZE_ROD, ChatColor.RED + ChatColor.BOLD.toString() + "Go Back")){
+		return new ClickableItem(ItemFactory.create(Material.BLAZE_ROD, ChatColor.YELLOW + ChatColor.BOLD.toString() + "Go Back")){
 			@Override
 			public void doClick(Player player) {
 				GUIPage cpage = GUIPage.getCurrent(player);
@@ -49,7 +49,7 @@ public class BaseItems {
 	}
 
 	public static ClickableItem next(){
-		return new ClickableItem(ItemFactory.create(Material.ARROW, ChatColor.GREEN + ChatColor.BOLD.toString() + "Next Page")){
+		return new ClickableItem(ItemFactory.create(Material.ARROW, ChatColor.YELLOW + ChatColor.BOLD.toString() + "Next Page")){
 			@Override
 			public void doClick(Player player) {
 				GUIPage cpage = GUIPage.getCurrent(player);
@@ -69,7 +69,7 @@ public class BaseItems {
 	}
 
 	public static ClickableItem blocks(){
-		return new ClickableItem(ItemFactory.create(Material.BEACON, ChatColor.RED + "Block Trails", ChatColor.GREEN + "Click to open the Blocks Trails GUI")) {
+		return new ClickableItem(ItemFactory.create(Material.SEEDS, ChatColor.YELLOW + ChatColor.BOLD.toString() + "Block Trails", ChatColor.AQUA + "Click to open the Blocks Trails GUI")) {
 			@Override
 			public void doClick(Player player) {
 				PlayerMetaDataUtil.setSwitchPage(player);
@@ -79,7 +79,7 @@ public class BaseItems {
 	}
 	
 	public static ClickableItem kits(){
-		return new ClickableItem(ItemFactory.create(Material.DIAMOND_CHESTPLATE, ChatColor.YELLOW + "Kits", ChatColor.GREEN + "Click to open the Kits GUI")) {
+		return new ClickableItem(ItemFactory.create(Material.DIAMOND_CHESTPLATE, ChatColor.YELLOW + ChatColor.BOLD.toString() + "Kits", ChatColor.AQUA + "Click to open the Kits GUI")) {
 			@Override
 			public void doClick(Player player) {
 				PlayerMetaDataUtil.setSwitchPage(player);

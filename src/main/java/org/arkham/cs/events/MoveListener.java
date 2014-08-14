@@ -12,6 +12,9 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.Chest;
+import org.bukkit.block.DoubleChest;
+import org.bukkit.block.Furnace;
 import org.bukkit.craftbukkit.v1_7_R4.CraftServer;
 import org.bukkit.craftbukkit.v1_7_R4.CraftWorld;
 import org.bukkit.entity.Player;
@@ -53,6 +56,12 @@ public class MoveListener implements Listener {
 			return;
 		}
 		final Block below = loc.getBlock().getRelative(BlockFace.DOWN);
+		if(below.getState() instanceof Chest){
+			return;
+		}
+		if(below.getState() instanceof Furnace){
+			return;
+		}
 		blocks.put(below.getLocation(), below.getType());
 		below.setType(cb.getDisplay().getType());
 		below.setData(cb.getDisplay().getData().getData());
@@ -63,7 +72,6 @@ public class MoveListener implements Listener {
 				Location l = below.getLocation();
 				l.getBlock().setType(blocks.get(l));
 				play(l, blocks.get(l));
-				blocks.remove(l);
 			}
 		}.runTaskLaterAsynchronously(CosmeticSuite.getInstance(), 20L * 5);
 	}

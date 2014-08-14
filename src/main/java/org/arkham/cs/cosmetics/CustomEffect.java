@@ -15,7 +15,6 @@ import org.bukkit.inventory.ItemStack;
 public class CustomEffect extends Button {
 
 	private FancyEffects effect;
-	private Material display;
 	private int amount;
 	private static ArrayList<CustomEffect> effects = new ArrayList<>();
 
@@ -28,21 +27,14 @@ public class CustomEffect extends Button {
 	 * @param amount
 	 */
 	public CustomEffect(int slot, Category cat, FancyEffects effect, String permission, Material display, int amount) {
-		super(slot, cat, permission);
+		super(slot, cat, permission, new ItemStack(display));
 		this.effect = effect;
-		this.display = display;
 		this.amount = amount;
 		effects.add(this);
 	}
 
 	public int getAmount(){
 		return amount;
-	}
-
-	@Override
-	public ItemStack getDisplay() {
-		ItemStack item = new ItemStack(display);
-		return item;
 	}
 
 	@Override

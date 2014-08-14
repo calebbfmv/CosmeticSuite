@@ -61,7 +61,7 @@ public class ChatColorManager {
 		if(!hasColor(player)){
 			sync(player);
 		}
-		return colors.get(player.getUniqueId());
+		return colors.get(player.getUniqueId()) == null ? ChatColor.WHITE : colors.get(player.getUniqueId());
 	}
 
 }

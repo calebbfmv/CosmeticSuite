@@ -4,19 +4,17 @@ import org.arkham.cs.gui.Category;
 import org.arkham.cs.handler.KitManager;
 import org.arkham.cs.interfaces.Button;
 import org.arkham.cs.utils.PlayerMetaDataUtil;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 public class SuperHeroKit extends Button implements GlobalKit {
 
 	private long cooldown = 24;
 	private ItemStack[] items;
 
-	public SuperHeroKit() {
-		super(2, Category.KITS, "cosmetics.kits.superhero");
+	public SuperHeroKit(ItemStack item) {
+		super(2, Category.KITS, "cosmetics.kits.superhero", item);
 		// 2x Gray Dye, 2x LightGray Dye, 2x Cyan Dye, 2x Purple Dye.
 		//: 2x Pink Dye, 2x Lime Dye, 2x LightBlue Dye, 2x Magenta Dye, 2x Orange Dye.
 		items = new ItemStack[] {
@@ -45,15 +43,6 @@ public class SuperHeroKit extends Button implements GlobalKit {
 	@Override
 	public long getCooldown(){
 		return cooldown;
-	}
-	
-	@Override
-	public ItemStack getDisplay() {
-		ItemStack item = new ItemStack(Material.INK_SACK, 1, (byte) 10);
-		ItemMeta meta = item.getItemMeta();
-		meta.setDisplayName(ChatColor.DARK_RED + "Kit SuperHero");
-		item.setItemMeta(meta);
-		return item;
 	}
 
 	@Override

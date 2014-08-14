@@ -62,9 +62,9 @@ public class BubbleListener implements Listener {
 		Player pl = event.getPlayer();
 		String msg = event.getMessage();
 		CosmeticSuite.getInstance().getChatColorManager().sync(pl);
-		System.out.println("Format " + event.getFormat() + " MSG " + msg);
 		ChatColor pColor = CosmeticSuite.getInstance().getChatColorManager().getColor(pl);
-		event.setFormat(event.getFormat().replace(msg, "") + pColor + msg);
+		event.setMessage(pColor + msg);
+		event.setFormat(event.getFormat());
 		final Location loc = pl.getLocation();
 		final Player fpl = pl;
 		final String fmsg = msg;

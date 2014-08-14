@@ -16,18 +16,18 @@ import org.bukkit.inventory.ItemStack;
 
 public abstract class Button {
 
-	public abstract ItemStack getDisplay();
 
 	public abstract void onClick(Player player);
 
 	private int slot, id;
 	private Category cat;
+	private ItemStack item;
 	private String permission;
-	private static HashMap<Category, HashMap<Integer, Button>> buttons = new HashMap<>();
+	private static HashMap<Category, HashMap<ItemStack, Button>> buttons = new HashMap<>();
 	public static HashMap<String, Button> buttonPerms = new HashMap<>();
 	public static ArrayList<Button> allButtons = new ArrayList<>();
 
-	public Button(int slot, Category cat, String permission){
+	public Button(int slot, Category cat, String permission, ItemStack item){
 		this.slot = slot;		
 		if(!buttons.isEmpty()){
 			id = buttons.size() + 1;
@@ -35,9 +35,10 @@ public abstract class Button {
 			id = 1;
 		}
 		this.cat = cat;
+		this.item = item;
 		this.permission = permission;
-		HashMap<Integer, Button> bs = buttons.get(cat) == null ? new HashMap<Integer, Button>() : buttons.get(cat);
-		bs.put(slot, this);
+		HashMap<ItemStack, Button> bs = buttons.get(cat) == null ? new HashMap<ItemStack, Button>() : buttons.get(cat);
+		bs.put(item, this);
 		allButtons.add(this);
 		buttons.put(cat, bs);
 		buttonPerms.put(permission, this);
@@ -45,6 +46,10 @@ public abstract class Button {
 
 	public String getPermission() {
 		return permission;
+	}
+	
+	public ItemStack getDisplay(){
+		return item;
 	}
 
 	public ClickableItem noPermissionItem(){
@@ -72,7 +77,6 @@ public abstract class Button {
 
 	public void setSlot(int slot){
 		this.slot = slot;
-		buttons.get(getCategory()).put(slot, this);
 	}
 
 	public int getId(){
@@ -83,8 +87,8 @@ public abstract class Button {
 		return cat;
 	}
 
-	public static Button getButton(Category cat, int slot){
-		return buttons.get(cat).get(slot);
+	public static Button getButton(Category cat, ItemStack name){
+		return buttons.get(cat).get(name);
 	}
 
 	public static Button fromPermission(String perm){

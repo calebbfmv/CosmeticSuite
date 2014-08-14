@@ -20,7 +20,6 @@ public class ItemFactory {
 			item.setItemMeta(meta);
 			return item;
 		}
-		lore1.add(" ");
 		for(String s : lore){
 			lore1.add(ChatColor.translateAlternateColorCodes('&', s));
 		}

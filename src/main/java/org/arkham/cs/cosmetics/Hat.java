@@ -6,6 +6,7 @@ import java.util.List;
 
 import net.minecraft.server.v1_7_R4.PacketPlayOutEntityEquipment;
 
+import org.arkham.cs.CosmeticSuite;
 import org.arkham.cs.gui.Category;
 import org.arkham.cs.interfaces.Button;
 import org.arkham.cs.utils.PlayerMetaDataUtil;
@@ -16,10 +17,10 @@ import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_7_R4.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class Hat extends Button {
 
-	private ItemStack item;
 	public static List<Hat> hats = new ArrayList<>();
 	private Rank rank;
 	private static HashMap<Rank, List<Hat>> hatsByRank = new HashMap<>();
@@ -31,8 +32,7 @@ public class Hat extends Button {
 	 * @param lore
 	 */
 	public Hat(int slot, ItemStack item, Category name, String permission, Rank rank) {
-		super(slot, name, permission);
-		this.item = item;
+		super(slot, name, permission, item);
 		this.rank = rank;
 		List<Hat> h = hatsByRank.get(rank);
 		if(h == null){
@@ -64,26 +64,28 @@ public class Hat extends Button {
 		this(slot, new ItemStack(mat), Category.HATS, "cosmetics.hats." + mat.name().toLowerCase(), rank);
 	}
 
-	@Override
-	public ItemStack getDisplay() {
-		return item;
-	}
-
 	public static List<Hat> getHats(Rank rank){
 		return hatsByRank.get(rank);
 	}
 
 	@Override
-	public void onClick(Player player) {
-		PacketPlayOutEntityEquipment equip = new PacketPlayOutEntityEquipment(player.getEntityId(), 4, CraftItemStack.asNMSCopy(item));
-		for(Player p :  Bukkit.getOnlinePlayers()){
-			if(p.getUniqueId().equals(player.getUniqueId())){
-				continue;
-			}
-			((CraftPlayer)p).getHandle().playerConnection.sendPacket(equip);
-		}
+	public void onClick(final Player player) {
 		PlayerMetaDataUtil.removeFromSwitching(player);
 		player.closeInventory();
+		new BukkitRunnable(){
+			@Override
+			public void run(){
+				PacketPlayOutEntityEquipment equip = new PacketPlayOutEntityEquipment(player.getEntityId(), 4, CraftItemStack.asNMSCopy(getDisplay()));
+				for(Player p :  Bukkit.getOnlinePlayers()){
+					if(p.getUniqueId().equals(player.getUniqueId())){
+						PacketPlayOutEntityEquipment pequip = new PacketPlayOutEntityEquipment(player.getEntityId(), 3, CraftItemStack.asNMSCopy(getDisplay()));
+						((CraftPlayer)player).getHandle().playerConnection.sendPacket(pequip);
+						continue;
+					}
+					((CraftPlayer)p).getHandle().playerConnection.sendPacket(equip);
+				}
+			}
+		}.runTaskLater(CosmeticSuite.getInstance(), 20L);
 	}
 
 	public Rank getRank() {

@@ -16,7 +16,6 @@ import org.bukkit.inventory.ItemStack;
 
 public class CurseBlock extends Button {
 	
-	private ItemStack item;
 	private Rank rank;
 	private static HashMap<UUID, CurseBlock> blocks = new HashMap<>();
 	private static HashMap<Rank, List<CurseBlock>> blocksByRank = new HashMap<>();
@@ -28,8 +27,7 @@ public class CurseBlock extends Button {
 	 * @param item
 	 */
 	public CurseBlock(int slot, String permission, ItemStack item, Rank rank){
-		super(slot, Category.CURSE_BLOCKS, permission);
-		this.item = item;
+		super(slot, Category.CURSE_BLOCKS, permission, item);
 		this.rank = rank;
 		List<CurseBlock> cbs = blocksByRank.get(rank);
 		if(cbs == null){
@@ -48,11 +46,6 @@ public class CurseBlock extends Button {
 	
 	public Rank getRank(){
 		return rank;
-	}
-	
-	@Override
-	public ItemStack getDisplay() {
-		return item;
 	}
 
 	@Override
