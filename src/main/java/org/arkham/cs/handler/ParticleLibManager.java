@@ -22,7 +22,6 @@ import de.slikey.effectlib.effect.GridLocationEffect;
 import de.slikey.effectlib.effect.HelixLocationEffect;
 import de.slikey.effectlib.effect.LoveEntityEffect;
 import de.slikey.effectlib.effect.MusicEntityEffect;
-import de.slikey.effectlib.effect.MusicLocationEffect;
 import de.slikey.effectlib.effect.ShieldEntityEffect;
 import de.slikey.effectlib.effect.SmokeEntityEffect;
 import de.slikey.effectlib.effect.StarLocationEffect;
@@ -85,13 +84,9 @@ public class ParticleLibManager {
 		 */
 		LOVEENTITYEFFECT(ParticleClassType.LIB_EFFECT),
 		/**
-		 * - Circle of notes appeares above the entity.
+		 * - Circle of notes appearers above the entity.
 		 */
 		MUSICENTITYEFFECT(ParticleClassType.LIB_EFFECT),
-		/**
-		 * - Circle of notes appeares at a location.
-		 */
-		MUSICLOCATIONEFFECT(ParticleClassType.LIB_EFFECT),
 		/**
 		 * - Spherical Shield around an entity.
 		 */
@@ -310,7 +305,7 @@ public class ParticleLibManager {
 							.toLocation(player.getWorld()));
 					break;
 				case ATOMLOCATIONEFFECT:
-					final AtomLocationEffect atom = new AtomLocationEffect(effectManager, player.getEyeLocation().clone().add(0, 1, 0));
+					final AtomLocationEffect atom = new AtomLocationEffect(effectManager, player.getLocation().clone().add(0, 1, 0));
 					atom.radius = 5;
 					e = atom;
 					break;
@@ -343,9 +338,6 @@ public class ParticleLibManager {
 					break;
 				case MUSICENTITYEFFECT:
 					e = new MusicEntityEffect(effectManager, player);
-					break;
-				case MUSICLOCATIONEFFECT:
-					e = new MusicLocationEffect(effectManager, player.getLocation());
 					break;
 				case SHIELDENTITYEFFECT:
 					e = new ShieldEntityEffect(effectManager, player);

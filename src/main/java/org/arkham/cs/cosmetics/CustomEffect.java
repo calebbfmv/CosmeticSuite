@@ -7,13 +7,12 @@ import java.util.List;
 import org.arkham.cs.CosmeticSuite;
 import org.arkham.cs.effects.EffectManager;
 import org.arkham.cs.gui.Category;
-import org.arkham.cs.gui.ItemFactory;
 import org.arkham.cs.handler.ParticleLibManager.FancyEffect;
 import org.arkham.cs.interfaces.Button;
 import org.arkham.cs.utils.PlayerMetaDataUtil;
 import org.arkham.cs.utils.Rank;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 public class CustomEffect extends Button {
 
@@ -31,8 +30,8 @@ public class CustomEffect extends Button {
 	 * @param display
 	 * @param amount
 	 */
-	public CustomEffect(int slot, Category cat, FancyEffect effect, String permission, Material display, int amount, Rank rank, String name) {
-		super(slot, cat, permission, ItemFactory.create(display, effect.name()));
+	public CustomEffect(int slot, Category cat, FancyEffect effect, String permission, ItemStack item, int amount, Rank rank, String name) {
+		super(slot, cat, permission, item);
 		this.effect = effect;
 		this.amount = amount;
 		this.name = name;

@@ -116,15 +116,20 @@ public class GUIPage {
 			}
 			ItemStack display = !PurchaseHandler.hasPurchased(player, button) ? button.noPermissionItem().getItem() : button.getDisplay();
 			if (cat == Category.EFFECTS) {
+				addedButtons.remove(button);
 				EffectManager mngr = CosmeticSuite.getInstance().getEffectManager();
 				CustomEffect ce = (CustomEffect) button;
 				if (!PurchaseHandler.hasPurchased(player, ce)) {
 					display = button.noPermissionItem().getItem();
-				} else if (mngr.getEffect(player) == null) {
-					display = ItemFactory.create(Material.STAINED_GLASS_PANE, ce.getName(), 1, (byte) DyeColor.WHITE.getData(), "noLore");
-				} else if (mngr.getEffect(player).equals(ce)) {
-					display = ItemFactory.create(Material.STAINED_GLASS_PANE, ChatColor.GREEN + "Active Effect", 1, (byte) 5, "noLore");
+				} 
+				System.out.println(mngr.getEffect(player));
+				if (mngr.getEffect(player) != null) {
+					System.out.println("Using name: " + mngr.getEffect(player).getName() + " || Button Name: " + ce.getName() + " || Match ? " + (mngr.getEffect(player).getName().equalsIgnoreCase(ce.getName())));
+					if (mngr.getEffect(player).getName().equalsIgnoreCase(ce.getName())) {
+						display = ItemFactory.create(Material.STAINED_GLASS_PANE, ChatColor.GREEN + "Active Effect", 1, DyeColor.GREEN.getData(), "noLore");
+					}
 				}
+				ce.setItem(display);
 			}
 			page.getInv().setItem(firstEmtpy, display);
 			addedButtons.add(button);

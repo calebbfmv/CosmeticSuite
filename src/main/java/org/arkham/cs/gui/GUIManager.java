@@ -80,7 +80,7 @@ public class GUIManager implements Listener {
 		}
 	}
 
-	@SuppressWarnings("unused")
+	@SuppressWarnings({ "unused", "deprecation" })
 	private void loadPagesFromYML() {
 		/**
 		 * Dis is the hats, looks ugly, ik.
@@ -99,14 +99,15 @@ public class GUIManager implements Listener {
 		{
 			int created = 1;
 			int i = 0;
+
 			new GUIPage("Particle Effects " + 1, Category.EFFECTS);
 			for (FancyEffect fancy : FancyEffect.values()) {
-				System.out.println(fancy.name() + " || Rank :: " + ParticleLibManager.getRank(fancy).name() + " || Name :: " + ParticleLibManager.name(fancy));
-				new CustomEffect(i, Category.EFFECTS, fancy, "cosmetics.effects." + fancy.name().toLowerCase(), Material.DIAMOND, 0, ParticleLibManager.getRank(fancy), ParticleLibManager.name(fancy));
+				new CustomEffect(i, Category.EFFECTS, fancy, "cosmetics.effects." + fancy.name().toLowerCase(), ItemFactory.create(Material.STAINED_GLASS_PANE, ParticleLibManager.name(fancy), 1, (byte) DyeColor.WHITE.getData(), "noLore"), 0, ParticleLibManager.getRank(fancy), "");
 				i++;
 				if (i % 35 == 0) {
 					created++;
 					new GUIPage("Particle Effects " + created, Category.EFFECTS);
+					i = 0;
 				}
 			}
 			CustomEffect.addSuperHeroToHero();
@@ -371,7 +372,7 @@ public class GUIManager implements Listener {
 			return;
 		}
 		ItemStack item = event.getCurrentItem();
-		if (item.getType() == Material.STAINED_GLASS_PANE) {
+		if(item.equals(new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) 15))) {
 			return;
 		}
 		if( item.getType() == Material.NETHER_STAR){
@@ -382,8 +383,9 @@ public class GUIManager implements Listener {
 			if (GUIPage.getCurrent(player) == null) {
 				return;
 			}
-			Button button = Button.getButton(GUIPage.getCurrent((Player) event.getWhoClicked()).getCategory(), item);
+			Button button = Button.getButton(GUIPage.getCurrent(player).getCategory(), item);
 			if (button == null) {
+				System.out.println("Button == null");
 				return;
 			}
 			button.onClick(player);

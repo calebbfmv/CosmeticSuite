@@ -82,6 +82,13 @@ public abstract class Button {
 	public int getId(){
 		return id;
 	}
+	
+	public void setItem(ItemStack item){
+		this.item = item;
+		HashMap<ItemStack, Button> bs = buttons.get(cat);
+		bs.put(item, this);
+		buttons.put(cat, bs);
+	}
 
 	public Category getCategory() {
 		return cat;
