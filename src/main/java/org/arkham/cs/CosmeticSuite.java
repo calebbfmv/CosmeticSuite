@@ -16,7 +16,10 @@ import org.arkham.cs.gui.GUIManager;
 import org.arkham.cs.handler.ChatColorManager;
 import org.arkham.cs.handler.ParticleLibManager;
 import org.arkham.cs.interfaces.Button;
+import org.arkham.cs.utils.PlayerMetaDataUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class CosmeticSuite extends JavaPlugin {
@@ -82,6 +85,13 @@ public class CosmeticSuite extends JavaPlugin {
 
 	public CosmeticCommand getCommand() {
 		return cCommand;
+	}
+	
+	public void onDisable(){
+		for(Player player : Bukkit.getOnlinePlayers()){
+			PlayerMetaDataUtil.removeFromInGUI(player);
+			PlayerMetaDataUtil.removeFromSwitching(player);
+		}
 	}
 
 	public void configSQL() {

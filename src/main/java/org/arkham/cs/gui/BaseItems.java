@@ -95,7 +95,7 @@ public class BaseItems {
 	}
 
 	public static ClickableItem pets() {
-		return new ClickableItem(ItemFactory.create(Material.BONE, ChatColor.YELLOW + ChatColor.BOLD.toString() + "Pets", ChatColor.AQUA + "Click to open the Kits GUI")) {
+		return new ClickableItem(ItemFactory.create(Material.BONE, ChatColor.YELLOW + ChatColor.BOLD.toString() + "Pets", ChatColor.AQUA + "Click to open the Pets GUI")) {
 			@Override
 			public void doClick(Player player) {
 				Bukkit.dispatchCommand(player, "pet select");
