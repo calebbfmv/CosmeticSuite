@@ -2,12 +2,15 @@ package org.arkham.cs.handler;
 
 import org.arkham.cs.CosmeticSuite;
 import org.arkham.cs.effects.ParticleEffect;
+import org.arkham.cs.utils.Rank;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import de.slikey.effectlib.Effect;
 import de.slikey.effectlib.EffectLib;
 import de.slikey.effectlib.EffectManager;
-import de.slikey.effectlib.effect.ArcLocationEffect;
+import de.slikey.effectlib.EffectType;
 import de.slikey.effectlib.effect.AtomLocationEffect;
 import de.slikey.effectlib.effect.BleedEntityEffect;
 import de.slikey.effectlib.effect.ConeLocationEffect;
@@ -15,6 +18,17 @@ import de.slikey.effectlib.effect.DnaLocationEffect;
 import de.slikey.effectlib.effect.ExplodeLocationEffect;
 import de.slikey.effectlib.effect.FlameEntityEffect;
 import de.slikey.effectlib.effect.FountainLocationEffect;
+import de.slikey.effectlib.effect.GridLocationEffect;
+import de.slikey.effectlib.effect.HelixLocationEffect;
+import de.slikey.effectlib.effect.LoveEntityEffect;
+import de.slikey.effectlib.effect.MusicEntityEffect;
+import de.slikey.effectlib.effect.MusicLocationEffect;
+import de.slikey.effectlib.effect.ShieldEntityEffect;
+import de.slikey.effectlib.effect.SmokeEntityEffect;
+import de.slikey.effectlib.effect.StarLocationEffect;
+import de.slikey.effectlib.effect.TraceEntityEffect;
+import de.slikey.effectlib.effect.VortexLocationEffect;
+import de.slikey.effectlib.effect.WarpEntityEffect;
 
 public class ParticleLibManager {
 
@@ -25,7 +39,7 @@ public class ParticleLibManager {
 		effectManager = new EffectManager(lib);
 	}
 
-	public enum FancyEffects {
+	public enum FancyEffect {
 		/**
 		 * - Create architectual correct arc of particles
 		 */
@@ -67,14 +81,6 @@ public class ParticleLibManager {
 		 */
 		HELIXLOCATIONEFFECT(ParticleClassType.LIB_EFFECT),
 		/**
-		 * - Forces an entity to jump naturally.
-		 */
-		JUMPENTITYEFFECT(ParticleClassType.LIB_EFFECT),
-		/**
-		 * - Draw line from A to B
-		 */
-		LINELOCATIONEFFECT(ParticleClassType.LIB_EFFECT),
-		/**
 		 * - The target entity is in love.
 		 */
 		LOVEENTITYEFFECT(ParticleClassType.LIB_EFFECT),
@@ -91,10 +97,6 @@ public class ParticleLibManager {
 		 */
 		SHIELDENTITYEFFECT(ParticleClassType.LIB_EFFECT),
 		/**
-		 * - Foces an entity to fly into the sky.
-		 */
-		SKYROCKETENTITYEFFECT(ParticleClassType.LIB_EFFECT),
-		/**
 		 * - Let the target entity smoke.
 		 */
 		SMOKEENTITYEFFECT(ParticleClassType.LIB_EFFECT),
@@ -103,17 +105,9 @@ public class ParticleLibManager {
 		 */
 		STARLOCATIONEFFECT(ParticleClassType.LIB_EFFECT),
 		/**
-		 * - Create particle-text with custom font, size and text
-		 */
-		TEXTLOCATIONEFFECT(ParticleClassType.LIB_EFFECT),
-		/**
 		 * - Create a trace along an entitys path.
 		 */
 		TRACEENTITYEFFECT(ParticleClassType.LIB_EFFECT),
-		/**
-		 * - Forces the player to turn in a circle.
-		 */
-		TURNPLAYEREFFECT(ParticleClassType.LIB_EFFECT),
 		/**
 		 * - Create a vortex of particles at location
 		 */
@@ -298,7 +292,7 @@ public class ParticleLibManager {
 
 		private ParticleClassType type;
 
-		private FancyEffects(ParticleClassType type) {
+		private FancyEffect(ParticleClassType type) {
 			this.type = type;
 		}
 
@@ -309,55 +303,73 @@ public class ParticleLibManager {
 		public void display(final Player player) {
 			switch (this.type) {
 			case LIB_EFFECT:
+				Effect e = null;
 				switch (this) {
 				case ARCLOCATIONEFFECT:
-					ArcLocationEffect arc = new de.slikey.effectlib.effect.ArcLocationEffect(effectManager, player.getLocation(), player.getLocation().getDirection().multiply(-3)
+					e = new de.slikey.effectlib.effect.ArcLocationEffect(effectManager, player.getLocation(), player.getLocation().getDirection().multiply(-3)
 							.toLocation(player.getWorld()));
-					arc.start();
 					break;
 				case ATOMLOCATIONEFFECT:
-					final AtomLocationEffect atom = new AtomLocationEffect(effectManager, player.getEyeLocation());
-					new BukkitRunnable(){
-						@Override
-						public void run(){
-							atom.start();
-							new BukkitRunnable() {
-								@Override
-								public void run() {
-									atom.cancel();
-									player.removeMetadata("effected", CosmeticSuite.getInstance());
-								}
-							}.runTaskLaterAsynchronously(CosmeticSuite.getInstance(), 20L*5);
-						}
-					}.runTaskAsynchronously(CosmeticSuite.getInstance());
+					final AtomLocationEffect atom = new AtomLocationEffect(effectManager, player.getEyeLocation().clone().add(0, 1, 0));
+					atom.radius = 5;
+					e = atom;
 					break;
 				case BLEEDENTITYEFFECT:
-					BleedEntityEffect bl = new BleedEntityEffect(effectManager, player);
-					bl.start();
+					e = new BleedEntityEffect(effectManager, player);
 					break;
 				case CONELOCATIONEFFECT:
-					ConeLocationEffect cl = new ConeLocationEffect(effectManager, player.getLocation());
-					cl.start();
+					e = new ConeLocationEffect(effectManager, player.getLocation());
 					break;
 				case DNALOCATIONEFFECT:
-					DnaLocationEffect dn = new DnaLocationEffect(effectManager, player.getLocation());
-					dn.start();
+					e = new DnaLocationEffect(effectManager, player.getLocation());
 					break;
 				case EXPLODELOCATIONEFFECT:
-					ExplodeLocationEffect ex = new ExplodeLocationEffect(effectManager, player.getLocation());
-					ex.start();
+					e = new ExplodeLocationEffect(effectManager, player.getLocation());
 					break;
 				case FLAMEENTITYEFFECT:
-					FlameEntityEffect fl = new FlameEntityEffect(effectManager, player);
-					fl.start();
+					e = new FlameEntityEffect(effectManager, player);
 					break;
 				case FOUNTAINLOCATIONEFFECT:
-					FountainLocationEffect fle = new FountainLocationEffect(effectManager, player.getLocation());
-					fle.start();
+					e = new FountainLocationEffect(effectManager, player.getLocation());
+					break;
+				case GRIDLOCATIONEFFECT:
+					e = new GridLocationEffect(effectManager, player.getLocation());
+					break;
+				case HELIXLOCATIONEFFECT:
+					e = new HelixLocationEffect(effectManager, player.getLocation());
+					break;
+				case LOVEENTITYEFFECT:
+					e = new LoveEntityEffect(effectManager, player);
+					break;
+				case MUSICENTITYEFFECT:
+					e = new MusicEntityEffect(effectManager, player);
+					break;
+				case MUSICLOCATIONEFFECT:
+					e = new MusicLocationEffect(effectManager, player.getLocation());
+					break;
+				case SHIELDENTITYEFFECT:
+					e = new ShieldEntityEffect(effectManager, player);
+					e.type = EffectType.INSTANT;
+					break;
+				case SMOKEENTITYEFFECT:
+					e = new SmokeEntityEffect(effectManager, player);
+					break;
+				case STARLOCATIONEFFECT:
+					e = new StarLocationEffect(effectManager, player.getLocation());
+					break;
+				case TRACEENTITYEFFECT:
+					e = new TraceEntityEffect(effectManager, player);
+					break;
+				case VORTEXLOCATIONEFFECT:
+					e = new VortexLocationEffect(effectManager, player.getLocation());
+					break;
+				case WARPENTITYEFFECT:
+					e = new WarpEntityEffect(effectManager, player);
 					break;
 				default:
 					break;
 				}
+				run(e, player);
 			case PARTICLE_EFFECT:
 				ParticleEffect effect = ParticleEffect.ANGRY_VILLAGER;
 				switch (this) {
@@ -478,4 +490,54 @@ public class ParticleLibManager {
 		}
 	}
 
+	public static void run(final Effect atom, final Player player){
+		new BukkitRunnable(){
+			@Override
+			public void run(){
+				atom.start();
+				new BukkitRunnable() {
+					@Override
+					public void run() {
+						atom.cancel();
+						player.removeMetadata("effected", CosmeticSuite.getInstance());
+					}
+				}.runTaskLaterAsynchronously(CosmeticSuite.getInstance(), 20L*20);
+			}
+		}.runTaskAsynchronously(CosmeticSuite.getInstance());
+	}
+
+	public static String name(FancyEffect effect){
+		String name = effect.name();
+		StringBuilder builder = new StringBuilder();
+		builder.append(ChatColor.YELLOW + ChatColor.BOLD.toString());		
+		if(name.contains("_")){
+			String[] str = name.split("_");
+			for(int i = 0; i < str.length; i++){
+				String s = str[i];
+				s = s.substring(0,1).toUpperCase() + s.substring(1).toLowerCase();
+				builder.append(s + " ");
+			}
+		} else {
+			name = name.replace("ENTITY", " Entity");
+			name = name.replace("LOCATION", " Location");
+			name = name.replace("EFFECT", " Effect");
+			String[] str = name.split(" ");
+			for(int i = 0; i < str.length; i++){
+				String s = str[i];
+				s = s.substring(0,1).toUpperCase() + s.substring(1).toLowerCase();
+				builder.append(s + " ");
+			}
+		}
+		return builder.toString();
+	}
+
+	public static Rank getRank(FancyEffect effect){
+		switch(effect.getType()){
+		case LIB_EFFECT:
+			return Rank.SUPERHERO;
+		case PARTICLE_EFFECT:
+			return Rank.HERO;
+		}
+		return Rank.HERO;
+	}
 }

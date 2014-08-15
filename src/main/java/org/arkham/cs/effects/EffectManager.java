@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import org.arkham.cs.CosmeticSuite;
 import org.arkham.cs.cosmetics.CustomEffect;
-import org.arkham.cs.handler.ParticleLibManager.FancyEffects;
+import org.arkham.cs.handler.ParticleLibManager.FancyEffect;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -45,7 +45,7 @@ public class EffectManager implements Listener{
 		if(effect == null){
 			return;
 		}
-		FancyEffects playedEffect = effect.getEffect();
+		FancyEffect playedEffect = effect.getEffect();
 		playedEffect.display(player);
 		player.setMetadata("effected", new FixedMetadataValue(CosmeticSuite.getInstance(), ""));
 	}

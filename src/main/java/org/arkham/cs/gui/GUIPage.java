@@ -6,10 +6,13 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.arkham.cs.CosmeticSuite;
+import org.arkham.cs.cosmetics.CustomEffect;
+import org.arkham.cs.effects.EffectManager;
 import org.arkham.cs.handler.PurchaseHandler;
 import org.arkham.cs.interfaces.Button;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -36,7 +39,7 @@ public class GUIPage {
 		title = ChatColor.translateAlternateColorCodes('&', title);
 		this.inv = Bukkit.createInventory(null, 54, title);
 		this.cat = cat;
-		for(int i = 36; i < inv.getSize() - 9; i ++){
+		for (int i = 36; i < inv.getSize() - 9; i++) {
 			ItemStack item = ItemFactory.create(Material.STAINED_GLASS_PANE, ChatColor.BLACK + " ", 1, (byte) 15, "noLore");
 			inv.setItem(i, item);
 		}
@@ -97,6 +100,7 @@ public class GUIPage {
 		return null;
 	}
 
+	@SuppressWarnings("deprecation")
 	public static void addButton(Button button, Category cat, Player player) {
 		List<GUIPage> pages = CosmeticSuite.getInstance().getGuiManager().getPages(cat);
 		if (addedButtons.contains(button)) {
@@ -111,6 +115,17 @@ public class GUIPage {
 				button.setSlot(firstEmtpy);
 			}
 			ItemStack display = !PurchaseHandler.hasPurchased(player, button) ? button.noPermissionItem().getItem() : button.getDisplay();
+			if (cat == Category.EFFECTS) {
+				EffectManager mngr = CosmeticSuite.getInstance().getEffectManager();
+				CustomEffect ce = (CustomEffect) button;
+				if (!PurchaseHandler.hasPurchased(player, ce)) {
+					display = button.noPermissionItem().getItem();
+				} else if (mngr.getEffect(player) == null) {
+					display = ItemFactory.create(Material.STAINED_GLASS_PANE, ce.getName(), 1, (byte) DyeColor.WHITE.getData(), "noLore");
+				} else if (mngr.getEffect(player).equals(ce)) {
+					display = ItemFactory.create(Material.STAINED_GLASS_PANE, ChatColor.GREEN + "Active Effect", 1, (byte) 5, "noLore");
+				}
+			}
 			page.getInv().setItem(firstEmtpy, display);
 			addedButtons.add(button);
 			break;

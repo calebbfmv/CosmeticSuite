@@ -12,7 +12,7 @@ import org.arkham.cs.cosmetics.HeroKit;
 import org.arkham.cs.cosmetics.SuperHeroKit;
 import org.arkham.cs.handler.ParticleLibManager;
 import org.arkham.cs.handler.PurchaseHandler;
-import org.arkham.cs.handler.ParticleLibManager.FancyEffects;
+import org.arkham.cs.handler.ParticleLibManager.FancyEffect;
 import org.arkham.cs.interfaces.Button;
 import org.arkham.cs.utils.Rank;
 import org.bukkit.Bukkit;
@@ -98,15 +98,18 @@ public class GUIManager implements Listener {
 		 */
 		{
 			int created = 1;
+			int i = 0;
 			new GUIPage("Particle Effects " + 1, Category.EFFECTS);
-			for (int i = 0; i < ParticleLibManager.FancyEffects.values().length; i++) {
-				FancyEffects fancy = FancyEffects.values()[i];
-				new CustomEffect(i, Category.EFFECTS, fancy, "cosmetics.effects." + fancy.name().toLowerCase(), Material.DIAMOND, 0, Rank.HERO);
+			for (FancyEffect fancy : FancyEffect.values()) {
+				System.out.println(fancy.name() + " || Rank :: " + ParticleLibManager.getRank(fancy).name() + " || Name :: " + ParticleLibManager.name(fancy));
+				new CustomEffect(i, Category.EFFECTS, fancy, "cosmetics.effects." + fancy.name().toLowerCase(), Material.DIAMOND, 0, ParticleLibManager.getRank(fancy), ParticleLibManager.name(fancy));
+				i++;
 				if (i % 35 == 0) {
 					created++;
 					new GUIPage("Particle Effects " + created, Category.EFFECTS);
 				}
 			}
+			CustomEffect.addSuperHeroToHero();
 		}
 		/**
 		 * Dis is Curse blocks

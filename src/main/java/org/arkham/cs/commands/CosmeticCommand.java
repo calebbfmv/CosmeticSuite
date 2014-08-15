@@ -78,16 +78,25 @@ public class CosmeticCommand implements CommandExecutor {
 	}
 
 	public void openEffects(Player player) {
-		System.out.println("Shit and giggles");
 		PlayerMetaDataUtil.setInGUI(player);
 		GUIManager manager = CosmeticSuite.getInstance().getGuiManager();
 		List<GUIPage> pages = manager.getPages(Category.EFFECTS);
 		GUIPage page = pages.get(0);
 		if(page == null){
-			System.out.println("Null Page");
 			return;
 		}
-		for(CustomEffect hat : CustomEffect.getEffects()){
+		if(PlayerHandler.isNothingSpecial(player)){
+			for(CustomEffect hat : CustomEffect.getEffects(Rank.SUPERHERO)){
+				GUIPage.addButton(hat, Category.EFFECTS, player);
+			}
+			player.openInventory(page.getInv());
+			return;
+		}
+		Rank rank = PlayerHandler.getRank(player);
+		for(CustomEffect hat : CustomEffect.getEffects(rank)){
+			if(!PurchaseHandler.hasPurchased(player, hat)){
+				PurchaseHandler.addPurchase(player, hat);
+			}
 			GUIPage.addButton(hat, Category.EFFECTS, player);
 		}
 		player.openInventory(page.getInv());
