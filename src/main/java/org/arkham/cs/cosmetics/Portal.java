@@ -20,18 +20,22 @@ import org.bukkit.metadata.FixedMetadataValue;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.flags.DefaultFlag;
 
 public class Portal implements Listener {
 
 	private Location loc;
 	private Player player;
-	private static ArrayList<Location> portals = new ArrayList<>();
+	public static ArrayList<Location> portals = new ArrayList<>();
 	private static HashMap<UUID, Entry<Portal, Portal>> madePortals = new HashMap<>();
 
 	public Portal(Location loc, Player player) {
+		if(!checkPerms(player)){
+			player.sendMessage(CosmeticSuite.PREFIX + "You cannot place a portal here");
+			return;
+		}
 		Bukkit.getPluginManager().registerEvents(this, CosmeticSuite.getInstance());
 		this.loc = loc;
+		portals.add(loc);
 		loc = loc.clone().add(0, 1, 0);
 		this.player = player;
 		portals.add(loc);
@@ -77,16 +81,15 @@ public class Portal implements Listener {
 
 	public boolean checkPerms(Player player) {
 		WorldGuardPlugin api = (WorldGuardPlugin) Bukkit.getPluginManager().getPlugin("WorldGuard");
-		ApplicableRegionSet regions = api.getRegionManager(loc.getWorld()).getApplicableRegions(loc);
+		ApplicableRegionSet regions = api.getRegionManager(player.getLocation().getWorld()).getApplicableRegions(player.getLocation());
 		LocalPlayer lPlayer = api.wrapPlayer(player);
 		if (regions.size() == 0) {
 			return true;
 		}
-		return (regions.allows(DefaultFlag.BUILD, lPlayer));
+		return regions.canBuild(lPlayer);
 	}
 
 	public void spark(boolean second) {
-		System.out.println(checkPerms(player));
 		if (!checkPerms(player)) {
 			return;
 		}
@@ -114,4 +117,6 @@ public class Portal implements Listener {
 			event.setCancelled(true);
 		}
 	}
+	
+	
 }

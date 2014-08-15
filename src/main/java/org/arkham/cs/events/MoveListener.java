@@ -122,13 +122,14 @@ public class MoveListener implements Listener {
 	@EventHandler
 	public void onShutDown(PluginDisableEvent event){
 		Plugin plugin = event.getPlugin();
-		if(!(plugin instanceof CosmeticSuite)){
+		if(!CosmeticSuite.getInstance().equals(plugin)){
 			return;
 		}
 		for(Location loc : blocks.keySet()){
 			Material type = blocks.get(loc);
 			loc.getBlock().setType(type);
 			blocks.remove(loc);
+			loc.getBlock().removeMetadata("spawned", CosmeticSuite.getInstance());
 		}
 	}
 }

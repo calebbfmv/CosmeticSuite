@@ -14,6 +14,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
+import com.sk89q.worldguard.LocalPlayer;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
+
 public class PortalLink implements Listener {
 	
 	private Portal portal_1, portal_2;
@@ -21,11 +25,16 @@ public class PortalLink implements Listener {
 	private static HashMap<UUID, PortalLink> links = new HashMap<>();
 	
 	public PortalLink(Portal p1, Portal p2, Player player) {
+		if(!checkPerms(player)){
+			player.sendMessage(CosmeticSuite.PREFIX + "You cannot place a portal here.");
+			return;
+		}
 		this.portal_1 = p1;
 		this.portal_2 = p2;
 		this.player = player;
 		links.put(player.getUniqueId(), this);
 		spark();
+		player.sendMessage(CosmeticSuite.PREFIX + "You have now linked 2 portal.");
 		Bukkit.getPluginManager().registerEvents(this, CosmeticSuite.getInstance());
 	}
 	
@@ -67,6 +76,16 @@ public class PortalLink implements Listener {
 	 */
 	public Player getPlayer() {
 		return player;
+	}
+	
+	public boolean checkPerms(Player player) {
+		WorldGuardPlugin api = (WorldGuardPlugin) Bukkit.getPluginManager().getPlugin("WorldGuard");
+		ApplicableRegionSet regions = api.getRegionManager(player.getLocation().getWorld()).getApplicableRegions(player.getLocation());
+		LocalPlayer lPlayer = api.wrapPlayer(player);
+		if (regions.size() == 0) {
+			return true;
+		}
+		return regions.canBuild(lPlayer);
 	}
 	
 	@EventHandler

@@ -9,12 +9,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
 
 public class FlyListener implements Listener  {
-	
+
 	public FlyListener(){
 		CosmeticSuite cs = CosmeticSuite.getInstance();
 		cs.getServer().getPluginManager().registerEvents(this, cs);
 	}
-	
+
 	@EventHandler
 	public void onFly(PlayerToggleFlightEvent event){
 		Player player = event.getPlayer();
@@ -41,7 +41,9 @@ public class FlyListener implements Listener  {
 				return;
 			}
 			if(PlayerHandler.isNothingSpecial(player)){
-				event.setCancelled(true);
+				if(event.isFlying()){
+					event.setCancelled(true);
+				}
 			}
 			return;
 		}
