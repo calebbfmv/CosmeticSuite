@@ -128,8 +128,8 @@ public class MoveListener implements Listener {
 		for(Location loc : blocks.keySet()){
 			Material type = blocks.get(loc);
 			loc.getBlock().setType(type);
-			blocks.remove(loc);
 			loc.getBlock().removeMetadata("spawned", CosmeticSuite.getInstance());
 		}
+		blocks.clear();
 	}
 }
