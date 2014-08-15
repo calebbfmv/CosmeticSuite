@@ -103,7 +103,7 @@ public class GUIPage {
 	@SuppressWarnings("deprecation")
 	public static void addButton(Button button, Category cat, Player player) {
 		List<GUIPage> pages = CosmeticSuite.getInstance().getGuiManager().getPages(cat);
-		if (addedButtons.contains(button)) {
+		if (addedButtons.contains(button) && cat != Category.EFFECTS) {
 			return;
 		}
 		for (GUIPage page : pages) {
@@ -122,14 +122,13 @@ public class GUIPage {
 				if (!PurchaseHandler.hasPurchased(player, ce)) {
 					display = button.noPermissionItem().getItem();
 				} 
-				System.out.println(mngr.getEffect(player));
 				if (mngr.getEffect(player) != null) {
-					System.out.println("Using name: " + mngr.getEffect(player).getName() + " || Button Name: " + ce.getName() + " || Match ? " + (mngr.getEffect(player).getName().equalsIgnoreCase(ce.getName())));
-					if (mngr.getEffect(player).getName().equalsIgnoreCase(ce.getName())) {
+					if (mngr.getEffect(player).getEffect() == ce.getEffect()) {
 						display = ItemFactory.create(Material.STAINED_GLASS_PANE, ChatColor.GREEN + "Active Effect", 1, DyeColor.GREEN.getData(), "noLore");
 					}
 				}
 				ce.setItem(display);
+				firstEmtpy = ce.getSlot();
 			}
 			page.getInv().setItem(firstEmtpy, display);
 			addedButtons.add(button);

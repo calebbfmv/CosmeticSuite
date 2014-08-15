@@ -5,9 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+import org.arkham.cs.CosmeticSuite;
 import org.arkham.cs.gui.Category;
 import org.arkham.cs.interfaces.Button;
-import org.arkham.cs.utils.NameUtils;
 import org.arkham.cs.utils.PlayerMetaDataUtil;
 import org.arkham.cs.utils.Rank;
 import org.bukkit.ChatColor;
@@ -53,10 +53,8 @@ public class CurseBlock extends Button {
 		PlayerMetaDataUtil.removeFromSwitching(player);
 		blocks.put(player.getUniqueId(), this);
 		player.closeInventory();
-		String item = "bob";
-		String[] str = this.getPermission().split(".");
-		str = NameUtils.formatAndReturn(str, ".", true);
-		player.sendMessage(ChatColor.AQUA + "[ArkhamCosmetics] " + ChatColor.YELLOW + "You will now walk on " + item);
+		String item = getPermission().replace("cosmetics.cursedblocks.", "").replace("_", " ");
+		player.sendMessage(CosmeticSuite.PREFIX + "Your new block trail is: " + ChatColor.UNDERLINE + item);
 	}
 	
 	public static CurseBlock get(Player player){

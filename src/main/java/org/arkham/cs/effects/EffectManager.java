@@ -32,9 +32,6 @@ public class EffectManager implements Listener{
 	@EventHandler
 	public void onMove(PlayerMoveEvent event){
 		Player player = event.getPlayer();
-		if(player.isFlying()){
-			return;
-		}
 		if(event.getTo().getBlockX() == event.getFrom().getBlockX() && event.getTo().getBlockZ() == event.getFrom().getBlockZ()){
 			return;
 		}

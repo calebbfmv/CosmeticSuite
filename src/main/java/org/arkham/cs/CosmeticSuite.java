@@ -2,6 +2,7 @@ package org.arkham.cs;
 
 import org.arkham.cs.commands.ColorCommand;
 import org.arkham.cs.commands.CosmeticCommand;
+import org.arkham.cs.commands.ItemCommand;
 import org.arkham.cs.commands.PortalCommand;
 import org.arkham.cs.db.Authentication;
 import org.arkham.cs.db.SQLQueryThread;
@@ -26,7 +27,7 @@ public class CosmeticSuite extends JavaPlugin {
 	private CosmeticCommand cCommand;
 	private ChatColorManager cManager;
 	
-	public static final String PREFIX = ChatColor.translateAlternateColorCodes('&', "&8[&e&lA&b&lC&8]&e");
+	public static final String PREFIX = ChatColor.translateAlternateColorCodes('&', "&8[&e&lA&b&lC&8]&e ");
 	
 	public void onEnable(){
 		instance = this;
@@ -45,6 +46,7 @@ public class CosmeticSuite extends JavaPlugin {
 		new BleedListener(this);
 		new CommandPreEvent(this);
 		new ParticleLibManager();
+		new ItemCommand(this);
 		GUIManager.setUp();
 		SQLQueryThread.addQuery("CREATE DATABASE IF NOT EXISTS " + Authentication.sqldb);
 		SQLQueryThread.addQuery("DROP TABLE IF EXISTS `globalkits`");

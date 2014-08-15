@@ -67,6 +67,7 @@ public class CustomEffect extends Button {
 
 	@Override
 	public void onClick(Player player) {
+		player.sendMessage(CosmeticSuite.PREFIX + "Your trail effect is now " + getName());
 		PlayerMetaDataUtil.removeFromSwitching(player);
 		EffectManager manager = CosmeticSuite.getInstance().getEffectManager();
 		manager.setEffect(player, this);

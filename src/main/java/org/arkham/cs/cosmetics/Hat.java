@@ -70,6 +70,7 @@ public class Hat extends Button {
 
 	@Override
 	public void onClick(final Player player) {
+		player.sendMessage(CosmeticSuite.PREFIX + "You have now equiped the hat " + getPermission().replace("cosmetics.hats.", "").replace("_", " "));
 		PlayerMetaDataUtil.removeFromSwitching(player);
 		player.closeInventory();
 		new BukkitRunnable(){

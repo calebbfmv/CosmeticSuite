@@ -20,7 +20,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 
 public class CosmeticCommand implements CommandExecutor {
 
@@ -36,9 +35,8 @@ public class CosmeticCommand implements CommandExecutor {
 		}
 		Player player = (Player) sender;
 		if (args.length == 0) {
-			Inventory inv = CosmeticSuite.getInstance().getGuiManager().getMain();
+			player.openInventory(CosmeticSuite.getInstance().getGuiManager().getMain(player));
 			PlayerMetaDataUtil.setInGUI(player);
-			player.openInventory(inv);
 			return true;
 		}
 		if (args.length == 1) {
@@ -49,15 +47,14 @@ public class CosmeticCommand implements CommandExecutor {
 			case "-h":
 				openHats(player);
 				break;
-			case "-f":
+			case "-bt":
 				openWalkingBlocks(player);
 				break;
 			case "help":
 				sendHelp(player);
 				break;
 			default:
-				Inventory inv = CosmeticSuite.getInstance().getGuiManager().getMain();
-				player.openInventory(inv);
+				player.openInventory(CosmeticSuite.getInstance().getGuiManager().getMain(player));
 				break;
 			}
 			return true;
@@ -72,6 +69,7 @@ public class CosmeticCommand implements CommandExecutor {
 				ChatColor.GOLD + "Arguments: ",
 				"  " + ChatColor.RED + "-h | " + ChatColor.GRAY + "Open the Hat's GUI",
 				"  " + ChatColor.RED + "-e | " + ChatColor.GRAY + "Open the Effects's GUI",
+				"  " + ChatColor.RED + "-bt | " + ChatColor.GRAY + "Open the Block Trail's GUI",
 				ChatColor.GREEN + "=============================================="
 		};
 		player.sendMessage(help);

@@ -19,7 +19,10 @@ import org.bukkit.craftbukkit.v1_7_R4.CraftWorld;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class MoveListener implements Listener {
@@ -64,7 +67,11 @@ public class MoveListener implements Listener {
 		if(blocks.containsKey(below.getLocation())){
 			return;
 		}
+		if(below.getType() == Material.WATER || below.getType() == Material.LAVA || below.getType() == Material.STATIONARY_LAVA || below.getType() == Material.STATIONARY_WATER){
+			return;
+		}
 		blocks.put(below.getLocation(), below.getType());
+		below.setMetadata("spawned", new FixedMetadataValue(CosmeticSuite.getInstance(), ""));
 		below.setType(cb.getDisplay().getType());
 		below.setData(cb.getDisplay().getData().getData());
 		play(below.getLocation(), below.getType());
@@ -74,8 +81,27 @@ public class MoveListener implements Listener {
 				Location l = below.getLocation();
 				l.getBlock().setType(blocks.get(l));
 				play(l, blocks.get(l));
+				below.removeMetadata("spawned", CosmeticSuite.getInstance());
+				blocks.remove(l);
 			}
 		}.runTaskLaterAsynchronously(CosmeticSuite.getInstance(), 20L * 5);
+	}
+	
+	@EventHandler
+	public void onBreak(BlockBreakEvent event){
+		Block block = event.getBlock();
+		if(block.hasMetadata("spawned")){
+			event.setCancelled(true);
+		}
+	}
+	
+	@EventHandler
+	public void onExplode(EntityExplodeEvent event){
+		for(Block block : event.blockList()){
+			if(block.hasMetadata("spawned")){
+				event.blockList().remove(block);
+			}
+		}
 	}
 
 	public void play(final Location l, final Material m){

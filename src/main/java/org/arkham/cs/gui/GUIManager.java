@@ -63,7 +63,6 @@ public class GUIManager implements Listener {
 			main.setItem(i, ItemFactory.create(Material.STAINED_GLASS_PANE, ChatColor.BLACK + "", 0, (byte) 15, "noLore"));
 		}
 		main.setItem(23, BaseItems.portal().getItem());
-		main.setItem(22, ItemFactory.create(Material.STAINED_GLASS_PANE, ChatColor.BLACK + "", 0, (byte) 15, "noLore"));
 		main.setItem(21, BaseItems.color().getItem());
 	}
 
@@ -102,7 +101,7 @@ public class GUIManager implements Listener {
 
 			new GUIPage("Particle Effects " + 1, Category.EFFECTS);
 			for (FancyEffect fancy : FancyEffect.values()) {
-				new CustomEffect(i, Category.EFFECTS, fancy, "cosmetics.effects." + fancy.name().toLowerCase(), ItemFactory.create(Material.STAINED_GLASS_PANE, ParticleLibManager.name(fancy), 1, (byte) DyeColor.WHITE.getData(), "noLore"), 0, ParticleLibManager.getRank(fancy), "");
+				new CustomEffect(i, Category.EFFECTS, fancy, "cosmetics.effects." + fancy.name().toLowerCase(), ItemFactory.create(Material.STAINED_GLASS_PANE, ParticleLibManager.name(fancy), 1, (byte) DyeColor.WHITE.getData(), "noLore"), 0, ParticleLibManager.getRank(fancy), ParticleLibManager.name(fancy));
 				i++;
 				if (i % 35 == 0) {
 					created++;
@@ -146,6 +145,69 @@ public class GUIManager implements Listener {
 		superHeroKit = new SuperHeroKit(item);
 	}
 
+	public List<GUIPage> getPages(Category cat) {
+		return pages.get(cat);
+	}
+
+	@EventHandler
+	public void onClose(InventoryCloseEvent event) {
+		Player player = (Player) event.getPlayer();
+		if (player.hasMetadata("switchedPages")) {
+			return;
+		}
+		if (player.hasMetadata("inGUI")) {
+			player.removeMetadata("inGUI", CosmeticSuite.getInstance());
+		}
+	}
+
+	@EventHandler
+	public void onClick(InventoryClickEvent event) {
+		Player player = (Player) event.getWhoClicked();
+		if (player.hasMetadata("inGUI")) {
+			event.setCancelled(true);
+			event.setResult(Result.DENY);
+		}
+		if (event.getInventory() == null) {
+			return;
+		}
+		if (event.getCurrentItem() == null) {
+			return;
+		}
+		ItemStack item = event.getCurrentItem();
+		if(item.equals(new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) 15))) {
+			return;
+		}
+		if( item.getType() == Material.NETHER_STAR){
+			player.openInventory(getMain(player));
+			return;
+		}
+		if (ClickableItem.fromItem(item) == null) {
+			if (GUIPage.getCurrent(player) == null) {
+				return;
+			}
+			Button button = Button.getButton(GUIPage.getCurrent(player).getCategory(), item);
+			if (button == null) {
+				System.out.println("Button == null");
+				return;
+			}
+			button.onClick(player);
+			return;
+		}
+		ClickableItem cItem = ClickableItem.fromItem(item);
+		cItem.doClick((Player) event.getWhoClicked());
+	}
+
+	@EventHandler
+	public void onJoin(PlayerJoinEvent event) {
+		PurchaseHandler.setUpPurchases(event.getPlayer());
+		CosmeticSuite.getInstance().getChatColorManager().sync(event.getPlayer());
+	}
+
+	public Inventory getMain(Player player) {
+		main.setItem(22, BaseItems.trail(player).getItem());
+		return main;
+	}
+	
 	private static String[] herohats() {
 		String stuff = "Dirt, Stone, Grass, Podzol, Cobblestone, Sandstone, Glass, Sand, WoodLogs, Planks, Iron_block, Gold_block, Diamond_block, Emerald_block, Glowstone, Ice, Pumpkin, Clay, Snow_block, diamond_ore, gold_ore, iron_ore, coal_ore, redstone_ore, lapis_ore, emerald_ore, Netherrack, Netherbrick, StoneBrick, Melon_block, Quartz_block, Hay, Coal, PackedIce, Leaves, CraftingTable, Anvil, Enderchest, Furnace, EnchantmentTable, EndFrame, Cactus, Fence, Jukebox, Redstone_block, TnT, Beacon, RedstoneLamp, Dispenser, NoteBlock";
 		return stuff.split(", ");
@@ -341,68 +403,6 @@ public class GUIManager implements Listener {
 				new CurseBlock(i, item, Rank.SUPERHERO, "cosmetics.cursedblocks." + mat.name().toLowerCase());
 			}
 		}
-	}
-
-	public List<GUIPage> getPages(Category cat) {
-		return pages.get(cat);
-	}
-
-	@EventHandler
-	public void onClose(InventoryCloseEvent event) {
-		Player player = (Player) event.getPlayer();
-		if (player.hasMetadata("switchedPages")) {
-			return;
-		}
-		if (player.hasMetadata("inGUI")) {
-			player.removeMetadata("inGUI", CosmeticSuite.getInstance());
-		}
-	}
-
-	@EventHandler
-	public void onClick(InventoryClickEvent event) {
-		Player player = (Player) event.getWhoClicked();
-		if (player.hasMetadata("inGUI")) {
-			event.setCancelled(true);
-			event.setResult(Result.DENY);
-		}
-		if (event.getInventory() == null) {
-			return;
-		}
-		if (event.getCurrentItem() == null) {
-			return;
-		}
-		ItemStack item = event.getCurrentItem();
-		if(item.equals(new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) 15))) {
-			return;
-		}
-		if( item.getType() == Material.NETHER_STAR){
-			player.openInventory(getMain());
-			return;
-		}
-		if (ClickableItem.fromItem(item) == null) {
-			if (GUIPage.getCurrent(player) == null) {
-				return;
-			}
-			Button button = Button.getButton(GUIPage.getCurrent(player).getCategory(), item);
-			if (button == null) {
-				System.out.println("Button == null");
-				return;
-			}
-			button.onClick(player);
-			return;
-		}
-		ClickableItem cItem = ClickableItem.fromItem(item);
-		cItem.doClick((Player) event.getWhoClicked());
-	}
-
-	@EventHandler
-	public void onJoin(PlayerJoinEvent event) {
-		PurchaseHandler.setUpPurchases(event.getPlayer());
-		CosmeticSuite.getInstance().getChatColorManager().sync(event.getPlayer());
-	}
-
-	public Inventory getMain() {
-		return main;
 	}
 
 	private static void stainedglass(int i) {

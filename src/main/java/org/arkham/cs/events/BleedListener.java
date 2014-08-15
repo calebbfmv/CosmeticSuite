@@ -4,12 +4,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import net.minecraft.server.v1_7_R4.Packet;
+import net.minecraft.server.v1_7_R4.PacketPlayOutWorldEvent;
+
 import org.arkham.cs.CosmeticSuite;
 import org.arkham.cs.handler.PlayerHandler;
 import org.arkham.cs.utils.Rank;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Item;
+import org.bukkit.craftbukkit.v1_7_R4.CraftServer;
+import org.bukkit.craftbukkit.v1_7_R4.CraftWorld;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,8 +23,6 @@ import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
 
 public class BleedListener implements Listener {
 
@@ -46,18 +48,16 @@ public class BleedListener implements Listener {
 		play(hit.getEyeLocation(), 10, 0.5, Material.REDSTONE, (byte) 0);
 	}
 
-	public void play(final Location loc, final int particles, final double velMult, final Material type, final byte data) {
-		for (int i = 0; i < particles; ++i) {
-			final Item item = loc.getWorld().dropItem(loc, new ItemStack(type, 1, data));
-			item.setVelocity(new Vector((Math.random() - 0.5) * velMult, Math.random() * velMult, (Math.random() - 0.5) * velMult));
-			item.setPickupDelay(Integer.MAX_VALUE);
-			new BukkitRunnable() {
-				@Override
-				public void run() {
-					item.remove();
-				}
-			}.runTaskLaterAsynchronously(CosmeticSuite.getInstance(), 20L);
-		}
+	public void play(final Location l, final int particles, final double velMult, final Material m, final byte data) {
+		CosmeticSuite.getInstance().getServer().getScheduler().runTaskAsynchronously(CosmeticSuite.getInstance(), new Runnable(){
+			@SuppressWarnings("deprecation")
+			@Override
+			public void run(){
+				int particle_id = m.getId();
+				Packet particles = new PacketPlayOutWorldEvent(2001, Math.round(l.getBlockX()), Math.round(l.getBlockY()), Math.round(l.getBlockZ()), particle_id, false);
+				((CraftServer) CosmeticSuite.getInstance().getServer()).getServer().getPlayerList().sendPacketNearby(l.getBlockX(), l.getBlockY(), l.getBlockZ(), 16, ((CraftWorld) l.getWorld()).getHandle().dimension, particles);
+			}
+		});
 	}
 	
 	@EventHandler
