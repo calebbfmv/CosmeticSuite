@@ -18,7 +18,7 @@ public class FlyListener implements Listener  {
 	@EventHandler
 	public void onFly(PlayerToggleFlightEvent event){
 		Player player = event.getPlayer();
-		if(player.isFlying()){
+		if(event.isFlying()){
 			TrailingBlock tb = TrailingBlock.get(player);
 			if(tb == null){
 				return;

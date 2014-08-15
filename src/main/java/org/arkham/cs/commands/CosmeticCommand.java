@@ -84,10 +84,9 @@ public class CosmeticCommand implements CommandExecutor {
 			return;
 		}
 		if(PlayerHandler.isNothingSpecial(player)){
-			for(CustomEffect hat : CustomEffect.getEffects(Rank.SUPERHERO)){
-				GUIPage.addButton(hat, Category.EFFECTS, player);
-			}
-			player.openInventory(page.getInv());
+		    player.sendMessage(CosmeticSuite.PREFIX + "Purchase HERO or SUPERHERO at " + ChatColor.UNDERLINE + "buy.arkhamnetwork.org" + ChatColor.YELLOW + " to unlock effects!");
+		    player.closeInventory();
+			// player.openInventory(page.getInv());
 			return;
 		}
 		Rank rank = PlayerHandler.getRank(player);
@@ -111,10 +110,9 @@ public class CosmeticCommand implements CommandExecutor {
 			return;
 		}
 		if(PlayerHandler.isNothingSpecial(player)){
-			for(Hat hat : Hat.getHats(Rank.SUPERHERO)){
-				GUIPage.addButton(hat, Category.HATS, player);
-			}
-			player.openInventory(page.getInv());
+		    player.sendMessage(CosmeticSuite.PREFIX + "Purchase HERO or SUPERHERO at " + ChatColor.UNDERLINE + "buy.arkhamnetwork.org" + ChatColor.YELLOW + " to unlock hats!");
+		    player.closeInventory();
+			// player.openInventory(page.getInv());
 			return;
 		}
 		Rank rank = PlayerHandler.getRank(player);
@@ -135,13 +133,14 @@ public class CosmeticCommand implements CommandExecutor {
 		if(page == null){
 			return;
 		}
+		
 		if(PlayerHandler.isNothingSpecial(player)){
-			for(CurseBlock hat : CurseBlock.getByRank(Rank.SUPERHERO)){
-				GUIPage.addButton(hat, Category.CURSE_BLOCKS, player);
-			}
-			player.openInventory(page.getInv());
+			// player.openInventory(page.getInv());
+			player.sendMessage(CosmeticSuite.PREFIX + "Purchase HERO or SUPERHERO at " + ChatColor.UNDERLINE + "buy.arkhamnetwork.org" + ChatColor.YELLOW + " to unlock block trails!");
+			player.closeInventory();
 			return;
 		}
+		
 		Rank rank = PlayerHandler.getRank(player);
 		for(CurseBlock hat : CurseBlock.getByRank(rank)){
 			if(!PurchaseHandler.hasPurchased(player, hat)){

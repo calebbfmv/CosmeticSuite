@@ -29,6 +29,7 @@ public class BubbleListener implements Listener {
 		if (rank == Rank.HERO) {
 			color = ChatColor.AQUA;
 		}
+		
 		if (rank == Rank.SUPERHERO) {
 			color = ChatColor.DARK_RED;
 		}
@@ -58,14 +59,22 @@ public class BubbleListener implements Listener {
 		return lmsg.toArray(new String[lmsg.size()]);
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	@EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = false)
 	public void onChat(AsyncPlayerChatEvent event) {
 		Player pl = event.getPlayer();
+
+		
 		String msg = event.getMessage();
 		CosmeticSuite.getInstance().getChatColorManager().sync(pl);
 		ChatColor pColor = CosmeticSuite.getInstance().getChatColorManager().getColor(pl);
 		event.setMessage(pColor + msg);
 		event.setFormat(event.getFormat());
+		 
+        if(!PlayerHandler.isSuperHero(pl)){
+            // No bubles.
+            return;
+        }
+		
 		final Location loc = pl.getLocation();
 		final Player fpl = pl;
 		final String fmsg = msg;
@@ -89,7 +98,7 @@ public class BubbleListener implements Listener {
 		CosmeticSuite.getInstance().getServer().getScheduler().runTaskAsynchronously(CosmeticSuite.getInstance(), new Runnable() {
 			@Override
 			public void run() {
-				new Hologram(CosmeticSuite.getInstance(), fpl, bubble_msg).show(loc.add(0, (0.5 + y_boost), 0), ((4 * 20L) + length));
+				new Hologram(CosmeticSuite.getInstance(), fpl, bubble_msg).show(loc.add(0, (0.8 + y_boost), 0), ((4 * 20L) + length));
 			}
 		});
 	}

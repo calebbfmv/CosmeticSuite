@@ -60,7 +60,7 @@ public class ChatColorManager {
 		if(color == null){
 			sync(player);
 		}
-		return color == null ? ChatColor.WHITE : color;
+		return color == null ? ChatColor.GRAY : color;
 	}
 
 }

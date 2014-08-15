@@ -26,6 +26,11 @@ public class EffectManager implements Listener{
 	}
 	
 	public void setEffect(Player player, CustomEffect effect){
+	    if(effect == null) {
+	        effects.remove(player.getUniqueId());
+	        return;
+	    }
+	    
 		effects.put(player.getUniqueId(), effect);
 	}
 	

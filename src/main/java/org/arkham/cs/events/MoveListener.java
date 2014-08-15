@@ -41,7 +41,7 @@ public class MoveListener implements Listener {
 			return;
 		}
 		Player player = event.getPlayer();
-		Location loc = player.getLocation();
+		final Location loc = player.getLocation().clone();
 		if(player.isFlying()){
 			TrailingBlock tb = TrailingBlock.get(player);
 			if(tb == null){
@@ -71,6 +71,7 @@ public class MoveListener implements Listener {
 			return;
 		}
 		blocks.put(below.getLocation(), below.getType());
+		final Material bellow_type = below.getType();
 		below.setMetadata("spawned", new FixedMetadataValue(CosmeticSuite.getInstance(), ""));
 		below.setType(cb.getDisplay().getType());
 		below.setData(cb.getDisplay().getData().getData());
@@ -78,13 +79,13 @@ public class MoveListener implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				Location l = below.getLocation();
-				l.getBlock().setType(blocks.get(l));
-				play(l, blocks.get(l));
+				Location l = loc;
+				l.getBlock().setType(bellow_type);
+				play(l, bellow_type);
 				below.removeMetadata("spawned", CosmeticSuite.getInstance());
 				blocks.remove(l);
 			}
-		}.runTaskLaterAsynchronously(CosmeticSuite.getInstance(), 20L * 5);
+		}.runTaskLater(CosmeticSuite.getInstance(), 20L * 5);
 	}
 	
 	@EventHandler

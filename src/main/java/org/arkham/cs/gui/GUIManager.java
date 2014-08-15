@@ -66,6 +66,9 @@ public class GUIManager implements Listener {
 		main.setItem(21, BaseItems.color().getItem());
 		main.setItem(20, BaseItems.itemEdit().getItem());
 		main.setItem(24, BaseItems.globalBuff().getItem());
+		
+		main.setItem(19, BaseItems.titleColorEdit().getItem());
+		main.setItem(25, BaseItems.titleSelect().getItem());
 	}
 
 	public void loadPages() {
@@ -118,9 +121,9 @@ public class GUIManager implements Listener {
 		 */
 		{
 			int created = 1;
-			new GUIPage("Curse Blocks " + created, Category.CURSE_BLOCKS);
-			new GUIPage("Curse Blocks " + 2, Category.CURSE_BLOCKS);
-			new GUIPage("Curse Blocks " + 3, Category.CURSE_BLOCKS);
+			new GUIPage("Block Trails " + created, Category.CURSE_BLOCKS);
+			new GUIPage("Block Trails " + 2, Category.CURSE_BLOCKS);
+			new GUIPage("Block Trails " + 3, Category.CURSE_BLOCKS);
 		}
 		/**
 		 * Dis is Kits
@@ -179,7 +182,7 @@ public class GUIManager implements Listener {
 		if(item.equals(new ItemStack(Material.STAINED_GLASS_PANE, 1, (byte) 15))) {
 			return;
 		}
-		if( item.getType() == Material.NETHER_STAR){
+		if( item.getType() == Material.NETHER_STAR && !event.getInventory().getTitle().contains("container.crafting") && !event.getInventory().getTitle().contains("Lobby Selector")){
 			player.openInventory(getMain(player));
 			return;
 		}
