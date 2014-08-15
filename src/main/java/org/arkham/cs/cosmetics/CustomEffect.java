@@ -11,6 +11,7 @@ import org.arkham.cs.handler.ParticleLibManager.FancyEffect;
 import org.arkham.cs.interfaces.Button;
 import org.arkham.cs.utils.PlayerMetaDataUtil;
 import org.arkham.cs.utils.Rank;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -67,7 +68,7 @@ public class CustomEffect extends Button {
 
 	@Override
 	public void onClick(Player player) {
-		player.sendMessage(CosmeticSuite.PREFIX + "Your trail effect is now " + getName());
+		player.sendMessage(CosmeticSuite.PREFIX + "Your trail effect is now " + ChatColor.UNDERLINE +  getName());
 		PlayerMetaDataUtil.removeFromSwitching(player);
 		EffectManager manager = CosmeticSuite.getInstance().getEffectManager();
 		manager.setEffect(player, this);

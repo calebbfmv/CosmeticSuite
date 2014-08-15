@@ -64,6 +64,8 @@ public class GUIManager implements Listener {
 		}
 		main.setItem(23, BaseItems.portal().getItem());
 		main.setItem(21, BaseItems.color().getItem());
+		main.setItem(20, BaseItems.itemEdit().getItem());
+		main.setItem(24, BaseItems.globalBuff().getItem());
 	}
 
 	public void loadPages() {
@@ -133,12 +135,12 @@ public class GUIManager implements Listener {
 		setUpSuperHeroHats();
 		setUpHeroCurseBlocks();
 		setUpSuperHeroCurseBlocks();
-		ItemStack hitem = new ItemStack(Material.INK_SACK, 1, (byte) 8);
+		ItemStack hitem = new ItemStack(Material.IRON_CHESTPLATE);
 		ItemMeta meta = hitem.getItemMeta();
 		meta.setDisplayName(ChatColor.AQUA + "Kit Hero");
 		hitem.setItemMeta(meta);
 		heroKit = new HeroKit(hitem);
-		ItemStack item = new ItemStack(Material.INK_SACK, 1, (byte) 10);
+		ItemStack item = new ItemStack(Material.DIAMOND_CHESTPLATE);
 		ItemMeta hmeta = item.getItemMeta();
 		hmeta.setDisplayName(ChatColor.DARK_RED + "Kit SuperHero");
 		item.setItemMeta(hmeta);

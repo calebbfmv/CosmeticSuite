@@ -59,7 +59,7 @@ public abstract class Button {
 			public void doClick(Player player) {		
 				CosmeticSuite cs = CosmeticSuite.getInstance();
 				FileConfiguration config = cs.getConfig();
-				String link = config.getString("buy-link", CosmeticSuite.PREFIX + "Pruchase this rank @ https://buy.arkhamnetwork.org");
+				String link = config.getString("buy-link", CosmeticSuite.PREFIX + "Purchase this rank at " + ChatColor.UNDERLINE + "buy.arkhamnetwork.org");
 				link = ChatColor.translateAlternateColorCodes('&', link);
 				player.sendMessage(link);
 				player.closeInventory();

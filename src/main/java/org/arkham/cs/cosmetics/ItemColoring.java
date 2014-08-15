@@ -7,17 +7,20 @@ import org.arkham.cs.CosmeticSuite;
 import org.arkham.cs.handler.PlayerHandler;
 import org.arkham.cs.utils.Rank;
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 /**
  * Hero - Rename / Color of armor and blocks SuperHero Rename / Color weapons,
  * armor, blocks, tools /lore /itemcolor
  * 
- * @author calebbfmv Aug 13, 2014
+ * atauthor calebbfmv Aug 13, 2014
  * 
  */
 public class ItemColoring {
@@ -49,7 +52,7 @@ public class ItemColoring {
 		if (PlayerHandler.isNothingSpecial(player)) {
 			CosmeticSuite cs = CosmeticSuite.getInstance();
 			FileConfiguration config = cs.getConfig();
-			String link = config.getString("buy-link", CosmeticSuite.PREFIX + "Pruchase this rank @ https://buy.arkhamnetwork.org");
+			String link = config.getString("buy-link", CosmeticSuite.PREFIX + "Purchase this rank at " + ChatColor.UNDERLINE + "buy.arkhamnetwork.org");
 			link = ChatColor.translateAlternateColorCodes('&', link);
 			player.sendMessage(link);
 			return;
@@ -96,7 +99,7 @@ public class ItemColoring {
 		if (PlayerHandler.isNothingSpecial(player)) {
 			CosmeticSuite cs = CosmeticSuite.getInstance();
 			FileConfiguration config = cs.getConfig();
-			String link = config.getString("buy-link", CosmeticSuite.PREFIX + "Pruchase this rank @ https://buy.arkhamnetwork.org");
+			String link = config.getString("buy-link", CosmeticSuite.PREFIX + "Purchase this rank at " + ChatColor.UNDERLINE + "buy.arkhamnetwork.org");
 			link = ChatColor.translateAlternateColorCodes('&', link);
 			player.sendMessage(link);
 			return;
@@ -129,5 +132,45 @@ public class ItemColoring {
 		item.setItemMeta(meta);
 		player.setItemInHand(item);
 		player.sendMessage(CosmeticSuite.PREFIX + "Set the items lore to " + loreLine);
+	}
+	
+	public static void color(Player player, DyeColor dyeColor){
+		Color color = dyeColor.getColor();
+		ItemStack item = player.getItemInHand();
+		if (PlayerHandler.isNothingSpecial(player)) {
+			CosmeticSuite cs = CosmeticSuite.getInstance();
+			FileConfiguration config = cs.getConfig();
+			String link = config.getString("buy-link", CosmeticSuite.PREFIX + "Purchase this rank at " + ChatColor.UNDERLINE + "buy.arkhamnetwork.org");
+			link = ChatColor.translateAlternateColorCodes('&', link);
+			player.sendMessage(link);
+			return;
+		}
+		if (item == null || item.getType() == Material.AIR) {
+			player.sendMessage(CosmeticSuite.PREFIX + "Pleas have the item, that you wish to change, in your hand.");
+			return;
+		}
+		Rank rank = PlayerHandler.getRank(player);
+		if (rank == Rank.HERO) {
+			if (!heroItems.contains(item.getType())) {
+				player.sendMessage(CosmeticSuite.PREFIX + "You cannot edit this item!");
+				return;
+			}
+		}
+		if (rank == Rank.SUPERHERO) {
+			if (!superHeroItems.contains(item.getType())) {
+				player.sendMessage(CosmeticSuite.PREFIX + "You cannot edit this item!");
+				return;
+			}
+		}
+		ItemMeta meta = item.getItemMeta();
+		try {
+			LeatherArmorMeta lmeta = (LeatherArmorMeta) meta;
+			lmeta.setColor(color);
+			item.setItemMeta(lmeta);
+			player.setItemInHand(item);
+			player.sendMessage(CosmeticSuite.PREFIX + "Changed the items color to " + ChatColor.UNDERLINE + dyeColor.name());
+		} catch (ClassCastException e){
+			player.sendMessage(CosmeticSuite.PREFIX + "Make sure the item in your hand is leather armor!");
+		}
 	}
 }

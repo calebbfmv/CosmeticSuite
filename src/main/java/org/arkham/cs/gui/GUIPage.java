@@ -52,7 +52,7 @@ public class GUIPage {
 		inv.setItem(52, BaseItems.next().getItem());
 		inv.setItem(51, BaseItems.next().getItem());
 		inv.setItem(50, BaseItems.next().getItem());
-		inv.setItem(49, ItemFactory.create(Material.NETHER_STAR, ChatColor.YELLOW + "Arkham" + ChatColor.DARK_RED + "Network"));
+		inv.setItem(49, ItemFactory.create(Material.NETHER_STAR, ChatColor.AQUA + ChatColor.BOLD.toString() + "Arkham" + ChatColor.YELLOW  + ChatColor.BOLD.toString()+ "Network"));
 	}
 
 	public Category getCategory() {

@@ -10,6 +10,7 @@ import org.arkham.cs.cosmetics.HeroKit;
 import org.arkham.cs.db.SQLConnectionThread;
 import org.arkham.cs.db.SQLQueryThread;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 public class KitManager {
@@ -27,6 +28,14 @@ public class KitManager {
 
 	public static boolean canUse(Player player, GlobalKit kit) {
 		int id = (kit instanceof HeroKit) ? 1 : 2;
+		if(PlayerHandler.isNothingSpecial(player)){
+			CosmeticSuite cs = CosmeticSuite.getInstance();
+			FileConfiguration config = cs.getConfig();
+			String link = config.getString("buy-link", CosmeticSuite.PREFIX + "Purchase this Kit at " + ChatColor.UNDERLINE + "buy.arkhamnetwork.org");
+			link = ChatColor.translateAlternateColorCodes('&', link);
+			player.sendMessage(link);
+			return false;
+		}
 		String uuid = "'" + player.getUniqueId() + "'";
 		String query = "SELECT `time` FROM `globalkits` WHERE `player`=" + uuid + " AND `id`=" + id;
 		ResultSet res = SQLConnectionThread.getResultSet(query);

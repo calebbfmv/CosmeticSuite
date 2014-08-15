@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -96,24 +97,34 @@ public class BaseItems {
 		return new ClickableItem(ItemFactory.create(Material.BONE, ChatColor.YELLOW + ChatColor.BOLD.toString() + "Pets", ChatColor.AQUA + "Click to open the Kits GUI")) {
 			@Override
 			public void doClick(Player player) {
-				PlayerMetaDataUtil.setSwitchPage(player);
 				Bukkit.dispatchCommand(player, "pet select");
 			}
 		};
 	}
 
-	public static ClickableItem color() {
+	public static ClickableItem itemEdit() {
 		return new ClickableItem(ItemFactory.create(Material.BOOK_AND_QUILL, ChatColor.YELLOW + ChatColor.BOLD.toString() + "ItemEdit Command", ChatColor.AQUA + "Click to execute the /itemedit command.")) {
 			@Override
 			public void doClick(Player player) {
-				PlayerMetaDataUtil.setSwitchPage(player);
 				Bukkit.dispatchCommand(player, "itemedit");
+				player.closeInventory();
+			}
+		};
+	}
+	
+	public static ClickableItem color() {
+		return new ClickableItem(ItemFactory.create(Material.INK_SACK, ChatColor.YELLOW + ChatColor.BOLD.toString() + "Color Command", ChatColor.AQUA + "Click to execute the /color command.")) {
+			@Override
+			public void doClick(Player player) {
+				Bukkit.dispatchCommand(player, "color");
+				player.closeInventory();
 			}
 		};
 	}
 
+	@SuppressWarnings("deprecation")
 	public static ClickableItem portal() {
-		return new ClickableItem(ItemFactory.create(Material.BOOK_AND_QUILL, ChatColor.YELLOW + ChatColor.BOLD.toString() + "Portal Command", ChatColor.AQUA + "Click to execute the /portal command.")) {
+		return new ClickableItem(ItemFactory.create(Material.getMaterial(119), ChatColor.YELLOW + ChatColor.BOLD.toString() + "Portal Command", ChatColor.AQUA + "Click to execute the /portal command.")) {
 			@Override
 			public void doClick(Player player) {
 				PlayerMetaDataUtil.setSwitchPage(player);
@@ -135,6 +146,23 @@ public class BaseItems {
 			public void doClick(Player player) {
 				PlayerMetaDataUtil.setSwitchPage(player);
 				Bukkit.dispatchCommand(player, "portal");
+			}
+		};
+	}
+	
+	//Global Buffs
+	//Diamond Block
+	//Click - Purchase Global loot buffs @ website
+	public static ClickableItem globalBuff() {
+		return new ClickableItem(ItemFactory.create(Material.DIAMOND_BLOCK, ChatColor.YELLOW + ChatColor.BOLD.toString() + "Global Buffs", ChatColor.AQUA + "More treasure, less grind.")) {
+			@Override
+			public void doClick(Player player) {
+				player.closeInventory();
+				CosmeticSuite cs = CosmeticSuite.getInstance();
+				FileConfiguration config = cs.getConfig();
+				String link = config.getString("buy-link", CosmeticSuite.PREFIX + "Pruchase Global Loot Buffs at " + ChatColor.UNDERLINE + "buy.arkhamnetwork.org");
+				link = ChatColor.translateAlternateColorCodes('&', link);
+				player.sendMessage(link);
 			}
 		};
 	}
