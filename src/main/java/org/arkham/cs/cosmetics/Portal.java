@@ -6,17 +6,23 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.UUID;
 
+import org.arkham.cs.CosmeticSuite;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPhysicsEvent;
+import org.bukkit.metadata.FixedMetadataValue;
 
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 
-public class Portal {
+public class Portal implements Listener {
 
 	private Location loc;
 	private Player player;
@@ -24,6 +30,7 @@ public class Portal {
 	private static HashMap<UUID, Entry<Portal, Portal>> madePortals = new HashMap<>();
 
 	public Portal(Location loc, Player player) {
+		Bukkit.getPluginManager().registerEvents(this, CosmeticSuite.getInstance());
 		this.loc = loc;
 		loc = loc.clone().add(0, 1, 0);
 		this.player = player;
@@ -75,18 +82,36 @@ public class Portal {
 		if (regions.size() == 0) {
 			return true;
 		}
-		return (regions.allows(DefaultFlag.BUILD, lPlayer) ? true : false);
+		return (regions.allows(DefaultFlag.BUILD, lPlayer));
 	}
 
-	public void spark() {
+	public void spark(boolean second) {
+		System.out.println(checkPerms(player));
 		if (!checkPerms(player)) {
 			return;
 		}
-		Material portal = Material.PORTAL;
+		Material portal = Material.STATIONARY_WATER;
 		Location above = loc.clone().add(0, 1, 0);
+		if(second){
+			loc.getBlock().setMetadata("portal-2", new FixedMetadataValue(CosmeticSuite.getInstance(), ""));
+			above.getBlock().setMetadata("portal-2", new FixedMetadataValue(CosmeticSuite.getInstance(), ""));
+		} else {
+			loc.getBlock().setMetadata("portal", new FixedMetadataValue(CosmeticSuite.getInstance(), ""));
+			above.getBlock().setMetadata("portal", new FixedMetadataValue(CosmeticSuite.getInstance(), ""));
+		}
 		above.getBlock().setType(portal);
 		portals.add(above);
 		loc.getBlock().setType(portal);
 	}
 
+	@EventHandler
+	public void physics(BlockPhysicsEvent event){
+		Block block = event.getBlock();
+		if(block.hasMetadata("portal")){
+			event.setCancelled(true);
+		}
+		if(block.hasMetadata("portal-2")){
+			event.setCancelled(true);
+		}
+	}
 }

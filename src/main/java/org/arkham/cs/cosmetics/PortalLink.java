@@ -3,9 +3,18 @@ package org.arkham.cs.cosmetics;
 import java.util.HashMap;
 import java.util.UUID;
 
+import org.arkham.cs.CosmeticSuite;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerMoveEvent;
 
-public class PortalLink {
+public class PortalLink implements Listener {
 	
 	private Portal portal_1, portal_2;
 	private Player player;
@@ -17,11 +26,12 @@ public class PortalLink {
 		this.player = player;
 		links.put(player.getUniqueId(), this);
 		spark();
+		Bukkit.getPluginManager().registerEvents(this, CosmeticSuite.getInstance());
 	}
 	
 	public void spark(){
-		portal_1.spark();
-		portal_2.spark();
+		portal_1.spark(false);
+		portal_2.spark(true);
 	}
 
 	/**
@@ -57,6 +67,26 @@ public class PortalLink {
 	 */
 	public Player getPlayer() {
 		return player;
+	}
+	
+	@EventHandler
+	public void onMove(PlayerMoveEvent event){
+		if(event.getTo().getBlockX() == event.getFrom().getBlockX() && event.getTo().getBlockZ() == event.getFrom().getBlockZ()){
+			return;
+		}
+		Player player = event.getPlayer();
+		Location loc = player.getLocation();
+		Block block = loc.getBlock();
+		if(block.getType() != Material.STATIONARY_WATER){
+			return;
+		}
+		if(block.hasMetadata("portal")){
+			player.teleport(portal_2.getLocation().getBlock().getRelative(BlockFace.NORTH).getLocation());
+			return;
+		}
+		if(block.hasMetadata("portal-2")){
+			player.teleport(portal_1.getLocation().getBlock().getRelative(BlockFace.NORTH).getLocation());
+		}
 	}
 	
 }

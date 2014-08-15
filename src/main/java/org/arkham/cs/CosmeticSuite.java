@@ -91,6 +91,8 @@ public class CosmeticSuite extends JavaPlugin {
 		for(Player player : Bukkit.getOnlinePlayers()){
 			PlayerMetaDataUtil.removeFromInGUI(player);
 			PlayerMetaDataUtil.removeFromSwitching(player);
+			player.removeMetadata("created", CosmeticSuite.getInstance());
+			player.removeMetadata("created2", CosmeticSuite.getInstance());
 		}
 	}
 
