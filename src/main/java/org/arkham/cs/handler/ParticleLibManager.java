@@ -235,7 +235,7 @@ public class ParticleLibManager {
 					break;
 				case SHIELDENTITYEFFECT:
 					e = new ShieldEntityEffect(effectManager, player);
-					e.type = EffectType.INSTANT;
+					e.type = EffectType.REPEATING;
 					break;
 				case SMOKEENTITYEFFECT:
 					e = new SmokeEntityEffect(effectManager, player);
