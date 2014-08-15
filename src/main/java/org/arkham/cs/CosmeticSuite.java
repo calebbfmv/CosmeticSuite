@@ -32,6 +32,7 @@ public class CosmeticSuite extends JavaPlugin {
 	public void onEnable(){
 		instance = this;
 		getDataFolder().mkdirs();
+		configSQL();
 		guiManager = new GUIManager();
 		guiManager.loadPages();
 		effectManager = new EffectManager();
@@ -83,7 +84,15 @@ public class CosmeticSuite extends JavaPlugin {
 		return cCommand;
 	}
 
-
+	public void configSQL(){
+		saveDefaultConfig();
+		Authentication.sqldb = getConfig().getString("sql.db", Authentication.sqldb);
+		Authentication.sqlhost = getConfig().getString("sql.host", Authentication.sqlhost);
+		Authentication.sqlpass = getConfig().getString("sql.pass", Authentication.sqlpass);
+		Authentication.sqlport = getConfig().getInt("sql.port", Authentication.sqlport);
+		Authentication.sqluser = getConfig().getString("sql.user", Authentication.sqluser);
+	}
+	
 	public static CosmeticSuite getInstance(){
 		return instance;
 	}
