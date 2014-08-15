@@ -14,11 +14,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class CurseBlock extends Button {
+public class BlockTrail extends Button {
 
     private Rank rank;
-    private static HashMap<UUID, CurseBlock> blocks = new HashMap<>();
-    private static HashMap<Rank, List<CurseBlock>> blocksByRank = new HashMap<>();
+    public static HashMap<UUID, BlockTrail> blocks = new HashMap<>();
+    private static HashMap<Rank, List<BlockTrail>> blocksByRank = new HashMap<>();
 
     /**
      * 
@@ -26,10 +26,10 @@ public class CurseBlock extends Button {
      * @param permission
      * @param item
      */
-    public CurseBlock(int slot, String permission, ItemStack item, Rank rank){
+    public BlockTrail(int slot, String permission, ItemStack item, Rank rank){
         super(slot, Category.CURSE_BLOCKS, permission, item);
         this.rank = rank;
-        List<CurseBlock> cbs = blocksByRank.get(rank);
+        List<BlockTrail> cbs = blocksByRank.get(rank);
         if(cbs == null){
             cbs = new ArrayList<>();
         }
@@ -40,7 +40,7 @@ public class CurseBlock extends Button {
         blocksByRank.put(rank, cbs);
     }
 
-    public CurseBlock(int i, ItemStack item, Rank rank, String permission){
+    public BlockTrail(int i, ItemStack item, Rank rank, String permission){
         this(i, permission, item, rank);
     }
 
@@ -63,11 +63,11 @@ public class CurseBlock extends Button {
         player.closeInventory();
     }
 
-    public static CurseBlock get(Player player){
+    public static BlockTrail get(Player player){
         return blocks.get(player.getUniqueId());
     }
 
-    public static List<CurseBlock> getByRank(Rank rank){
+    public static List<BlockTrail> getByRank(Rank rank){
         return blocksByRank.get(rank);
     }
 }

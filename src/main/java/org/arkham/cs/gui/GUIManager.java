@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.arkham.cs.CosmeticSuite;
-import org.arkham.cs.cosmetics.CurseBlock;
+import org.arkham.cs.cosmetics.BlockTrail;
 import org.arkham.cs.cosmetics.CustomEffect;
 import org.arkham.cs.cosmetics.Hat;
 import org.arkham.cs.cosmetics.HeroKit;
@@ -210,6 +210,7 @@ public class GUIManager implements Listener {
 
 	public Inventory getMain(Player player) {
 		main.setItem(22, BaseItems.trail(player).getItem());
+		main.setItem(22-9, BaseItems.blockTrails(player).getItem());
 		return main;
 	}
 	
@@ -350,7 +351,7 @@ public class GUIManager implements Listener {
 			if (s.equalsIgnoreCase("podZol")) {
 				ItemStack item = new ItemStack(Material.DIRT, 1, (byte) 2);
 				String permission = "cosmetics.cursedblocks.podzol";
-				new CurseBlock(i, permission, item, Rank.HERO);
+				new BlockTrail(i, permission, item, Rank.HERO);
 			} else if (s.equalsIgnoreCase("woods")) {
 				ItemStack oak = new ItemStack(Material.LOG);
 				ItemStack spruce = new ItemStack(Material.LOG, 1, (byte) 1);
@@ -358,12 +359,12 @@ public class GUIManager implements Listener {
 				ItemStack jungle = new ItemStack(Material.LOG, 1, (byte) 3);
 				ItemStack acacia = new ItemStack(Material.LOG, 1, (byte) 4);
 				ItemStack dark = new ItemStack(Material.LOG, 1, (byte) 5);
-				new CurseBlock(i, "cosmetics.cursedblocks.oak_log", oak, Rank.HERO);
-				new CurseBlock(i, "cosmetics.cursedblocks.spruce_log", spruce, Rank.HERO);
-				new CurseBlock(i, "cosmetics.cursedblocks.birch_log", birch, Rank.HERO);
-				new CurseBlock(i, "cosmetics.cursedblocks.jungle_log", jungle, Rank.HERO);
-				new CurseBlock(i, "cosmetics.cursedblocks.acacia_log", acacia, Rank.HERO);
-				new CurseBlock(i, "cosmetics.cursedblocks.dark_log", dark, Rank.HERO);
+				new BlockTrail(i, "cosmetics.cursedblocks.oak_log", oak, Rank.HERO);
+				new BlockTrail(i, "cosmetics.cursedblocks.spruce_log", spruce, Rank.HERO);
+				new BlockTrail(i, "cosmetics.cursedblocks.birch_log", birch, Rank.HERO);
+				new BlockTrail(i, "cosmetics.cursedblocks.jungle_log", jungle, Rank.HERO);
+				new BlockTrail(i, "cosmetics.cursedblocks.acacia_log", acacia, Rank.HERO);
+				new BlockTrail(i, "cosmetics.cursedblocks.dark_log", dark, Rank.HERO);
 			} else if (s.equalsIgnoreCase("planks")) {
 				ItemStack oak = new ItemStack(Material.WOOD);
 				ItemStack spruce = new ItemStack(Material.WOOD, 1, (byte) 1);
@@ -371,17 +372,17 @@ public class GUIManager implements Listener {
 				ItemStack jungle = new ItemStack(Material.WOOD, 1, (byte) 3);
 				ItemStack acacia = new ItemStack(Material.WOOD, 1, (byte) 4);
 				ItemStack dark = new ItemStack(Material.WOOD, 1, (byte) 5);
-				new CurseBlock(i, "cosmetics.cursedblocks.oak_plank", oak, Rank.HERO);
-				new CurseBlock(i, "cosmetics.cursedblocks.spruce_plank", spruce, Rank.HERO);
-				new CurseBlock(i, "cosmetics.cursedblocks.birch_plank", birch, Rank.HERO);
-				new CurseBlock(i, "cosmetics.cursedblocks.jungle_plank", jungle, Rank.HERO);
-				new CurseBlock(i, "cosmetics.cursedblocks.acacia_plank", acacia, Rank.HERO);
-				new CurseBlock(i, "cosmetics.cursedblocks.dark_plank", dark, Rank.HERO);
+				new BlockTrail(i, "cosmetics.cursedblocks.oak_plank", oak, Rank.HERO);
+				new BlockTrail(i, "cosmetics.cursedblocks.spruce_plank", spruce, Rank.HERO);
+				new BlockTrail(i, "cosmetics.cursedblocks.birch_plank", birch, Rank.HERO);
+				new BlockTrail(i, "cosmetics.cursedblocks.jungle_plank", jungle, Rank.HERO);
+				new BlockTrail(i, "cosmetics.cursedblocks.acacia_plank", acacia, Rank.HERO);
+				new BlockTrail(i, "cosmetics.cursedblocks.dark_plank", dark, Rank.HERO);
 			} else {
 				Material mat = Material.valueOf(s);
 				ItemStack item = new ItemStack(mat);
 				String permission = "cosmetics.cursedblocks." + mat.name().toLowerCase();
-				new CurseBlock(i, permission, item, Rank.HERO);
+				new BlockTrail(i, permission, item, Rank.HERO);
 			}
 		}
 	}
@@ -405,7 +406,7 @@ public class GUIManager implements Listener {
 			} else {
 				Material mat = Material.valueOf(s);
 				ItemStack item = new ItemStack(mat);
-				new CurseBlock(i, item, Rank.SUPERHERO, "cosmetics.cursedblocks." + mat.name().toLowerCase());
+				new BlockTrail(i, item, Rank.SUPERHERO, "cosmetics.cursedblocks." + mat.name().toLowerCase());
 			}
 		}
 	}
@@ -527,7 +528,7 @@ public class GUIManager implements Listener {
 		for (DyeColor color : DyeColor.values()) {
 			Wool wool = new Wool(color);
 			ItemStack item = wool.toItemStack();
-			new CurseBlock(i, "cosmetics.cursedblocks." + color.name().toLowerCase() + "_wool", item, Rank.SUPERHERO);
+			new BlockTrail(i, "cosmetics.cursedblocks." + color.name().toLowerCase() + "_wool", item, Rank.SUPERHERO);
 		}
 	}
 
@@ -548,22 +549,22 @@ public class GUIManager implements Listener {
 		ItemStack stainedclay_green = new ItemStack(Material.STAINED_CLAY, 1, (short) 13);
 		ItemStack stainedclay_red = new ItemStack(Material.STAINED_CLAY, 1, (short) 14);
 		ItemStack stainedclay_black = new ItemStack(Material.STAINED_CLAY, 1, (short) 15);
-		new CurseBlock(i, stainedclay, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay");
-		new CurseBlock(i, stainedclay_black, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.black");
-		new CurseBlock(i, stainedclay_blue, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.blue");
-		new CurseBlock(i, stainedclay_brown, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.brown");
-		new CurseBlock(i, stainedclay_cyan, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.cyan");
-		new CurseBlock(i, stainedclay_gray, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.gray");
-		new CurseBlock(i, stainedclay_green, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.green");
-		new CurseBlock(i, stainedclay_light_blue, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.light_blue");
-		new CurseBlock(i, stainedclay_light_gray, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.light_gray");
-		new CurseBlock(i, stainedclay_lime, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.lime");
-		new CurseBlock(i, stainedclay_magenta, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.magenta");
+		new BlockTrail(i, stainedclay, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay");
+		new BlockTrail(i, stainedclay_black, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.black");
+		new BlockTrail(i, stainedclay_blue, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.blue");
+		new BlockTrail(i, stainedclay_brown, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.brown");
+		new BlockTrail(i, stainedclay_cyan, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.cyan");
+		new BlockTrail(i, stainedclay_gray, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.gray");
+		new BlockTrail(i, stainedclay_green, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.green");
+		new BlockTrail(i, stainedclay_light_blue, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.light_blue");
+		new BlockTrail(i, stainedclay_light_gray, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.light_gray");
+		new BlockTrail(i, stainedclay_lime, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.lime");
+		new BlockTrail(i, stainedclay_magenta, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.magenta");
 		new Hat(i, stainedclay_orange, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.orange");
-		new CurseBlock(i, stainedclay_pink, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.pink");
-		new CurseBlock(i, stainedclay_purple, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.purple");
-		new CurseBlock(i, stainedclay_red, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.red");
-		new CurseBlock(i, stainedclay_yellow, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.yellow");
+		new BlockTrail(i, stainedclay_pink, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.pink");
+		new BlockTrail(i, stainedclay_purple, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.purple");
+		new BlockTrail(i, stainedclay_red, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.red");
+		new BlockTrail(i, stainedclay_yellow, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedclay.yellow");
 	}
 
 	private static void stainedglassB(int i) {
@@ -583,21 +584,21 @@ public class GUIManager implements Listener {
 		ItemStack stainedclay_green = new ItemStack(Material.STAINED_GLASS, 1, (short) 13);
 		ItemStack stainedclay_red = new ItemStack(Material.STAINED_GLASS, 1, (short) 14);
 		ItemStack stainedclay_black = new ItemStack(Material.STAINED_GLASS, 1, (short) 15);
-		new CurseBlock(i, stainedclay, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass");
-		new CurseBlock(i, stainedclay_black, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.black");
-		new CurseBlock(i, stainedclay_blue, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.blue");
-		new CurseBlock(i, stainedclay_brown, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.brown");
-		new CurseBlock(i, stainedclay_cyan, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.cyan");
-		new CurseBlock(i, stainedclay_gray, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.gray");
-		new CurseBlock(i, stainedclay_green, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.green");
-		new CurseBlock(i, stainedclay_light_blue, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.light_blue");
-		new CurseBlock(i, stainedclay_light_gray, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.light_gray");
-		new CurseBlock(i, stainedclay_lime, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.lime");
-		new CurseBlock(i, stainedclay_magenta, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.magenta");
+		new BlockTrail(i, stainedclay, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass");
+		new BlockTrail(i, stainedclay_black, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.black");
+		new BlockTrail(i, stainedclay_blue, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.blue");
+		new BlockTrail(i, stainedclay_brown, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.brown");
+		new BlockTrail(i, stainedclay_cyan, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.cyan");
+		new BlockTrail(i, stainedclay_gray, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.gray");
+		new BlockTrail(i, stainedclay_green, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.green");
+		new BlockTrail(i, stainedclay_light_blue, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.light_blue");
+		new BlockTrail(i, stainedclay_light_gray, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.light_gray");
+		new BlockTrail(i, stainedclay_lime, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.lime");
+		new BlockTrail(i, stainedclay_magenta, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.magenta");
 		new Hat(i, stainedclay_orange, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.orange");
-		new CurseBlock(i, stainedclay_pink, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.pink");
-		new CurseBlock(i, stainedclay_purple, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.purple");
-		new CurseBlock(i, stainedclay_red, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.red");
-		new CurseBlock(i, stainedclay_yellow, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.yellow");
+		new BlockTrail(i, stainedclay_pink, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.pink");
+		new BlockTrail(i, stainedclay_purple, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.purple");
+		new BlockTrail(i, stainedclay_red, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.red");
+		new BlockTrail(i, stainedclay_yellow, Rank.SUPERHERO, "cosmetics.cursedblocks.stainedglass.yellow");
 	}
 }

@@ -6,7 +6,7 @@ import net.minecraft.server.v1_7_R4.Packet;
 import net.minecraft.server.v1_7_R4.PacketPlayOutWorldEvent;
 
 import org.arkham.cs.CosmeticSuite;
-import org.arkham.cs.cosmetics.CurseBlock;
+import org.arkham.cs.cosmetics.BlockTrail;
 import org.arkham.cs.cosmetics.TrailingBlock;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -22,7 +22,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class MoveListener implements Listener {
@@ -50,7 +52,7 @@ public class MoveListener implements Listener {
 			tb.run(player);
 			return;
 		}
-		CurseBlock cb = CurseBlock.get(player);
+		BlockTrail cb = BlockTrail.get(player);
 		if(cb == null){
 			return;
 		}
@@ -79,7 +81,7 @@ public class MoveListener implements Listener {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
-				Location l = loc;
+				Location l = loc.getBlock().getRelative(BlockFace.DOWN).getLocation();
 				l.getBlock().setType(bellow_type);
 				play(l, bellow_type);
 				below.removeMetadata("spawned", CosmeticSuite.getInstance());
@@ -115,5 +117,18 @@ public class MoveListener implements Listener {
 				((CraftServer) CosmeticSuite.getInstance().getServer()).getServer().getPlayerList().sendPacketNearby(l.getBlockX(), l.getBlockY(), l.getBlockZ(), 16, ((CraftWorld) l.getWorld()).getHandle().dimension, particles);
 			}
 		});
+	}
+	
+	@EventHandler
+	public void onShutDown(PluginDisableEvent event){
+		Plugin plugin = event.getPlugin();
+		if(!(plugin instanceof CosmeticSuite)){
+			return;
+		}
+		for(Location loc : blocks.keySet()){
+			Material type = blocks.get(loc);
+			loc.getBlock().setType(type);
+			blocks.remove(loc);
+		}
 	}
 }

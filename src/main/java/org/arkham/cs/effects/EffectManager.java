@@ -27,6 +27,9 @@ public class EffectManager implements Listener{
 	
 	public void setEffect(Player player, CustomEffect effect){
 	    if(effect == null) {
+	    	if(effects.containsKey(player.getUniqueId())){
+	    		effects.get(player.getUniqueId()).getEffect().stop(player);
+	    	}
 	        effects.remove(player.getUniqueId());
 	        return;
 	    }
@@ -51,5 +54,4 @@ public class EffectManager implements Listener{
 		playedEffect.display(player);
 		player.setMetadata("effected", new FixedMetadataValue(CosmeticSuite.getInstance(), ""));
 	}
-
 }

@@ -121,6 +121,73 @@ public class ParticleLibManager {
 		public ParticleClassType getType() {
 			return type;
 		}
+		
+		public void stop(Player player){
+			Effect e = null;
+			switch (this) {
+			case ARCLOCATIONEFFECT:
+				e = new ArcLocationEffect(effectManager, player.getEyeLocation(), player.getEyeLocation().getDirection().multiply(-3)
+						.toLocation(player.getWorld()));
+				break;
+			case ATOMLOCATIONEFFECT:
+				final AtomLocationEffect atom = new AtomLocationEffect(effectManager, player.getLocation().clone().add(0, 1, 0));
+				atom.radius = 5;
+				e = atom;
+				break;
+			case BLEEDENTITYEFFECT:
+				e = new BleedEntityEffect(effectManager, player);
+				break;
+			case CONELOCATIONEFFECT:
+				e = new ConeLocationEffect(effectManager, player.getEyeLocation());
+				break;
+			case DNALOCATIONEFFECT:
+				e = new DnaLocationEffect(effectManager, player.getEyeLocation());
+				break;
+			case EXPLODELOCATIONEFFECT:
+				e = new ExplodeLocationEffect(effectManager, player.getEyeLocation());
+				break;
+			case FLAMEENTITYEFFECT:
+				e = new FlameEntityEffect(effectManager, player);
+				break;
+			case FOUNTAINLOCATIONEFFECT:
+				e = new FountainLocationEffect(effectManager, player.getEyeLocation());
+				break;
+			case GRIDLOCATIONEFFECT:
+				e = new GridLocationEffect(effectManager, player.getEyeLocation());
+				break;
+			case HELIXLOCATIONEFFECT:
+				e = new HelixLocationEffect(effectManager, player.getEyeLocation());
+				break;
+			case LOVEENTITYEFFECT:
+				e = new LoveEntityEffect(effectManager, player);
+				break;
+			case MUSICENTITYEFFECT:
+				e = new MusicEntityEffect(effectManager, player);
+				break;
+			case SHIELDENTITYEFFECT:
+				e = new ShieldEntityEffect(effectManager, player);
+				e.type = EffectType.INSTANT;
+				break;
+			case SMOKEENTITYEFFECT:
+				e = new SmokeEntityEffect(effectManager, player);
+				break;
+			case STARLOCATIONEFFECT:
+				e = new StarLocationEffect(effectManager, player.getEyeLocation());
+				break;
+			case TRACEENTITYEFFECT:
+				e = new TraceEntityEffect(effectManager, player);
+				break;
+			case VORTEXLOCATIONEFFECT:
+				e = new VortexLocationEffect(effectManager, player.getEyeLocation());
+				break;
+			case WARPENTITYEFFECT:
+				e = new WarpEntityEffect(effectManager, player);
+				break;
+			default:
+				break;
+			}
+			ParticleLibManager.stop(e, player);
+		}
 
 		public void display(final Player player) {
 			switch (this.type) {
@@ -200,19 +267,19 @@ public class ParticleLibManager {
 	}
 
 	public static void run(final Effect atom, final Player player){
-		new BukkitRunnable(){
+		atom.start();
+		new BukkitRunnable() {
 			@Override
-			public void run(){
-				atom.start();
-				new BukkitRunnable() {
-					@Override
-					public void run() {
-						atom.cancel();
-						player.removeMetadata("effected", CosmeticSuite.getInstance());
-					}
-				}.runTaskLaterAsynchronously(CosmeticSuite.getInstance(), 20L*20);
+			public void run() {
+				atom.cancel();
+				player.removeMetadata("effected", CosmeticSuite.getInstance());
 			}
-		}.runTaskAsynchronously(CosmeticSuite.getInstance());
+		}.runTaskLaterAsynchronously(CosmeticSuite.getInstance(), 20L*20);;
+	}
+	
+	public static void stop(Effect effect, Player player){
+		effect.cancel();
+		player.removeMetadata("effected", CosmeticSuite.getInstance());
 	}
 
 	public static String name(FancyEffect effect){

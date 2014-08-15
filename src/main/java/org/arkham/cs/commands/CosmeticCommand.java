@@ -3,7 +3,7 @@ package org.arkham.cs.commands;
 import java.util.List;
 
 import org.arkham.cs.CosmeticSuite;
-import org.arkham.cs.cosmetics.CurseBlock;
+import org.arkham.cs.cosmetics.BlockTrail;
 import org.arkham.cs.cosmetics.CustomEffect;
 import org.arkham.cs.cosmetics.Hat;
 import org.arkham.cs.cosmetics.HeroKit;
@@ -142,7 +142,7 @@ public class CosmeticCommand implements CommandExecutor {
 		}
 		
 		Rank rank = PlayerHandler.getRank(player);
-		for(CurseBlock hat : CurseBlock.getByRank(rank)){
+		for(BlockTrail hat : BlockTrail.getByRank(rank)){
 			if(!PurchaseHandler.hasPurchased(player, hat)){
 				PurchaseHandler.addPurchase(player, hat);
 			}

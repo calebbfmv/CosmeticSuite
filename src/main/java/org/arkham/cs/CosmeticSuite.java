@@ -20,16 +20,16 @@ import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class CosmeticSuite extends JavaPlugin {
-	
+
 	private static CosmeticSuite instance;
 	private GUIManager guiManager;
 	private EffectManager effectManager;
 	private CosmeticCommand cCommand;
 	private ChatColorManager cManager;
-	
+
 	public static final String PREFIX = ChatColor.translateAlternateColorCodes('&', "&8[&e&lA&b&lC&8]&e ");
-	
-	public void onEnable(){
+
+	public void onEnable() {
 		instance = this;
 		getDataFolder().mkdirs();
 		configSQL();
@@ -54,58 +54,61 @@ public class CosmeticSuite extends JavaPlugin {
 		SQLQueryThread.addQuery("CREATE TABLE IF NOT EXISTS `colors` (`player` varchar(64) PRIMARY KEY , `code` varchar(2))");
 		SQLQueryThread.addQuery("CREATE TABLE IF NOT EXISTS `globalkits` (`player` varchar(64), `id` int, `time` long)");
 		getServer().getPluginManager().registerEvents(guiManager, instance);
-//		getLogger().info("Printing Permiossion nodes now: ");
+		// getLogger().info("Printing Permiossion nodes now: ");
 		StringBuilder builder = new StringBuilder();
-		for(Button button : Button.allButtons){
+		for (Button button : Button.allButtons) {
 			builder.append(button.getPermission() + "  \n");
 		}
 		getLogger().info("===========================");
 		getLogger().info("Writing permiission nodes now.");
-//		File file = new File(this.getDataFolder(), "perms.txt");
-//		if(!file.exists()){
-//			try {
-//				file.createNewFile();
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//		try {
-//			PrintWriter writer = new PrintWriter(file);
-//			writer.write(builder.toString());
-//			writer.close();
-//		} catch (FileNotFoundException e) {
-//			e.printStackTrace();
-//		}
+		// File file = new File(this.getDataFolder(), "perms.txt");
+		// if(!file.exists()){
+		// try {
+		// file.createNewFile();
+		// } catch (IOException e) {
+		// e.printStackTrace();
+		// }
+		// }
+		// try {
+		// PrintWriter writer = new PrintWriter(file);
+		// writer.write(builder.toString());
+		// writer.close();
+		// } catch (FileNotFoundException e) {
+		// e.printStackTrace();
+		// }
 		getLogger().info("Permission Nodes Wrtiten");
 		getLogger().info("===========================");
 	}
-	
-	public CosmeticCommand getCommand(){
+
+	public CosmeticCommand getCommand() {
 		return cCommand;
 	}
 
-	public void configSQL(){
+	public void configSQL() {
 		saveDefaultConfig();
 		Authentication.sqldb = getConfig().getString("sql.db", Authentication.sqldb);
 		Authentication.sqlhost = getConfig().getString("sql.host", Authentication.sqlhost);
 		Authentication.sqlpass = getConfig().getString("sql.pass", Authentication.sqlpass);
 		Authentication.sqlport = getConfig().getInt("sql.port", Authentication.sqlport);
 		Authentication.sqluser = getConfig().getString("sql.user", Authentication.sqluser);
+		System.out.println(Authentication.sqluser + " :: " + Authentication.sqldb + " :: " + Authentication.sqlhost + " :: " + Authentication.sqlpass + " :: " + Authentication.sqlport);
+	    Authentication.sqlurl = "jdbc:mysql://" + Authentication.sqlhost + ":" + Authentication.sqlport + "/" + Authentication.sqldb;
+
 	}
-	
-	public static CosmeticSuite getInstance(){
+
+	public static CosmeticSuite getInstance() {
 		return instance;
 	}
-	
-	public GUIManager getGuiManager(){
+
+	public GUIManager getGuiManager() {
 		return guiManager;
 	}
-	
-	public EffectManager getEffectManager(){
+
+	public EffectManager getEffectManager() {
 		return effectManager;
 	}
-	
-	public ChatColorManager getChatColorManager(){
+
+	public ChatColorManager getChatColorManager() {
 		return cManager;
 	}
 
